@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model 02 - Metric Inflation</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;family=Oswald:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        /* =========================================
+           1. CSS Variables & Reset
+           ========================================= */
+        :root {
+            --bg-dark: #020914;
+            --nav-bg: rgba(2, 9, 20, 0.95);
+            --card-bg: #071324;
+            --gold: #eebb60;
+            --text-main: #ffffff;
+            --text-muted: #a0aec0;
+            --border-blue: #1a2a42;
+            --number-blue: #4a77b4;
+            --quote-bg: #09182d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(26, 42, 66, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(26, 42, 66, 0.2) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* =========================================
+           2. Global Portfolio Navbar
+           Uses the same structure as the Home / main portfolio pages.
+           Model 02 keeps its own dark-blue + gold visual identity.
+           ========================================= */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(2, 9, 20, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-brand .logo {
+            color: var(--gold);
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text .name {
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .brand-text .title {
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .navbar .nav-links a {
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: var(--gold);
+        }
+
+        .navbar .btn-outline {
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .navbar .btn-outline:hover {
+            background-color: rgba(238, 187, 96, 0.08);
+        }
+
+        /* =========================================
+           3. Model 02 Content Styles
+           ========================================= */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .header-section {
+            margin-bottom: 3rem;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .main-title .gold-text {
+            color: var(--gold);
+        }
+
+        .gold-divider {
+            width: 100px;
+            height: 3px;
+            background-color: var(--gold);
+            border: none;
+            margin: 1.5rem 0;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .section-heading {
+            color: var(--gold);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-heading::before {
+            content: '|';
+            font-weight: 700;
+        }
+
+        .quote-card {
+            background-color: var(--quote-bg);
+            border: 1px solid var(--border-blue);
+            border-radius: 8px;
+            padding: 2rem;
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .quote-icon {
+            color: var(--number-blue);
+            font-size: 2rem;
+            font-family: serif;
+            position: absolute;
+            top: 1.5rem;
+            left: 1rem;
+            line-height: 1;
+        }
+
+        .quote-icon-right {
+            color: var(--number-blue);
+            font-size: 2rem;
+            font-family: serif;
+            position: absolute;
+            bottom: -0.5rem;
+            right: 1.5rem;
+            line-height: 1;
+        }
+
+        .quote-content {
+            padding-left: 2rem;
+        }
+
+        .quote-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .quote-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .context-text {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: transparent;
+            border: 2px dashed #1a2a42;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 2rem;
+            margin: 3rem 0;
+            position: relative;
+        }
+        
+        .image-placeholder::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px dashed rgba(26, 42, 66, 0.5);
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        .placeholder-text {
+            color: var(--gold);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .section-1-heading {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1.8rem;
+            border-top: 1px solid var(--border-blue);
+            padding-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .kpi-pill {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-blue);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1 1 auto;
+            min-width: 150px;
+        }
+
+        .kpi-number {
+            color: var(--number-blue);
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
+
+        .kpi-label {
+            font-size: 0.95rem;
+            line-height: 1.2;
+        }
+
+        .conclusion-text {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .highlight-card {
+            background: linear-gradient(to right, #0a182d, transparent);
+            border-left: 2px solid var(--gold);
+            border-top: 1px solid var(--border-blue);
+            border-bottom: 1px solid var(--border-blue);
+            border-right: 1px solid var(--border-blue);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .highlight-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .highlight-question {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        .final-sentence {
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .main-title { font-size: 2.5rem; }
+            .image-placeholder { height: 250px; }
+            .highlight-question { font-size: 1.8rem; }
+            .navbar .nav-links, .navbar .btn-outline { display: none; /* يمكن إضافة قائمة هامبرجر لاحقاً للموبايل */ }
+        }
+    
+        /* =========================================
+           GLOBAL NAVBAR — MODEL 02 ORIGINAL COLORS
+           ========================================= */
+        .navbar {
+            background-color: var(--bg-dark) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .navbar .logo {
+            color: var(--gold) !important;
+        }
+
+        .navbar .brand-text .name {
+            color: var(--text-main) !important;
+        }
+
+        .navbar .brand-text .title {
+            color: var(--text-muted) !important;
+        }
+
+        .navbar .nav-links a {
+            color: var(--text-main) !important;
+        }
+
+        .navbar .nav-links a:hover,
+        .navbar .nav-links a.active {
+            color: var(--gold) !important;
+        }
+
+        .navbar .btn-outline {
+            border-color: var(--gold) !important;
+            color: var(--gold) !important;
+            background: transparent !important;
+        }
+
+        .navbar .btn-outline:hover {
+            border-color: var(--gold) !important;
+            background-color: rgba(238, 187, 96, 0.08) !important;
+            color: var(--gold) !important;
+        }
+
+
+        /* =========================================================
+           MODEL 02 — PAGE 02 / VALIDATION & ROOT CAUSE
+           ========================================================= */
+        .model02-page-two {
+            position: relative;
+            overflow: hidden;
+            padding: 5.5rem 0 7rem;
+            border-top: 1px solid rgba(238, 187, 96, 0.18);
+            background:
+                radial-gradient(circle at 100% 12%, rgba(26, 42, 66, 0.36), transparent 33%),
+                radial-gradient(circle at 0% 92%, rgba(26, 42, 66, 0.24), transparent 30%),
+                linear-gradient(180deg, rgba(2, 9, 20, 0.98), rgba(2, 9, 20, 1));
+        }
+
+        .model02-page-two::before,
+        .model02-page-two::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.38;
+        }
+
+        .model02-page-two::before {
+            inset: 0 auto auto 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(74, 119, 180, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 119, 180, 0.08) 1px, transparent 1px);
+            background-size: 38px 38px;
+            mask-image: linear-gradient(to right, rgba(0,0,0,0.85), transparent 84%);
+            -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0.85), transparent 84%);
+        }
+
+        .model02-page-two::after {
+            width: 420px;
+            height: 420px;
+            top: 80px;
+            right: -160px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 119, 180, 0.16);
+            box-shadow:
+                0 0 0 28px rgba(74, 119, 180, 0.05),
+                0 0 0 56px rgba(74, 119, 180, 0.035),
+                0 0 0 84px rgba(74, 119, 180, 0.02);
+            animation: model02Orbit 16s linear infinite;
+        }
+
+        @keyframes model02Orbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .m2-page-inner {
+            width: min(1000px, calc(100% - 60px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .m2-section-block {
+            position: relative;
+            padding: 0 0 1.7rem;
+        }
+
+        .m2-section-badge {
+            display: inline-flex;
+            align-items: center;
+            min-height: 34px;
+            padding: 5px 14px;
+            border: 1px solid #577093;
+            border-radius: 8px;
+            background: rgba(2, 9, 20, 0.58);
+            color: #f4f6f9;
+            font-size: 0.95rem;
+            letter-spacing: 0.4px;
+        }
+
+        .m2-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 5.2vw, 4.45rem);
+            line-height: 1.08;
+            font-weight: 700;
+            margin: 0.9rem 0 1rem;
+            color: #f4f6f9;
+        }
+
+        .m2-section-title .gold {
+            color: var(--gold);
+        }
+
+        .m2-title-accent {
+            width: 150px;
+            height: 3px;
+            margin: 0 0 1.35rem;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 999px;
+            box-shadow: 0 0 10px rgba(238, 187, 96, 0.28);
+        }
+
+        .m2-body-copy {
+            color: #f2f4f8;
+            font-size: clamp(1rem, 1.6vw, 1.22rem);
+            line-height: 1.67;
+            max-width: 950px;
+            margin-bottom: 1rem;
+        }
+
+        .m2-shot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1.35rem;
+        }
+
+        .m2-shot-card {
+            background: rgba(7, 19, 36, 0.72);
+            border: 1px solid #476487;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+        }
+
+        .m2-shot-label {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+            line-height: 1.2;
+            font-weight: 700;
+            text-align: center;
+            min-height: 62px;
+            display: grid;
+            place-items: center;
+            padding: 0 0.5rem 0.4rem;
+        }
+
+        .m2-placeholder {
+            min-height: 188px;
+            border: 1px dashed #2d6ea7;
+            border-radius: 12px;
+            background:
+                linear-gradient(180deg, rgba(9, 24, 45, 0.72), rgba(2, 9, 20, 0.58));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: #79a9dc;
+            text-align: center;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .m2-placeholder:hover {
+            transform: translateY(-4px);
+            border-color: rgba(74, 119, 180, 0.9);
+            box-shadow: 0 12px 30px rgba(43, 93, 150, 0.14);
+        }
+
+        .m2-placeholder-icon {
+            width: 66px;
+            height: 54px;
+            border: 3px solid #4f79a6;
+            border-radius: 6px;
+            position: relative;
+            opacity: 0.9;
+        }
+
+        .m2-placeholder-icon::before,
+        .m2-placeholder-icon::after {
+            content: "";
+            position: absolute;
+            background: #4f79a6;
+            opacity: 0.85;
+        }
+
+        .m2-placeholder-icon::before {
+            left: 0;
+            right: 0;
+            top: 17px;
+            height: 2px;
+            box-shadow: 0 17px 0 #4f79a6;
+        }
+
+        .m2-placeholder-icon::after {
+            top: 0;
+            bottom: 0;
+            left: 21px;
+            width: 2px;
+            box-shadow: 20px 0 0 #4f79a6;
+        }
+
+        .m2-placeholder-text {
+            font-size: 1rem;
+            color: #76a6dc;
+        }
+
+        .m2-divider {
+            height: 1px;
+            width: 100%;
+            margin: 1.45rem 0;
+            background: linear-gradient(90deg, var(--gold), rgba(238,187,96,0.12), var(--gold));
+            opacity: 0.85;
+        }
+
+        .m2-section-three {
+            padding-top: 0.2rem;
+        }
+
+        .m2-root-grid {
+            display: grid;
+            grid-template-columns: 1.02fr 0.98fr;
+            gap: 1.2rem;
+            align-items: stretch;
+            margin-top: 1.1rem;
+        }
+
+        .m2-result-card {
+            background: rgba(8, 19, 35, 0.82);
+            border: 1px solid #314c6c;
+            border-radius: 12px;
+            padding: 1.25rem 1.35rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .m2-result-card::before {
+            content: "";
+            position: absolute;
+            left: 14px;
+            top: 18px;
+            bottom: 18px;
+            width: 4px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--gold), rgba(238,187,96,0.25));
+            box-shadow: 0 0 8px rgba(238, 187, 96, 0.14);
+        }
+
+        .m2-result-content {
+            padding-left: 1.2rem;
+        }
+
+        .m2-result-title {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.32rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .m2-result-list {
+            padding-left: 1.2rem;
+            color: #f2f4f8;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .m2-explanation {
+            padding: 0.3rem 0 0;
+            color: #f2f4f8;
+            font-size: clamp(1rem, 1.7vw, 1.18rem);
+            line-height: 1.6;
+        }
+
+        .m2-explanation strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .m2-explanation-divider {
+            height: 1px;
+            margin: 1rem 0;
+            background: rgba(74, 119, 180, 0.56);
+            border-top: 1px dashed rgba(74, 119, 180, 0.56);
+        }
+
+        .m2-sql-card {
+            margin-top: 1.15rem;
+            background: rgba(7, 19, 36, 0.72);
+            border: 1px solid #476487;
+            border-radius: 12px;
+            padding: 0.95rem;
+        }
+
+        .m2-sql-title {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.1rem, 1.9vw, 1.35rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.9rem;
+        }
+
+        .m2-sql-placeholder {
+            min-height: 150px;
+            border: 1px dashed #2d6ea7;
+            border-radius: 12px;
+            background: rgba(2, 9, 20, 0.42);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            color: #76a6dc;
+        }
+
+        .m2-code-icon {
+            font-family: 'Oswald', sans-serif;
+            color: #6488b3;
+            font-size: 2.7rem;
+            line-height: 1;
+            letter-spacing: -5px;
+        }
+
+        .m2-scroll-line {
+            width: 100%;
+            height: 2px;
+            margin-top: 2.1rem;
+            background: linear-gradient(90deg, transparent, rgba(238,187,96,0.85), transparent);
+            transform-origin: center;
+            animation: m2LinePulse 3.2s ease-in-out infinite;
+        }
+
+        @keyframes m2LinePulse {
+            0%, 100% { transform: scaleX(0.65); opacity: 0.38; }
+            50%      { transform: scaleX(1); opacity: 1; }
+        }
+
+        .m2-reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition:
+                opacity 0.85s ease,
+                transform 0.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .m2-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .m2-delay-1 { transition-delay: 0.08s; }
+        .m2-delay-2 { transition-delay: 0.16s; }
+        .m2-delay-3 { transition-delay: 0.24s; }
+
+        @media (max-width: 860px) {
+            .m2-shot-grid,
+            .m2-root-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .m2-page-inner {
+                width: min(100% - 34px, 720px);
+            }
+
+            .m2-section-title {
+                font-size: clamp(2.5rem, 11vw, 3.8rem);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 16px 22px;
+            }
+
+            .navbar .nav-links {
+                display: none;
+            }
+
+            .navbar .btn-outline {
+                display: inline-flex;
+                padding: 9px 15px;
+                border-radius: 30px;
+            }
+
+            .m2-page-inner {
+                width: min(100% - 28px, 680px);
+            }
+
+            .m2-shot-label {
+                min-height: auto;
+            }
+
+            .m2-placeholder {
+                min-height: 165px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .model02-page-two::after,
+            .m2-scroll-line {
+                animation: none;
+            }
+
+            .m2-reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+
+        /* =========================================================
+           MODEL 02 — PAGE 03 / FIXING THE PROBLEM & BUSINESS FINDINGS
+           ========================================================= */
+
+        .model02-page-three {
+            position: relative;
+            overflow: hidden;
+            padding: 5.5rem 0 7rem;
+            border-top: 1px solid rgba(238, 187, 96, 0.18);
+            background:
+                radial-gradient(circle at 100% 16%, rgba(26, 42, 66, 0.34), transparent 34%),
+                radial-gradient(circle at 0% 88%, rgba(26, 42, 66, 0.22), transparent 32%),
+                linear-gradient(180deg, rgba(2, 9, 20, 0.98), rgba(2, 9, 20, 1));
+        }
+
+        .model02-page-three::before,
+        .model02-page-three::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .model02-page-three::before {
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(74, 119, 180, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 119, 180, 0.07) 1px, transparent 1px);
+            background-size: 38px 38px;
+            opacity: 0.42;
+            mask-image: linear-gradient(to right, transparent 0%, black 17%, black 78%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 17%, black 78%, transparent 100%);
+        }
+
+        .model02-page-three::after {
+            width: 510px;
+            height: 510px;
+            right: -210px;
+            top: 100px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 119, 180, 0.13);
+            box-shadow:
+                0 0 0 28px rgba(74, 119, 180, 0.045),
+                0 0 0 56px rgba(74, 119, 180, 0.03),
+                0 0 0 84px rgba(74, 119, 180, 0.02);
+            animation: model02PageThreeOrbit 18s linear infinite;
+        }
+
+        @keyframes model02PageThreeOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .m2p3-inner {
+            width: min(1000px, calc(100% - 60px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .m2p3-fix-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+            gap: 2.1rem;
+            align-items: start;
+        }
+
+        .m2p3-text {
+            padding-top: 0.1rem;
+        }
+
+        .m2p3-body {
+            color: #f2f4f8;
+            font-size: clamp(1rem, 1.6vw, 1.17rem);
+            line-height: 1.68;
+            max-width: 650px;
+            margin-bottom: 1.25rem;
+        }
+
+        .m2p3-body strong {
+            color: #f4a938;
+            font-weight: 700;
+        }
+
+        .m2p3-shot-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .m2p3-shot-card {
+            background: rgba(7, 19, 36, 0.72);
+            border: 1px solid #476487;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+        }
+
+        .m2p3-shot-title {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.04rem, 1.65vw, 1.28rem);
+            line-height: 1.22;
+            font-weight: 700;
+            text-align: center;
+            padding: 0.05rem 0.55rem 0.7rem;
+        }
+
+        .m2p3-placeholder {
+            min-height: 186px;
+            border: 1px dashed #2d6ea7;
+            border-radius: 12px;
+            background:
+                linear-gradient(180deg, rgba(9, 24, 45, 0.74), rgba(2, 9, 20, 0.58));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 0.75rem;
+            color: #76a6dc;
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .m2p3-placeholder:hover {
+            transform: translateY(-4px);
+            border-color: rgba(74, 119, 180, 0.9);
+            box-shadow: 0 12px 30px rgba(43, 93, 150, 0.14);
+        }
+
+        .m2p3-browser-icon {
+            width: 92px;
+            height: 62px;
+            border: 3px solid #4f79a6;
+            border-radius: 8px;
+            position: relative;
+            opacity: 0.92;
+        }
+
+        .m2p3-browser-icon::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 16px;
+            height: 2px;
+            background: #4f79a6;
+        }
+
+        .m2p3-browser-icon::after {
+            content: "•••";
+            position: absolute;
+            left: 9px;
+            top: -1px;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: #4f79a6;
+        }
+
+        .m2p3-dashboard-icon {
+            width: 92px;
+            height: 62px;
+            border: 3px solid #4f79a6;
+            border-radius: 8px;
+            position: relative;
+            opacity: 0.92;
+        }
+
+        .m2p3-dashboard-icon::before {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 10px;
+            height: 28px;
+            background:
+                linear-gradient(to top, #4f79a6 0 100%) left bottom / 8px 14px no-repeat,
+                linear-gradient(to top, #4f79a6 0 100%) center bottom / 8px 22px no-repeat,
+                linear-gradient(to top, #4f79a6 0 100%) right bottom / 8px 18px no-repeat;
+            opacity: 0.8;
+        }
+
+        .m2p3-placeholder-text {
+            font-size: 0.98rem;
+            color: #76a6dc;
+        }
+
+        .m2p3-divider {
+            height: 1px;
+            width: 100%;
+            margin: 1.6rem 0 1.7rem;
+            background: linear-gradient(90deg, var(--gold), rgba(238,187,96,0.1), var(--gold));
+            opacity: 0.85;
+        }
+
+        .m2p3-findings-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+            gap: 1.8rem;
+            align-items: start;
+        }
+
+        .m2p3-findings-heading {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.42rem;
+            margin: 1.6rem 0 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .m2p3-findings-heading::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(238, 187, 96, 0.46);
+        }
+
+        .m2p3-finding {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 1rem;
+            align-items: start;
+            padding: 0.9rem 0;
+            border-bottom: 1px solid rgba(74, 119, 180, 0.34);
+        }
+
+        .m2p3-finding:last-child {
+            border-bottom: 0;
+        }
+
+        .m2p3-finding-number {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid rgba(238, 187, 96, 0.7);
+            display: grid;
+            place-items: center;
+            color: var(--gold);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            background: rgba(7, 19, 36, 0.54);
+            box-shadow: inset 0 0 14px rgba(238, 187, 96, 0.05);
+        }
+
+        .m2p3-finding-text {
+            color: #f1f4f7;
+            font-size: clamp(0.98rem, 1.55vw, 1.1rem);
+            line-height: 1.63;
+            padding-top: 0.18rem;
+        }
+
+        .m2p3-finding-text strong {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .m2p3-dashboard-card {
+            background: rgba(7, 19, 36, 0.72);
+            border: 1px solid #476487;
+            border-radius: 12px;
+            padding: 0.95rem;
+            box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+        }
+
+        .m2p3-final-placeholder {
+            min-height: 500px;
+            border: 1px dashed #2d6ea7;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(9,24,45,0.76), rgba(2,9,20,0.58));
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            color: #76a6dc;
+        }
+
+        .m2p3-dashboard-mock {
+            border: 1px solid rgba(74,119,180,0.5);
+            border-radius: 8px;
+            background: rgba(4, 13, 27, 0.7);
+            padding: 0.75rem;
+        }
+
+        .m2p3-kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.35rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .m2p3-kpi-box {
+            border: 1px solid rgba(74,119,180,0.52);
+            border-radius: 5px;
+            padding: 0.45rem 0.25rem;
+            text-align: center;
+            background: rgba(11,30,55,0.65);
+        }
+
+        .m2p3-kpi-box .num {
+            color: #82a8da;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .m2p3-kpi-box .lab {
+            display: block;
+            color: #8ea1ba;
+            font-size: 0.55rem;
+            margin-top: 0.2rem;
+        }
+
+        .m2p3-chart {
+            border: 1px solid rgba(74,119,180,0.45);
+            border-radius: 5px;
+            min-height: 130px;
+            margin-bottom: 0.45rem;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(rgba(74,119,180,0.14) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74,119,180,0.14) 1px, transparent 1px),
+                rgba(5,16,32,0.6);
+            background-size: 24px 24px;
+        }
+
+        .m2p3-chart::before {
+            content: "";
+            position: absolute;
+            inset: 22% 8% 24% 8%;
+            border-top: 2px solid #6f91bf;
+            border-radius: 50%;
+            transform: rotate(-7deg);
+            box-shadow:
+                35px 16px 0 -1px #6f91bf,
+                80px -7px 0 -1px #6f91bf,
+                125px 18px 0 -1px #6f91bf,
+                170px -5px 0 -1px #6f91bf;
+            opacity: 0.85;
+        }
+
+        .m2p3-small-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.45rem;
+        }
+
+        .m2p3-small-chart {
+            min-height: 110px;
+            border: 1px solid rgba(74,119,180,0.45);
+            border-radius: 5px;
+            background: rgba(5,16,32,0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .m2p3-small-chart::before {
+            content: "";
+            position: absolute;
+            left: 14%;
+            right: 13%;
+            bottom: 12%;
+            height: 58%;
+            background:
+                linear-gradient(to top, #5d7fab 0 100%) 0 100% / 12% 55% no-repeat,
+                linear-gradient(to top, #5d7fab 0 100%) 25% 100% / 12% 75% no-repeat,
+                linear-gradient(to top, #5d7fab 0 100%) 50% 100% / 12% 46% no-repeat,
+                linear-gradient(to top, #5d7fab 0 100%) 75% 100% / 12% 66% no-repeat;
+            opacity: 0.75;
+        }
+
+        .m2p3-small-chart.donut::after {
+            content: "";
+            position: absolute;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            left: 18px;
+            top: 23px;
+            border: 11px solid #5678a1;
+            border-right-color: #243c5c;
+            transform: rotate(18deg);
+        }
+
+        .m2p3-dashboard-label {
+            text-align: center;
+            font-size: 0.96rem;
+            color: #76a6dc;
+            margin-top: 0.6rem;
+        }
+
+        .m2p3-bottom-line {
+            width: 100%;
+            height: 2px;
+            margin-top: 2.2rem;
+            background: linear-gradient(90deg, transparent, rgba(238,187,96,0.82), transparent);
+            animation: m2p3PulseLine 3.3s ease-in-out infinite;
+            transform-origin: center;
+        }
+
+        @keyframes m2p3PulseLine {
+            0%, 100% { transform: scaleX(0.68); opacity: 0.38; }
+            50% { transform: scaleX(1); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .m2p3-fix-layout,
+            .m2p3-findings-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .m2p3-shot-stack {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .m2p3-final-placeholder {
+                min-height: 430px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .m2p3-inner {
+                width: min(100% - 28px, 680px);
+            }
+
+            .m2p3-shot-stack {
+                grid-template-columns: 1fr;
+            }
+
+            .m2p3-kpi-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .m2p3-final-placeholder {
+                min-height: 360px;
+            }
+
+            .m2p3-finding {
+                grid-template-columns: 48px 1fr;
+            }
+
+            .m2p3-finding-number {
+                width: 44px;
+                height: 44px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .model02-page-three::after,
+            .m2p3-bottom-line {
+                animation: none;
+            }
+        }
+
+        /* Final Dashboard — true full-width landscape layout */
+        .m2p3-findings-layout {
+            display: block !important;
+        }
+
+        .m2p3-findings-layout > div:first-child {
+            width: 100%;
+        }
+
+        .m2p3-dashboard-card.final-dashboard-wide {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .m2p3-dashboard-card.final-dashboard-wide .m2p3-final-placeholder {
+            min-height: 300px;
+            width: 100%;
+        }
+
+        .m2p3-dashboard-card.final-dashboard-wide .m2p3-dashboard-mock {
+            width: min(100%, 950px);
+            margin: 0 auto;
+        }
+
+        .m2p3-dashboard-card.final-dashboard-wide .m2p3-chart {
+            min-height: 130px;
+        }
+
+        @media (max-width: 640px) {
+            .m2p3-dashboard-card.final-dashboard-wide .m2p3-final-placeholder {
+                min-height: 240px;
+            }
+        }
+
+        /* =========================================================
+           MODEL 02 — PAGE 04 / BEYOND THE DASHBOARD
+           ========================================================= */
+
+        .model02-page-four {
+            position: relative;
+            overflow: hidden;
+            padding: 5.8rem 0 7rem;
+            border-top: 1px solid rgba(238, 187, 96, 0.18);
+            background:
+                radial-gradient(circle at 100% 10%, rgba(26, 42, 66, 0.38), transparent 36%),
+                radial-gradient(circle at 0% 90%, rgba(26, 42, 66, 0.22), transparent 32%),
+                linear-gradient(180deg, rgba(2, 9, 20, 0.99), rgba(2, 9, 20, 1));
+        }
+
+        .model02-page-four::before,
+        .model02-page-four::after {
+            content: "";
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .model02-page-four::before {
+            inset: 0;
+            opacity: 0.34;
+            background-image:
+                linear-gradient(rgba(74, 119, 180, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74, 119, 180, 0.07) 1px, transparent 1px);
+            background-size: 38px 38px;
+            mask-image: linear-gradient(90deg, transparent 0%, black 18%, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 18%, black 80%, transparent 100%);
+        }
+
+        .model02-page-four::after {
+            width: 540px;
+            height: 540px;
+            top: 70px;
+            right: -215px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 119, 180, 0.13);
+            box-shadow:
+                0 0 0 32px rgba(74, 119, 180, 0.045),
+                0 0 0 64px rgba(74, 119, 180, 0.028),
+                0 0 0 96px rgba(74, 119, 180, 0.018);
+            animation: model02PageFourOrbit 19s linear infinite;
+        }
+
+        @keyframes model02PageFourOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .m2p4-inner {
+            width: min(1000px, calc(100% - 60px));
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .m2p4-header {
+            position: relative;
+            max-width: 920px;
+        }
+
+        .m2p4-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.6rem, 5.25vw, 4.55rem);
+            line-height: 1.06;
+            color: #f4f6f9;
+            margin: 0.95rem 0 1rem;
+            font-weight: 700;
+        }
+
+        .m2p4-title .gold {
+            color: var(--gold);
+        }
+
+        .m2p4-accent {
+            width: 162px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            border-radius: 999px;
+            box-shadow: 0 0 10px rgba(238, 187, 96, 0.3);
+            margin-bottom: 1.55rem;
+        }
+
+        .m2p4-quote {
+            position: relative;
+            max-width: 670px;
+            padding-left: 2.55rem;
+            margin: 0 0 1.8rem;
+            color: #8fb1dd;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.45rem, 2.4vw, 2rem);
+            line-height: 1.35;
+            font-weight: 600;
+        }
+
+        .m2p4-quote::before {
+            content: "“";
+            position: absolute;
+            left: 0;
+            top: -0.15rem;
+            color: #f4ad38;
+            font-family: Georgia, serif;
+            font-size: 4rem;
+            line-height: 1;
+        }
+
+        .m2p4-quote::after {
+            content: "”";
+            color: #f4ad38;
+            font-family: Georgia, serif;
+            font-size: 3rem;
+            margin-left: 0.25rem;
+            vertical-align: -0.4rem;
+        }
+
+        .m2p4-body {
+            max-width: 660px;
+            color: #f0f3f7;
+            font-size: clamp(1rem, 1.65vw, 1.18rem);
+            line-height: 1.72;
+            margin-bottom: 1.05rem;
+        }
+
+        .m2p4-workflow-title {
+            color: #f0f3f7;
+            font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+            margin: 1.55rem 0 0.85rem;
+        }
+
+        .m2p4-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .m2p4-workflow {
+            position: relative;
+            margin-top: 0.25rem;
+            padding-left: 0.65rem;
+        }
+
+        .m2p4-workflow::before {
+            content: "";
+            position: absolute;
+            left: 28px;
+            top: 27px;
+            bottom: 27px;
+            width: 1px;
+            background: linear-gradient(
+                180deg,
+                rgba(238,187,96,0.72),
+                rgba(74,119,180,0.5),
+                rgba(238,187,96,0.28)
+            );
+        }
+
+        .m2p4-step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 1rem;
+            align-items: center;
+            min-height: 70px;
+        }
+
+        .m2p4-step + .m2p4-step {
+            margin-top: 0.12rem;
+        }
+
+        .m2p4-step-number {
+            position: relative;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid rgba(238,187,96,0.8);
+            background: rgba(2,9,20,0.93);
+            display: grid;
+            place-items: center;
+            color: var(--gold);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.24rem;
+            box-shadow: 0 0 0 4px rgba(2,9,20,0.5);
+        }
+
+        .m2p4-step-text {
+            color: #f2f4f8;
+            font-size: clamp(0.98rem, 1.55vw, 1.12rem);
+            line-height: 1.45;
+        }
+
+        .m2p4-step-text strong {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+        }
+
+        .m2p4-visuals {
+            position: relative;
+            min-height: 600px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 58% 30%, rgba(74,119,180,0.18), transparent 30%),
+                linear-gradient(180deg, rgba(4,14,29,0.2), transparent);
+        }
+
+        .m2p4-chart-grid {
+            position: absolute;
+            inset: 10px 0 0 0;
+            opacity: 0.48;
+            background-image:
+                linear-gradient(rgba(74,119,180,0.10) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(74,119,180,0.10) 1px, transparent 1px);
+            background-size: 44px 44px;
+            mask-image: linear-gradient(to bottom, black 10%, transparent 95%);
+            -webkit-mask-image: linear-gradient(to bottom, black 10%, transparent 95%);
+        }
+
+        .m2p4-bars {
+            position: absolute;
+            right: 12%;
+            top: 15%;
+            width: 58%;
+            height: 38%;
+            display: flex;
+            align-items: flex-end;
+            gap: 7px;
+            opacity: 0.55;
+        }
+
+        .m2p4-bars span {
+            flex: 1;
+            min-width: 10px;
+            background: linear-gradient(to top, rgba(74,119,180,0.12), rgba(74,119,180,0.68));
+            border: 1px solid rgba(91,130,179,0.45);
+            border-bottom: none;
+            animation: m2p4BarPulse 4.4s ease-in-out infinite alternate;
+        }
+
+        .m2p4-bars span:nth-child(1) { height: 35%; animation-delay: 0.2s; }
+        .m2p4-bars span:nth-child(2) { height: 51%; animation-delay: 0.5s; }
+        .m2p4-bars span:nth-child(3) { height: 42%; animation-delay: 0.8s; }
+        .m2p4-bars span:nth-child(4) { height: 63%; animation-delay: 1.1s; }
+        .m2p4-bars span:nth-child(5) { height: 54%; animation-delay: 1.4s; }
+        .m2p4-bars span:nth-child(6) { height: 75%; animation-delay: 1.7s; }
+        .m2p4-bars span:nth-child(7) { height: 68%; animation-delay: 2s; }
+
+        @keyframes m2p4BarPulse {
+            from { transform: scaleY(0.96); opacity: 0.56; }
+            to { transform: scaleY(1.04); opacity: 0.9; }
+        }
+
+        .m2p4-trend {
+            position: absolute;
+            right: 4%;
+            top: 7%;
+            width: 70%;
+            height: 44%;
+            overflow: visible;
+            opacity: 0.7;
+        }
+
+        .m2p4-trend path {
+            fill: none;
+            stroke: #789dca;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1500;
+            stroke-dashoffset: 1500;
+            animation: m2p4DrawTrend 4.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+        }
+
+        @keyframes m2p4DrawTrend {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .m2p4-flow-wave {
+            position: absolute;
+            right: -4%;
+            bottom: 2%;
+            width: 92%;
+            height: 42%;
+            opacity: 0.52;
+        }
+
+        .m2p4-flow-wave span {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            border-radius: 50%;
+            border-top: 1px solid rgba(74,119,180,0.45);
+            transform: skewY(-10deg);
+            animation: m2p4WaveMove 6s ease-in-out infinite alternate;
+        }
+
+        .m2p4-flow-wave span:nth-child(1) { top: 15%; }
+        .m2p4-flow-wave span:nth-child(2) { top: 27%; animation-delay: 0.4s; }
+        .m2p4-flow-wave span:nth-child(3) { top: 39%; animation-delay: 0.8s; }
+        .m2p4-flow-wave span:nth-child(4) { top: 51%; animation-delay: 1.2s; }
+        .m2p4-flow-wave span:nth-child(5) { top: 63%; animation-delay: 1.6s; }
+        .m2p4-flow-wave span:nth-child(6) { top: 75%; animation-delay: 2s; }
+
+        @keyframes m2p4WaveMove {
+            from { transform: translateX(-10px) skewY(-10deg); opacity: 0.35; }
+            to { transform: translateX(10px) skewY(-10deg); opacity: 0.7; }
+        }
+
+        .m2p4-callout-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+            gap: 1.8rem;
+            align-items: stretch;
+            margin-top: 1.9rem;
+        }
+
+        .m2p4-callout {
+            border: 1px solid #476487;
+            border-radius: 14px;
+            background: rgba(7,19,36,0.74);
+            padding: 1.35rem 1.35rem 1.45rem 1.55rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .m2p4-callout::before {
+            content: "";
+            position: absolute;
+            left: 16px;
+            top: 17px;
+            bottom: 17px;
+            width: 4px;
+            border-radius: 999px;
+            background: linear-gradient(180deg, var(--gold), rgba(238,187,96,0.25));
+        }
+
+        .m2p4-callout-content {
+            padding-left: 1.1rem;
+        }
+
+        .m2p4-callout-title {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            line-height: 1.2;
+            margin-bottom: 0.7rem;
+        }
+
+        .m2p4-callout-highlight {
+            color: #88aada;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 3vw, 2.45rem);
+            line-height: 1.16;
+            margin: 0;
+        }
+
+        .m2p4-callout-highlight .gold {
+            color: var(--gold);
+        }
+
+        .m2p4-callout-text {
+            color: #f0f3f7;
+            font-size: clamp(1rem, 1.55vw, 1.1rem);
+            line-height: 1.65;
+            margin: 0;
+        }
+
+        .m2p4-wide-card {
+            margin-top: 1.55rem;
+            border: 1px solid #476487;
+            border-radius: 14px;
+            background: rgba(7,19,36,0.74);
+            padding: 1.35rem 1.6rem;
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 1.4rem;
+            align-items: center;
+        }
+
+        .m2p4-wide-text {
+            color: #f0f3f7;
+            font-size: clamp(1rem, 1.65vw, 1.18rem);
+            line-height: 1.68;
+            margin: 0;
+        }
+
+        .m2p4-wide-text strong {
+            color: var(--gold);
+        }
+
+        .m2p4-final-quote {
+            margin: 1.65rem auto 0;
+            max-width: 820px;
+            border: 1px solid #476487;
+            border-radius: 44px;
+            background: rgba(7,19,36,0.82);
+            padding: 1.25rem 2rem;
+            display: grid;
+            grid-template-columns: 70px 1fr 70px;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .m2p4-final-quote-mark {
+            color: #f4ad38;
+            font-family: Georgia, serif;
+            font-size: 4.2rem;
+            line-height: 0.8;
+            text-align: center;
+        }
+
+        .m2p4-final-quote-text {
+            margin: 0;
+            text-align: center;
+            color: #f2f4f8;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 600;
+            font-size: clamp(1.5rem, 2.55vw, 2.15rem);
+            line-height: 1.22;
+        }
+
+        .m2p4-bottom-line {
+            width: 100%;
+            height: 2px;
+            margin-top: 2rem;
+            background: linear-gradient(90deg, transparent, rgba(238,187,96,0.84), transparent);
+            animation: m2p4LinePulse 3.5s ease-in-out infinite;
+        }
+
+        @keyframes m2p4LinePulse {
+            0%, 100% { transform: scaleX(0.65); opacity: 0.4; }
+            50% { transform: scaleX(1); opacity: 1; }
+        }
+
+        @media (max-width: 900px) {
+            .m2p4-layout,
+            .m2p4-callout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .m2p4-visuals {
+                min-height: 430px;
+                order: -1;
+            }
+
+            .m2p4-final-quote {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .m2p4-inner {
+                width: min(100% - 28px, 680px);
+            }
+
+            .m2p4-quote {
+                padding-left: 2rem;
+            }
+
+            .m2p4-step {
+                grid-template-columns: 50px 1fr;
+            }
+
+            .m2p4-step-number {
+                width: 44px;
+                height: 44px;
+                font-size: 1.05rem;
+            }
+
+            .m2p4-workflow::before {
+                left: 25px;
+            }
+
+            .m2p4-visuals {
+                min-height: 340px;
+            }
+
+            .m2p4-wide-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .m2p4-head-icon {
+                margin: 0 auto;
+            }
+
+            .m2p4-final-quote {
+                grid-template-columns: 38px 1fr 38px;
+                padding: 1rem;
+                border-radius: 28px;
+            }
+
+            .m2p4-final-quote-mark {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .model02-page-four::after,
+            .m2p4-bars span,
+            .m2p4-trend path,
+            .m2p4-flow-wave span,
+            .m2p4-bottom-line {
+                animation: none;
+            }
+
+            .m2p4-trend path {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .m2p4-head-icon {
+            width: 118px;
+            height: 118px;
+            display: block;
+            margin: 0 auto;
+            overflow: visible;
+        }
+
+        .m2p4-head-icon .brain-outline {
+            fill: none;
+            stroke: #6d96c9;
+            stroke-width: 3.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .m2p4-head-icon .brain-fold {
+            fill: none;
+            stroke: #78a5d8;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+            opacity: 0.88;
+        }
+
+        .m2p4-head-icon .gear-ring {
+            fill: rgba(7, 19, 36, 0.75);
+            stroke: #f0ad3d;
+            stroke-width: 2.6;
+        }
+
+        .m2p4-head-icon .gear-teeth {
+            fill: #f0ad3d;
+        }
+
+        .m2p4-head-icon .gear-inner {
+            fill: #071324;
+            stroke: #f0ad3d;
+            stroke-width: 2.2;
+        }
+
+        .m2p4-head-icon .gear-core {
+            fill: #f0ad3d;
+        }
+
+        .m2p4-head-icon .node {
+            fill: #f0ad3d;
+            opacity: 0.85;
+        }
+
+        .m2p4-head-icon .halo {
+            fill: none;
+            stroke: rgba(74,119,180,0.42);
+            stroke-width: 1.4;
+        }
+
+
+        .m2p4-wide-card.text-only {
+            grid-template-columns: 1fr;
+        }
+
+        .m2p4-wide-card.text-only .m2p4-wide-text {
+            margin: 0;
+        }
+    
+/* =========================================================
+   MODEL 02 — REAL SCREENSHOTS
+   ========================================================= */
+.model02-page .image-placeholder img,
+.model02-page .m2-placeholder img,
+.model02-page .m2-sql-placeholder img,
+.model02-page .m2p3-placeholder img,
+.model02-page .m2p3-final-placeholder img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid rgba(238,187,96,0.18);
+}
+
+.model02-page .m2p3-final-placeholder > img {
+    width: min(100%, 1200px);
+    margin: 0 auto;
+}
+</style>
+
+<link rel="stylesheet" href="portfolio-global.css">
+
+<style>
+
+/* =========================================================
+   MODEL 01 / 02 — GLOBAL PORTFOLIO THEME BRIDGE
+   Keeps existing model-specific layouts/animations while
+   letting portfolio-global.css control the theme.
+   ========================================================= */
+
+body.model01-page,
+body.model02-page{
+  background:var(--bg-dark)!important;
+  color:var(--text)!important;
+  transition:background-color .35s ease,color .35s ease;
+}
+
+.model01-page .navbar,
+.model02-page .navbar,
+.model01-page nav,
+.model02-page nav{
+  background:var(--nav-bg)!important;
+  border-color:var(--border-color)!important;
+}
+
+.model01-page .nav-links a,
+.model02-page .nav-links a{
+  color:var(--text-grey)!important;
+}
+
+.model01-page .nav-links a:hover,
+.model01-page .nav-links a.active,
+.model02-page .nav-links a:hover,
+.model02-page .nav-links a.active{
+  color:var(--gold-accent)!important;
+}
+
+.model01-page .logo,
+.model02-page .logo,
+.model01-page .nav-logo,
+.model02-page .nav-logo{
+  color:var(--gold-accent)!important;
+}
+
+.model01-page .brand-text,
+.model02-page .brand-text,
+.model01-page .brand-text .title,
+.model02-page .brand-text .title{
+  color:var(--text-grey)!important;
+}
+
+.model01-page .brand-text .name,
+.model02-page .brand-text .name{
+  color:var(--text-white)!important;
+}
+
+/* Common hard-coded "white" text */
+.model01-page h1,
+.model01-page h2,
+.model01-page h3,
+.model01-page h4,
+.model01-page p,
+.model01-page li,
+.model01-page span,
+.model02-page h1,
+.model02-page h2,
+.model02-page h3,
+.model02-page h4,
+.model02-page p,
+.model02-page li,
+.model02-page span{
+  text-wrap:pretty;
+}
+
+.model01-page .glass-card,
+.model01-page .model-card,
+.model02-page .glass-card,
+.model02-page .model-card{
+  background:var(--bg-card)!important;
+  border-color:var(--border-color)!important;
+  color:var(--text)!important;
+}
+
+.model01-page .model-quote,
+.model02-page .model-quote{
+  background:var(--bg-deep)!important;
+  border-color:var(--gold-line)!important;
+}
+
+.model01-page .tag-outline,
+.model02-page .tag-outline{
+  background:var(--bg-deep)!important;
+  border-color:var(--border-color)!important;
+  color:var(--text-grey)!important;
+}
+
+.model01-page .explore-link,
+.model02-page .explore-link{
+  color:var(--gold-accent)!important;
+}
+
+.model01-page .dashed-placeholder,
+.model02-page .dashed-placeholder,
+.model01-page .analytical-block-container,
+.model02-page .analytical-block-container,
+.model01-page .full-width-analytical-block,
+.model02-page .full-width-analytical-block,
+.model01-page .segment-def-box,
+.model02-page .segment-def-box,
+.model01-page .key-outcomes-box,
+.model02-page .key-outcomes-box,
+.model01-page .numbered-row,
+.model02-page .numbered-row,
+.model01-page .warning-box,
+.model02-page .warning-box,
+.model01-page .failure-box,
+.model02-page .failure-box{
+  background:var(--bg-card)!important;
+  border-color:var(--border-color)!important;
+  color:var(--text)!important;
+}
+
+.model01-page .model-table,
+.model02-page .model-table{
+  background:var(--bg-deep)!important;
+  border-color:var(--gold-line)!important;
+}
+
+.model01-page .model-table th,
+.model02-page .model-table th{
+  background:var(--gold-soft)!important;
+  color:var(--gold-accent)!important;
+  border-color:var(--border-color)!important;
+}
+
+.model01-page .model-table td,
+.model02-page .model-table td{
+  color:var(--text-grey)!important;
+  border-color:var(--border-color)!important;
+}
+
+.model01-page .model-table tr:hover td,
+.model02-page .model-table tr:hover td{
+  background:var(--gold-soft)!important;
+  color:var(--text-white)!important;
+}
+
+/* Model 01 / 02 local blue accents become portfolio gold */
+.model01-page .reflection-highlight,
+.model02-page .reflection-highlight{
+  color:var(--gold-accent)!important;
+}
+
+/* Model 02's custom blue visual system is bridged to portfolio gold */
+.model02-page [class*="m2p4-"]{
+  --m2p4-gold:var(--gold-accent);
+}
+
+.model02-page [class*="m2p4-"] .m2p4-head-icon .brain-outline,
+.model02-page [class*="m2p4-"] .m2p4-head-icon .brain-fold{
+  stroke:var(--gold-accent)!important;
+}
+
+.model02-page [class*="m2p4-"] .m2p4-head-icon .gear-ring,
+.model02-page [class*="m2p4-"] .m2p4-head-icon .gear-inner{
+  stroke:var(--gold-accent)!important;
+}
+
+.model02-page [class*="m2p4-"] .m2p4-head-icon .gear-teeth,
+.model02-page [class*="m2p4-"] .m2p4-head-icon .gear-core,
+.model02-page [class*="m2p4-"] .m2p4-head-icon .node{
+  fill:var(--gold-accent)!important;
+}
+
+html[data-theme="light"] .model01-page,
+html[data-theme="light"] .model02-page{
+  --shadow:rgba(20,20,20,.10);
+}
+
+/* Theme-aware placeholder/image treatment */
+html[data-theme="light"] .model01-page img,
+html[data-theme="light"] .model02-page img{
+  border-color:var(--border-color)!important;
+}
+
+/* Automatic toggle spacing */
+.model01-page .portfolio-theme-toggle,
+.model02-page .portfolio-theme-toggle{
+  flex-shrink:0;
+}
+
+</style>
+<style id="model02-real-dashboard-image">
+.m2p3-real-image{min-height:0 !important;height:auto !important;padding:0 !important;border:0 !important;background:transparent !important;display:block !important;}
+.m2p3-real-image img{display:block !important;width:100% !important;height:auto !important;max-width:100% !important;object-fit:contain !important;border-radius:10px !important;}
+.final-dashboard-wide{width:100% !important;}
+</style>
+</head>
+<body class="model02-page">
+<!-- Global Portfolio Navbar -->
+<nav class="navbar">
+<div class="nav-brand">
+<span class="logo">MA.</span>
+<div class="brand-text">
+<span class="name">MOHAMED AMR</span>
+<span class="title">DATA ANALYST</span>
+</div>
+</div>
+<ul class="nav-links">
+<li><a href="index.html">HOME</a></li>
+<li><a href="main-project.html">MAIN PROJECT</a></li>
+<li><a class="active" href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li>
+<li><a href="knowledge-hub.html">KNOWLEDGE HUB</a></li>
+<li><a href="resume.html">RESUME</a></li>
+<li><a href="about.html">ABOUT</a></li>
+<li><a href="contact.html">CONTACT</a></li>
+</ul>
+<a class="btn-outline" href="contact.html">Let's Connect <i class="fa-regular fa-paper-plane"></i></a>
+</nav>
+<!-- Main Content for Model 02 -->
+<div class="container">
+<!-- Header -->
+<div class="header-section m2-reveal">
+<h1 class="main-title">When the Right Dashboard<br/><span class="gold-text">Leads to the Wrong Decision</span></h1>
+<hr class="gold-divider"/>
+<p class="subtitle">A simulation of a real-world validation failure<br/>caused by mismatched data granularity.</p>
+</div>
+<!-- The Business Question -->
+<h2 class="section-heading m2-reveal">The Business Question</h2>
+<div class="quote-card m2-reveal m2-delay-1">
+<span class="quote-icon">“</span>
+<div class="quote-content">
+<h3 class="quote-title">What happened during Q4 2024?</h3>
+<p class="quote-text">Did sales increase or decline?<br/>Which categories and cities contributed the most,<br/>and are there any noticeable changes that require attention?</p>
+</div>
+<span class="quote-icon-right">”</span>
+</div>
+<p class="context-text m2-reveal">This is one of the most common business questions a data analyst receives.<br/>The objective was simple: build a dashboard that summarizes the<br/>last quarter of 2024 and provides decision-makers with a quick<br/>overview of business performance.</p>
+<p class="context-text m2-reveal">At this stage, everything appeared correct. The dashboard answered<br/>the business question, the KPIs looked reasonable, and no obvious<br/>issues were visible.</p>
+<!-- Placeholder for Screenshot -->
+<div class="image-placeholder m2-reveal m2-delay-1"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755985/v1_bd2nvx.png" alt="Dashboard Version 1" style="display:block;width:100%;height:auto;border-radius:10px;"></div>
+<!-- Section 1 -->
+<h2 class="section-1-heading m2-reveal">Section 1 — First Look at the Results</h2>
+<p class="context-text m2-reveal">The dashboard reported the following KPIs:</p>
+<div class="kpi-grid m2-reveal m2-delay-1">
+<div class="kpi-pill m2-reveal m2-delay-1">
+<span class="kpi-number">01</span>
+<span class="kpi-label">Revenue</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-2">
+<span class="kpi-number">02</span>
+<span class="kpi-label">Number<br/>of Orders</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-3">
+<span class="kpi-number">03</span>
+<span class="kpi-label">Average<br/>Order Value (AOV)</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-1">
+<span class="kpi-number">04</span>
+<span class="kpi-label">Quantity<br/>Sold</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-2">
+<span class="kpi-number">05</span>
+<span class="kpi-label">Revenue<br/>Trend</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-3">
+<span class="kpi-number">06</span>
+<span class="kpi-label">Revenue by<br/>Category</span>
+</div>
+<div class="kpi-pill m2-reveal m2-delay-1">
+<span class="kpi-number">07</span>
+<span class="kpi-label">Revenue by<br/>City</span>
+</div>
+</div>
+<p class="conclusion-text m2-reveal">At first glance, the results looked perfectly valid.<br/>Revenue trends were logical, category rankings made sense,<br/>and city contributions matched expectations.<br/><span style="color: #4a77b4;">Nothing suggested that the dataset contained a serious issue.</span></p>
+<!-- Highlight Card -->
+<div class="highlight-card m2-reveal m2-delay-2">
+<p class="highlight-text">But before using these numbers to support business decisions,<br/>one question still needed to be answered.</p>
+<h3 class="highlight-question">Can these numbers actually be trusted?</h3>
+</div>
+<p class="final-sentence m2-reveal">That single question changed the entire investigation.</p>
+</div>
+<!-- =========================================================
+         MODEL 02 — PAGE 02
+         ========================================================= -->
+<section aria-label="Model 02 Validation and Root Cause Analysis" class="model02-page-two">
+<div class="m2-page-inner">
+<div class="m2-section-block m2-reveal">
+<span class="m2-section-badge">SECTION 2</span>
+<h2 class="m2-section-title">
+                    Validation <span class="gold">Before Decision</span>
+</h2>
+<div class="m2-title-accent"></div>
+<p class="m2-body-copy">
+                    Building a dashboard is not the end of the analysis process. Before trusting any KPI,
+                    the underlying data must first be validated.
+                </p>
+<p class="m2-body-copy">
+                    This project intentionally simulates a real-world validation scenario. The objective was
+                    never to prove that a dashboard can be built, but to demonstrate that even a well-designed
+                    dashboard can become misleading if the data behind it is not verified first.
+                </p>
+<p class="m2-body-copy">
+                    Instead of accepting the dashboard at face value, I went back to the source and started
+                    validating the extracted dataset before drawing any business conclusions.
+                </p>
+<p class="m2-body-copy">
+                    The investigation began from the SQL output itself—not because the dashboard looked
+                    suspicious, but because business decisions should never rely on unvalidated data.
+                </p>
+<div class="m2-shot-grid">
+<div class="m2-shot-card m2-reveal m2-delay-1">
+<div class="m2-shot-label">
+                            Insert Screenshot — SQL Output /<br/>Extracted Dataset
+                        </div>
+<div class="m2-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755984/Insert_Screenshot_SQL_Output_aanptu.png" alt="SQL Output Extracted Dataset"></div>
+</div>
+<div class="m2-shot-card m2-reveal m2-delay-2">
+<div class="m2-shot-label">
+                            Insert Screenshot —<br/>Table View (Duplicated Rows)
+                        </div>
+<div class="m2-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755984/Table_View_u5jhyu.png" alt="Table View Duplicated Rows"></div>
+</div>
+</div>
+</div>
+<div class="m2-divider m2-reveal m2-delay-2"></div>
+<div class="m2-section-three m2-reveal">
+<span class="m2-section-badge">SECTION 3</span>
+<h2 class="m2-section-title">
+                    Root Cause <span class="gold">Analysis</span>
+</h2>
+<div class="m2-title-accent"></div>
+<p class="m2-body-copy">
+                    The investigation traced the issue back to the SQL query that generated the dataset.
+                </p>
+<p class="m2-body-copy">
+                    The business question was translated into SQL correctly, but one important concept
+                    was overlooked: data granularity.
+                </p>
+<p class="m2-body-copy">
+                    The dataset mixed Order-level information with Order Item-level records.
+                </p>
+<p class="m2-body-copy">
+                    Revenue and Quantity remained correct because both naturally exist at the Order Item level.
+                    However, counting orders directly from the joined table caused the same Order ID to appear
+                    multiple times whenever an order contained multiple products.
+                </p>
+<div class="m2-root-grid">
+<div class="m2-result-card m2-reveal m2-delay-1">
+<div class="m2-result-content">
+<div class="m2-result-title">As a result:</div>
+<ul class="m2-result-list">
+<li>Revenue remained correct.</li>
+<li>Quantity Sold remained correct.</li>
+<li>Number of Orders became inflated.</li>
+<li>Average Order Value (AOV) became misleading because it was calculated using an incorrect denominator.</li>
+</ul>
+</div>
+</div>
+<div class="m2-explanation m2-reveal m2-delay-2">
+<p>
+                            This was not a SQL syntax issue.<br/>
+                            It was a <strong>modeling and business logic issue</strong>
+                            caused by using the correct query against the wrong level of detail.
+                        </p>
+<div class="m2-explanation-divider"></div>
+<p>
+                            The SQL engine simply executed the instructions exactly as written.
+                        </p>
+</div>
+</div>
+<div class="m2-sql-card m2-reveal m2-delay-3">
+<div class="m2-sql-title">Insert Screenshot — Original SQL Query</div>
+<div class="m2-sql-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755994/Original_SQL_Query_bivtyg.png" alt="Original SQL Query"></div>
+</div>
+<div aria-hidden="true" class="m2-scroll-line"></div>
+</div>
+</div>
+</section>
+<!-- =========================================================
+         MODEL 02 — PAGE 03
+         ========================================================= -->
+<section aria-label="Model 02 Fixing the Problem and Business Findings" class="model02-page-three">
+<div class="m2p3-inner">
+<!-- SECTION 4 -->
+<div class="m2p3-fix-layout">
+<div class="m2p3-text">
+<span class="m2-section-badge m2-reveal">SECTION 4</span>
+<h2 class="m2-section-title m2-reveal m2-delay-1">
+                        Fixing the <span class="gold">Problem</span>
+</h2>
+<div class="m2-title-accent m2-reveal m2-delay-1"></div>
+<p class="m2p3-body m2-reveal">
+                        The issue could not be fixed inside Power Query because the extracted dataset
+                        no longer contained the key required to uniquely identify each order.
+                    </p>
+<p class="m2p3-body m2-reveal">
+                        Without the original Order ID, removing duplicates would become guesswork rather
+                        than data validation.
+                    </p>
+<p class="m2p3-body m2-reveal">
+                        The correct solution was to fix the problem at its source by rewriting the SQL query.
+                    </p>
+<p class="m2p3-body m2-reveal">
+                        The query was updated to count unique orders using
+                        <strong>COUNT(DISTINCT Order_ID)</strong>, preserving Order-level metrics while
+                        keeping Order Item-level measures such as Revenue and Quantity unchanged.
+                    </p>
+<p class="m2p3-body m2-reveal">
+                        This ensured that every KPI was calculated at the correct level of granularity.
+                    </p>
+</div>
+<div class="m2p3-shot-stack">
+<div class="m2p3-shot-card m2-reveal m2-delay-1">
+<div class="m2p3-shot-title">Insert Screenshot —<br/>Corrected SQL Query</div>
+<div class="m2p3-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755994/Original_SQL_Query_bivtyg.png" alt="Corrected SQL Query"></div>
+</div>
+<div class="m2p3-shot-card m2-reveal m2-delay-2">
+<div class="m2p3-shot-title">Insert Screenshot —<br/>Correct Dashboard</div>
+<div class="m2p3-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786756081/%D8%B5%D8%AD_qpvqsr.png" alt="Correct Dashboard"></div>
+</div>
+</div>
+</div>
+<div class="m2p3-divider m2-reveal m2-delay-2"></div>
+<!-- SECTION 5 -->
+<div>
+<div class="m2p3-findings-layout">
+<div>
+<span class="m2-section-badge m2-reveal">SECTION 5</span>
+<h2 class="m2-section-title m2-reveal m2-delay-1">
+                            Business <span class="gold">Findings</span>
+</h2>
+<div class="m2-title-accent m2-reveal m2-delay-1"></div>
+<p class="m2p3-body m2-reveal">
+                            After correcting the SQL query and rebuilding the dataset, the dashboard reflected
+                            the actual business performance for Q4 2024.
+                        </p>
+<h3 class="m2p3-findings-heading m2-reveal">Key Findings</h3>
+<div class="m2p3-finding m2-reveal m2-delay-1">
+<div class="m2p3-finding-number">01</div>
+<div class="m2p3-finding-text">
+                                Total Revenue remained stable at approximately <strong>1.45M</strong>,
+                                confirming that Revenue was never affected by the duplication.
+                            </div>
+</div>
+<div class="m2p3-finding m2-reveal m2-delay-2">
+<div class="m2p3-finding-number">02</div>
+<div class="m2p3-finding-text">
+                                The Number of Orders dropped from <strong>274</strong> to <strong>215</strong>,
+                                proving that orders had previously been counted multiple times.
+                            </div>
+</div>
+<div class="m2p3-finding m2-reveal m2-delay-3">
+<div class="m2p3-finding-number">03</div>
+<div class="m2p3-finding-text">
+                                As a result, Average Order Value (AOV) increased from roughly
+                                <strong>5.3K</strong> to <strong>6.7K</strong>, giving a more accurate
+                                view of customer purchasing behavior.
+                            </div>
+</div>
+<div class="m2p3-finding m2-reveal m2-delay-1">
+<div class="m2p3-finding-number">04</div>
+<div class="m2p3-finding-text">
+<strong>Mobile Devices</strong> generated nearly half of the total revenue,
+                                followed by <strong>Office Setup</strong>, making these two categories the
+                                primary revenue drivers during the quarter.
+                            </div>
+</div>
+<div class="m2p3-finding m2-reveal m2-delay-2">
+<div class="m2p3-finding-number">05</div>
+<div class="m2p3-finding-text">
+                                Revenue declined in <strong>November</strong>, while <strong>October</strong>
+                                and <strong>December</strong> remained close to the quarterly average. This
+                                indicates a period that deserves further investigation rather than an immediate
+                                business conclusion.
+                            </div>
+</div>
+</div>
+<div class="m2p3-dashboard-card m2-reveal m2-delay-2 final-dashboard-wide"><div class="m2p3-final-placeholder m2p3-real-image"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786755985/v1_bd2nvx.png" alt="Final Dashboard" style="display:block;width:100%;height:auto;border-radius:10px;"></div></div>
+</div>
+</div>
+<div aria-hidden="true" class="m2p3-bottom-line"></div>
+</div>
+</section>
+<!-- =========================================================
+         MODEL 02 — PAGE 04
+         ========================================================= -->
+<section aria-label="Model 02 Beyond the Dashboard" class="model02-page-four">
+<div class="m2p4-inner">
+<div class="m2p4-header">
+<span class="m2-section-badge m2-reveal">SECTION 6</span>
+<h2 class="m2p4-title m2-reveal m2-delay-1">
+                    Beyond the Dashboard:<br/>
+<span class="gold">What This Simulation Proved</span>
+</h2>
+<div class="m2p4-accent m2-reveal m2-delay-1"></div>
+<div class="m2p4-quote m2-reveal m2-delay-2">
+                    This project was never about building another dashboard.
+                </div>
+<p class="m2p4-body m2-reveal">
+                    It was designed to simulate a realistic analytical failure that can happen in real business
+                    environments, where a technically valid SQL query produces misleading business metrics because
+                    the data is aggregated at the wrong level of granularity.
+                </p>
+<p class="m2p4-body m2-reveal">
+                    The objective was to demonstrate a complete analytical workflow:
+                </p>
+</div>
+<div class="m2p4-layout">
+<div>
+<div class="m2p4-workflow">
+<div class="m2p4-step m2-reveal m2-delay-1">
+<div class="m2p4-step-number">01</div>
+<div class="m2p4-step-text">
+                                Start with a <strong>business question.</strong>
+</div>
+</div>
+<div class="m2p4-step m2-reveal m2-delay-2">
+<div class="m2p4-step-number">02</div>
+<div class="m2p4-step-text">
+                                Translate it into <strong>SQL.</strong>
+</div>
+</div>
+<div class="m2p4-step m2-reveal m2-delay-3">
+<div class="m2p4-step-number">03</div>
+<div class="m2p4-step-text">
+<strong>Validate</strong> the extracted data before trusting any KPI.
+                            </div>
+</div>
+<div class="m2p4-step m2-reveal m2-delay-1">
+<div class="m2p4-step-number">04</div>
+<div class="m2p4-step-text">
+                                Identify the <strong>root cause</strong> instead of fixing the symptom.
+                            </div>
+</div>
+<div class="m2p4-step m2-reveal m2-delay-2">
+<div class="m2p4-step-number">05</div>
+<div class="m2p4-step-text">
+                                Correct the problem at its source.
+                            </div>
+</div>
+<div class="m2p4-step m2-reveal m2-delay-3">
+<div class="m2p4-step-number">06</div>
+<div class="m2p4-step-text">
+                                Rebuild the dashboard using reliable data.
+                            </div>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="m2p4-visuals m2-reveal m2-delay-2">
+<div class="m2p4-chart-grid"></div>
+<div class="m2p4-bars">
+<span></span><span></span><span></span><span></span>
+<span></span><span></span><span></span>
+</div>
+<svg class="m2p4-trend" preserveaspectratio="none" viewbox="0 0 700 330">
+<path d="M0 280 C80 245, 120 265, 185 207 S295 175, 365 205 S445 120, 525 100 S610 45, 690 12"></path>
+</svg>
+<div class="m2p4-flow-wave">
+<span></span><span></span><span></span>
+<span></span><span></span><span></span>
+</div>
+</div>
+</div>
+<div class="m2p4-callout-grid">
+<div class="m2p4-callout m2-reveal">
+<div class="m2p4-callout-content">
+<h3 class="m2p4-callout-title">
+                            This exercise reinforced an important lesson:
+                        </h3>
+<p class="m2p4-callout-highlight">
+                            Validation starts <span class="gold">long before visualization.</span>
+</p>
+</div>
+</div>
+<div class="m2p4-callout m2-reveal m2-delay-1">
+<div class="m2p4-callout-content">
+<p class="m2p4-callout-text">
+                            It begins with understanding the business question, continues through SQL design,
+                            and ends only after confirming that every reported metric truly represents the
+                            business process it is intended to measure.
+                        </p>
+</div>
+</div>
+</div>
+<div class="m2p4-wide-card m2-reveal m2-delay-2 text-only">
+
+<p class="m2p4-wide-text">
+                    More importantly, this project demonstrates not only SQL knowledge, but also
+                    <strong>analytical thinking, data validation, business understanding</strong>,
+                    and the ability to distinguish between <strong>technically correct code</strong>
+                    and <strong>business-correct results.</strong>
+</p>
+</div>
+<div class="m2p4-final-quote m2-reveal m2-delay-3">
+<div class="m2p4-final-quote-mark">“</div>
+<p class="m2p4-final-quote-text">
+                    A dashboard is only as trustworthy as the logic used to build the data behind it.
+                </p>
+<div class="m2p4-final-quote-mark">”</div>
+</div>
+<div aria-hidden="true" class="m2p4-bottom-line"></div>
+</div>
+</section>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const revealItems = document.querySelectorAll(".m2-reveal");
+
+            const observer = new IntersectionObserver(
+                function (entries, obs) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("active");
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.12,
+                    rootMargin: "0px 0px -40px 0px"
+                }
+            );
+
+            revealItems.forEach(function (item) {
+                observer.observe(item);
+            });
+        });
+    </script>
+
+<script src="portfolio-global.js"></script>
+</body>
+</html>

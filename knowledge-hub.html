@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Hub - Mohamed Amr</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portfolio-global.css">
+</head>
+<body class="project-page">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">MA.</span>
+            <div class="brand-text">
+                <span class="name">MOHAMED AMR</span>
+                <span class="title">DATA ANALYST</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="main-project.html">MAIN PROJECT</a></li>
+            <li><a href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li>
+            <!-- Notice KNOWLEDGE HUB has the 'active' class here -->
+            <li><a href="knowledge-hub.html" class="active">KNOWLEDGE HUB</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+        </ul>
+        <a href="contact.html" class="btn-outline">Let's Connect <i class="fa-regular fa-paper-plane"></i></a>
+    </nav>
+
+    <!-- SECTION 01: Book Intro & Download Options -->
+    <section class="project-section padding-top">
+        <div class="section-wrapper reveal">
+            
+            <div class="project-intro-grid">
+                
+                <!-- Left: Text & Buttons -->
+                <div class="intro-text">
+                    <span class="eyebrow">THE KNOWLEDGE HUB</span>
+                    <h1 class="project-title">E-Commerce<br><span class="gold-text">Analytics Mini-Book</span></h1>
+                    <p class="project-subtitle">From Data Creation to Business Insights: Understanding the "Why" Behind the Numbers.</p>
+                    
+                    <ul style="list-style: none; color: var(--text-grey); margin-bottom: 30px; line-height: 2;">
+                        <li><i class="fa-solid fa-check gold-text" style="margin-right: 10px;"></i> <strong>Domain:</strong> E-commerce (Order-to-Delivery Cycle)</li>
+                        <li><i class="fa-solid fa-check gold-text" style="margin-right: 10px;"></i> <strong>Project Type:</strong> End-to-End Data Analytics</li>
+                        <li><i class="fa-solid fa-check gold-text" style="margin-right: 10px;"></i> <strong>Length:</strong> 45 Pages of documented logic</li>
+                        <li><i class="fa-solid fa-check gold-text" style="margin-right: 10px;"></i> <strong>Scale:</strong> Built from scratch: 6 tables, 13 KPIs, 4 dashboards</li>
+                    </ul>
+
+                    <!-- The 2 Options -->
+                    <div class="cta-group">
+                        <!-- UPDATE THE HREF to link to your actual PDF file -->
+                        <a href="https://drive.google.com/uc?export=download&id=1EL2jRla8efX_XHHajfeMnkSQxjkmsCtI" download class="btn-primary">
+                            <i class="fa-solid fa-file-pdf"></i> Download PDF
+                        </a>
+                        <a href="#read-online" class="btn-secondary">
+                            <i class="fa-solid fa-book-open"></i> Read Online
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Right: Book Cover Image -->
+                <div class="intro-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781988724/Annotation_2026-06-20_234920_antzqq.png" alt="E-Commerce Analytics Mini Book Cover" class="floating-img book-cover">
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 02: The Digital Reader -->
+    <section id="read-online" class="project-section alt-bg">
+        <div class="section-wrapper reveal">
+            
+            <div class="book-layout">
+                
+                <!-- Left Sidebar: Table of Contents -->
+                <aside class="toc-sidebar glass-card">
+                    <h4 class="gold-text" style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">TABLE OF CONTENTS</h4>
+                    <ul class="toc-list">
+                        <li><a href="#intro">Introduction</a></li>
+                        <li><a href="#ch1">Ch 1: Project Vision & Objective</a></li>
+                        <li><a href="#ch2">Ch 2: Dataset Foundation</a></li>
+                        <li><a href="#ch3">Ch 3: Data Cleaning & Quality</a></li>
+                        <li><a href="#ch4">Ch 4: Data Modelling</a></li>
+                        <li><a href="#ch5">Ch 5: Business & Accounting Logic</a></li>
+                        <li><a href="#ch6">Ch 6: KPI Framework</a></li>
+                        <li><a href="#ch7">Ch 7: Statistical Thinking</a></li>
+                        <li><a href="#ch8">Ch 8: Dashboard Walkthrough</a></li>
+                        <li><a href="#ch9">Ch 9: Root Cause Analysis</a></li>
+                        <li><a href="#ch10">Ch 10: Insights & Recommendations</a></li>
+                        <li><a href="#ch11">Ch 11: Final Learnings</a></li>
+                    </ul>
+                </aside>
+
+                <!-- Right Side: The Content -->
+                <article class="book-content glass-card">
+                    
+                    <!-- Introduction -->
+                    <div id="intro" class="book-chapter">
+                        <h2 class="gold-text">INTRODUCTION</h2>
+                        <p>Every e-commerce store has numbers. But not every store knows the real story behind them.</p>
+                        <p>This project started with one question: <strong>What actually drives profit — and what kills it?</strong></p>
+                        <p>No ready-made dataset. No clean, perfect data. Because real life isn't like that. Real life: missing columns, different date formats in the same field, tables with no clear keys.</p>
+                        <p>The journey wasn't a straight line. Two weeks on Kaggle — nothing worked. Every dataset was incomplete or broken. So, I made my own data. 6 tables. Built from scratch. Messed it up on purpose to simulate reality.</p>
+                        <p>Behind this project: one person. No courses. No one guiding me. YouTube and AI. And a lot of patience, frustration, and stubbornness. 9 months in the field. 37 days on this specific project.</p>
+                        <p>Every day: 3.5 hours. A repeating pattern: <strong>understand → document → cross-check with AI.</strong></p>
+                        <p>Not to build a "pretty dashboard" like social media sells. But to understand the full picture — the numbers, the causes, and the mistakes behind them.</p>
+                    </div>
+
+                    <hr class="chapter-divider">
+
+                    <!-- Chapter 1 -->
+                    <div id="ch1" class="book-chapter">
+                        <h2 class="gold-text">CHAPTER 1: Project Vision & Objective</h2>
+                        <span class="eyebrow">6 tables built from scratch • 31 days of work • One question: Why?</span>
+                        
+                        <h3>1.1 Why This Project?</h3>
+                        <p>Anyone can build a dashboard. But can they answer "Why did this happen?" I saw a gap. Most people explain what happened. Almost no one explains why. So, I built this project differently.</p>
+
+                        <h3>1.2 The Real Question</h3>
+                        <p>Every business sees numbers move — sales up, sales down, profit margins shrink. The question every E-commerce manager wants answered is simple: <strong>Why?</strong></p>
+                        <p>Why did sales drop in February and March? Why did profit margin change from month to month? Was it discounts? Or delivery delays? Or both? This project was my attempt to answer that — not by guessing, but by connecting the dots.</p>
+
+                        <h3>1.3 Why I Built My Own Data</h3>
+                        <p>Real data isn't clean. I spent two weeks on Kaggle. Every dataset was incomplete or very very broken, and more, some of it contain data integrity issue. So, I made my own. 6 tables. Built from scratch. Messed up on purpose to simulate reality. Why? Because I wanted to understand why data behaves the way it does. Not just use it.</p>
+
+                        <h3>1.4 Correlation and Causation</h3>
+                        <p>I learned the rule: Correlation doesn't mean causation. But in business, when you see delays increase → sales drop → and it happens more than once — something is there. You still check discounts, marketing, competitors. But at some point, I stop guessing and start connecting.</p>
+                    </div>
+
+                    <hr class="chapter-divider">
+
+                    <!-- Chapter 2 -->
+                    <div id="ch2" class="book-chapter">
+                        <h2 class="gold-text">CHAPTER 2: Dataset Foundation</h2>
+                        
+                        <h3>2.1 The 6 Tables</h3>
+                        <p>Before I built this project, I spent about 1.5 months deep in SQL. Not just SELECT, WHERE, GROUP BY — but also HAVING, ORDER BY, INNER JOIN, LEFT JOIN, aggregation, and how to connect all of that to a business question.</p>
+                        <p>But I realized something: You can't really understand INNER JOIN or LEFT JOIN unless you understand relationships — entities, events, primary keys, foreign keys, sql engine and how NULL affects everything.</p>
+                        
+                        <ul class="book-list">
+                            <li><strong>Entity:</strong> distinct real-world object or concept about which data is collected and stored.</li>
+                            <li><strong>Event:</strong> an action or occurrence that happens at a specific point in time.</li>
+                            <li><strong>Relationship:</strong> how two or more entities are connected.</li>
+                            <li><strong>Primary Key:</strong> a unique identifier for each record in a table.</li>
+                            <li><strong>Foreign Key:</strong> a field in one table that links to the primary key of another.</li>
+                        </ul>
+
+                        <h3>2.2 Why City and Not Branches?</h3>
+                        <p>I'm not a retail store with physical branches. I'm an E-commerce business. I ship from one main location (Cairo) to customers in Mansoura and Alexandria. So, I made a city table, not a Branches table. This keeps the model clean and reflects reality.</p>
+                    </div>
+
+                    <hr class="chapter-divider">
+
+                    <!-- Note: For the sake of the user's scroll experience, you can copy the rest of the text into these blocks! -->
+                    <div class="book-chapter">
+                        <h2 class="gold-text">... (CONTINUE READING IN PDF) ...</h2>
+                        <p><em>Note: The full 45-page text is highly detailed. To view the complete technical breakdowns of Chapters 3 through 11, including the DAX logic, statistical modeling, and root cause analysis, please download the full PDF above.</em></p>
+
+                        <div class="cta-group" style="margin-top: 24px;">
+                            <a href="https://drive.google.com/uc?export=download&id=1EL2jRla8efX_XHHajfeMnkSQxjkmsCtI" download class="btn-primary">
+                                <i class="fa-solid fa-file-pdf"></i> Download Full Book PDF
+                            </a>
+                        </div>
+                    </div>
+
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Page Transition Block -->
+    <section class="project-section" style="padding-top: 0;">
+        <div class="section-wrapper">
+            <div class="final-transition-box reveal">
+                <div class="transition-text">
+                    <i class="fa-solid fa-briefcase gold-text" style="font-size: 2rem; margin-right: 15px;"></i>
+                    <div>
+                        <p style="margin: 0; color: var(--text-grey);">Ready to see the results?</p>
+                        <p style="margin: 0; font-size: 0.9rem;">Check out my professional experience and technical toolkit.</p>
+                    </div>
+                </div>
+                <a href="resume.html" class="next-page-btn">
+                    <span>Next:</span><br><strong>My Resume</strong> <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="portfolio-global.js"></script>
+</body>
+</html>

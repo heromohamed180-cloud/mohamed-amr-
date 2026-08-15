@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohamed Amr - Data Analyst</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portfolio-global.css">
+<style>
+/* =========================================================
+   HOME — PROOF OF THINKING PANEL
+   ========================================================= */
+.image-placeholder{
+    width:100%;
+    max-width:450px;
+    aspect-ratio:1 / 1;
+    margin:0 auto;
+    position:relative;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:42px;
+    overflow:hidden;
+    border-radius:20px;
+    border:1px solid rgba(212,175,55,.42);
+    background:
+        radial-gradient(circle at 50% 42%, rgba(212,175,55,.10), transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,.025), rgba(255,255,255,.005));
+    box-shadow:
+        0 0 0 1px rgba(212,175,55,.035) inset,
+        0 0 45px rgba(212,175,55,.08),
+        0 20px 55px rgba(0,0,0,.26);
+    animation:glowPulse 4s infinite ease-in-out;
+    transition:
+        background .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease,
+        color .35s ease;
+}
+
+.image-placeholder::before,
+.image-placeholder::after{
+    content:'';
+    position:absolute;
+    pointer-events:none;
+}
+
+.image-placeholder::before{
+    inset:18px;
+    border:1px solid rgba(212,175,55,.10);
+    border-radius:14px;
+}
+
+.image-placeholder::after{
+    width:110px;
+    height:110px;
+    top:-55px;
+    right:-55px;
+    border-radius:50%;
+    border:1px solid rgba(212,175,55,.14);
+    box-shadow:
+        0 0 0 18px rgba(212,175,55,.025),
+        0 0 0 36px rgba(212,175,55,.018);
+}
+
+.proof-thinking-text{
+    position:relative;
+    z-index:3;
+    display:block;
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    padding:0;
+    text-align:center;
+    font-family:'Manrope', sans-serif !important;
+    font-size:clamp(1.25rem,2.5vw,1.75rem);
+    line-height:1.35;
+    font-weight:600;
+    letter-spacing:-.025em;
+    color:var(--text-white);
+    text-wrap:balance;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+}
+
+/* Explicit light-theme treatment so the panel never becomes a black square */
+html[data-theme="light"] .image-placeholder{
+    background:
+        radial-gradient(circle at 50% 42%, rgba(170,123,0,.09), transparent 48%),
+        linear-gradient(145deg, rgba(255,255,255,.98), rgba(245,242,235,.96));
+    border-color:rgba(170,123,0,.38);
+    box-shadow:
+        0 0 0 1px rgba(170,123,0,.04) inset,
+        0 0 45px rgba(170,123,0,.08),
+        0 18px 45px rgba(20,20,20,.10);
+}
+
+html[data-theme="light"] .image-placeholder::before{
+    border-color:rgba(170,123,0,.12);
+}
+
+html[data-theme="light"] .image-placeholder::after{
+    border-color:rgba(170,123,0,.15);
+    box-shadow:
+        0 0 0 18px rgba(170,123,0,.025),
+        0 0 0 36px rgba(170,123,0,.018);
+}
+
+html[data-theme="light"] .proof-thinking-text{
+    color:#111111 !important;
+}
+
+@media screen and (max-width:900px){
+    .image-placeholder{
+        width:min(82vw,390px);
+        max-width:390px;
+        aspect-ratio:1 / 1;
+        padding:34px;
+        border-radius:18px;
+    }
+
+    .proof-thinking-text{
+        max-width:300px;
+        font-size:clamp(1.12rem,5vw,1.45rem);
+        line-height:1.38;
+    }
+}
+
+@media screen and (max-width:520px){
+    .image-placeholder{
+        width:min(86vw,340px);
+        max-width:340px;
+        padding:28px;
+        border-radius:16px;
+    }
+
+    .image-placeholder::before{
+        inset:14px;
+        border-radius:12px;
+    }
+
+    .proof-thinking-text{
+        max-width:270px;
+        font-size:clamp(1.02rem,5.4vw,1.25rem);
+        font-weight:600;
+    }
+}
+</style>
+
+<style id="box-text-only-override">
+.proof-thinking-text{
+    font-family:"Times New Roman", Times, serif !important;
+    font-size:28px !important;
+    line-height:1.28 !important;
+    font-weight:700 !important;
+    letter-spacing:0 !important;
+}
+
+.proof-thinking-text .thinking-word{
+    color:var(--gold-accent) !important;
+}
+
+@media screen and (max-width:900px){
+    .proof-thinking-text{
+        font-size:24px !important;
+    }
+}
+
+@media screen and (max-width:520px){
+    .proof-thinking-text{
+        font-size:21px !important;
+    }
+}
+</style>
+
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="nav-brand" href="index.html" aria-label="Go to homepage">
+            <span class="logo">MA.</span>
+            <div class="brand-text">
+                <span class="name">MOHAMED AMR</span>
+                <span class="title">DATA ANALYST</span>
+            </div>
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">HOME</a></li>
+            <li><a href="main-project.html">MAIN PROJECT</a></li>
+            <li><a href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li>
+            <li><a href="knowledge-hub.html">KNOWLEDGE HUB</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+    
+        </ul>
+
+        <a href="contact.html" class="btn-outline">Let's Connect <i class="fa-regular fa-paper-plane"></i></a>
+    </nav>
+
+    <section class="hero-section">
+        
+        <div class="bg-decorations">
+            <div class="bg-dot-grid"></div>
+            <div class="bg-column-chart">
+                <div class="bar bar-1"></div><div class="bar bar-2"></div><div class="bar bar-3"></div><div class="bar bar-4"></div><div class="bar bar-5"></div>
+            </div>
+            <div class="bg-trend-line">
+                <svg viewBox="0 0 800 600" preserveAspectRatio="none">
+                    <path d="M0,500 Q200,450 350,300 T600,100 T800,0" fill="none" stroke="rgba(212, 175, 55, 0.15)" stroke-width="2" />
+                    <path d="M50,550 L150,450 L200,480 L300,350 L350,370 L450,250 L500,270 L600,150 L650,180 L750,50" fill="none" stroke="var(--gold-accent)" stroke-width="1.5" />
+                    <circle cx="150" cy="450" r="3" fill="var(--gold-accent)" />
+                    <circle cx="200" cy="480" r="3" fill="var(--gold-accent)" />
+                    <circle cx="300" cy="350" r="4" fill="var(--gold-accent)" />
+                    <circle cx="350" cy="370" r="3" fill="var(--gold-accent)" />
+                    <circle cx="450" cy="250" r="4" fill="var(--gold-accent)" />
+                    <circle cx="500" cy="270" r="3" fill="var(--gold-accent)" />
+                    <circle cx="600" cy="150" r="4" fill="var(--gold-accent)" />
+                    <circle cx="650" cy="180" r="3" fill="var(--gold-accent)" />
+                    <circle cx="750" cy="50" r="5" fill="#fff" filter="drop-shadow(0 0 5px var(--gold-accent))" />
+                </svg>
+            </div>
+            <div class="dust dust-1"></div><div class="dust dust-2"></div><div class="dust dust-3"></div><div class="dust dust-4"></div>
+        </div>
+
+        <div class="hero-grid">
+            <div class="hero-image-wrapper reveal delay-1">
+                <div class="image-placeholder"><span class="proof-thinking-text">Proof of <span class="thinking-word">Thinking</span> — Not a Gallery of Results</span></div>
+            </div>
+
+            <div class="hero-content reveal delay-2">
+                <span class="eyebrow">JUNIOR DATA ANALYST</span>
+                <h1>From Raw Questions<br><span>to Trusted Decisions</span></h1>
+                <h3 class="subheadline">The Journey of a Self-Directed Data Analyst</h3>
+
+                <div class="text-content">
+                    <p>I spent the last 13 months teaching myself data analytics — not through a structured curriculum, but by building, breaking, and rebuilding until things made sense.</p>
+                    <p>There were no instructors to tell me when I was wrong, so I learned to question everything myself. Overthinking evolved into critical thinking. Uncertainty became a habit of validating assumptions before trusting results. And the long hours spent decoding a single problem taught me that understanding data deeply is far more valuable than just solving a problem quickly.</p>
+                    <p>I did not just learn SQL or Power BI; I learned why a metric must be defined before it is calculated, and why a benchmark must come from the data before it is applied.</p>
+                    <p>I realized that the most important question in any analysis is never "how do I build this?" — it is always "what does this actually mean for the business?"</p>
+                    <p>This portfolio documents that mindset. Not just the tools I used or the dashboards I built, but the thinking that developed over 13 months of navigating real business problems without a map.</p>
+                </div>
+
+                <div class="quote-box">
+                    <span class="quote-mark">“</span>
+                    <p>Behind every dashboard and every number,<br>there is a human decision and a business reality.</p>
+                </div>
+
+                <div class="cta-group">
+                    <a href="main-project.html" class="btn-primary">Explore My Projects <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#" class="btn-secondary">Download Resume <i class="fa-solid fa-download"></i></a>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/mohamed-amr-bis/" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-quotes">
+            <div class="quote-item reveal delay-1">
+                <span class="quote-icon">“</span>
+                <p>The best insights come from<br>curiosity, not assumptions.</p>
+                <div class="accent-line"></div>
+            </div>
+            <div class="quote-item reveal delay-2">
+                <span class="quote-icon">“</span>
+                <p>Data doesn't speak for itself.<br>We have to listen carefully.</p>
+                <div class="accent-line"></div>
+            </div>
+            <div class="quote-item reveal delay-3">
+                <span class="quote-icon">“</span>
+                <p>Discipline in analysis.<br>Creativity in solutions.</p>
+                <div class="accent-line"></div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="portfolio-global.js"></script>ٍ
+</body>
+</html>

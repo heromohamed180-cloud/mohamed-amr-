@@ -1,0 +1,4055 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Model 04 — From Analysis to Decision | Mohamed Amr</title>
+<style>
+:root {
+  --bg:#0a0b0e;--bg-card:#111318;--bg-deep:#0f1116;
+  --border:#2a2a2a;--gold:#d4af37;
+  --gold-dim:rgba(212,175,55,0.12);--gold-line:rgba(212,175,55,0.24);
+  --gold-soft:rgba(212,175,55,0.05);
+  --text:#f0f0f0;--text-2:#a0a0a0;--text-3:#555;--white:#ffffff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.75;overflow-x:hidden;}
+
+/* BACKGROUND */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(200,164,90,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(200,164,90,0.018) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 15%,transparent 90%);}
+.bg-glow-tl{position:absolute;top:-80px;left:-80px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(200,164,90,0.04) 0%,transparent 65%);}
+.bg-glow-br{position:absolute;bottom:-80px;right:-80px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(200,164,90,0.03) 0%,transparent 65%);}
+.bg-ring{position:absolute;border-radius:50%;border:1px solid rgba(200,164,90,0.035);}
+.bg-ring-1{width:680px;height:680px;top:-180px;right:-180px;}
+.bg-ring-2{width:480px;height:480px;bottom:-80px;left:-130px;}
+
+/* venn diagram bg */
+.bg-venn{position:absolute;right:3%;top:20%;opacity:0.04;}
+
+/* WRAP */
+.wrap{max-width:1060px;margin:0 auto;padding:108px 48px 100px;position:relative;z-index:1;}
+
+/* EYEBROW */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Inter',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--gold);}
+
+/* HERO */
+.hero-title{font-family:'Oswald',serif;font-size:clamp(40px,6vw,70px);font-weight:300;line-height:1.05;color:var(--white);letter-spacing:-.02em;margin-bottom:10px;}
+.hero-title em{color:var(--gold);font-style:normal;}
+.hero-sub{font-family:'Oswald',serif;font-size:clamp(15px,2vw,20px);font-style:italic;font-weight:300;color:var(--text-2);max-width:600px;line-height:1.6;margin-bottom:48px;}
+
+/* DIVIDER */
+.div{width:100%;height:1px;background:linear-gradient(90deg,var(--gold-line) 0%,transparent 80%);margin:48px 0;}
+
+/* TEXT */
+.txt{font-size:14px;color:var(--text-2);line-height:1.88;margin-bottom:14px;}
+.txt strong{color:var(--text);font-weight:500;}
+
+/* FOUNDATION STRIP — what came before */
+.foundation{
+  background:var(--bg-deep);border:1px solid var(--border);
+  padding:22px 26px;margin-bottom:28px;
+}
+.foundation-lbl{font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.foundation-lbl svg{width:12px;height:12px;stroke:var(--text-2);fill:none;stroke-width:1.5;}
+.foundation-models{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.fm{padding:12px 16px;border-right:1px solid var(--border);display:flex;gap:10px;align-items:flex-start;}
+.fm:last-child{border-right:none;}
+.fm-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;}
+.fm-body{}
+.fm-num{font-family:'Inter',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.fm-txt{font-size:12px;color:var(--text-2);line-height:1.5;}
+
+/* SHIFT STATEMENT */
+.shift{
+  border-top:1px solid var(--gold-line);border-bottom:1px solid var(--gold-line);
+  padding:28px 0;margin:32px 0;text-align:center;
+}
+.shift-txt{font-family:'Oswald',serif;font-size:clamp(20px,3vw,28px);font-weight:300;color:var(--white);line-height:1.45;margin-bottom:8px;}
+.shift-sub{font-size:13px;color:var(--text-2);}
+
+/* DECISION FRAMEWORK — the centerpiece */
+.framework{
+  margin:36px 0;position:relative;
+}
+.framework-lbl{font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;gap:10px;}
+.framework-lbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.framework-lbl svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+
+/* AI-generated Venn-style visual */
+.venn-wrap{
+  background:var(--bg-deep);border:1px solid var(--border);
+  padding:40px;margin-bottom:24px;
+  display:flex;flex-direction:column;align-items:center;
+  position:relative;overflow:hidden;
+}
+.venn-ai-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:28px;align-self:flex-start;display:flex;align-items:center;gap:7px;}
+.venn-ai-lbl svg{width:11px;height:11px;stroke:var(--text-3);fill:none;stroke-width:1.5;}
+
+/* three pillars layout */
+.pillars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;width:100%;position:relative;}
+
+/* connecting arc in middle */
+.pillars::before{
+  content:'';position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  width:80px;height:80px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--gold-line);
+  z-index:2;
+}
+.pillars::after{
+  content:'DECISION';
+  position:absolute;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Inter',monospace;font-size:8px;letter-spacing:.12em;
+  color:var(--gold);text-align:center;z-index:3;width:80px;text-align:center;
+}
+
+.pillar{
+  background:var(--bg-card);border:1px solid var(--border);
+  padding:24px 20px 28px;
+  position:relative;
+  transition:border-color .25s;
+}
+.pillar:hover{border-color:rgba(200,164,90,0.3);}
+
+/* connector lines to center */
+.pillar:nth-child(1)::after{
+  content:'';position:absolute;top:50%;right:-1px;
+  width:30%;height:1px;background:var(--gold-line);
+  transform:translateY(-50%);
+}
+.pillar:nth-child(3)::before{
+  content:'';position:absolute;top:50%;left:-1px;
+  width:30%;height:1px;background:var(--gold-line);
+  transform:translateY(-50%);
+}
+
+.pillar-icon{width:40px;height:40px;background:var(--gold-dim);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+.pillar-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.pillar-name{font-family:'Oswald',serif;font-size:22px;font-weight:400;color:var(--white);margin-bottom:8px;}
+.pillar-def{font-size:12.5px;color:var(--text-2);line-height:1.65;}
+.pillar-q{font-size:12px;color:var(--text-2);font-style:italic;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+
+/* pillar accents */
+.pillar:nth-child(1){border-top:2px solid var(--gold);}
+.pillar:nth-child(2){border-top:2px solid rgba(200,164,90,0.4);background:var(--bg-deep);}
+.pillar:nth-child(3){border-top:2px solid var(--gold);}
+
+/* framework explanation */
+.framework-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
+.fc{background:var(--bg-card);border:1px solid var(--border);padding:20px 20px 22px;}
+.fc-num{font-family:'Inter',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+.fc-title{font-size:13.5px;font-weight:500;color:var(--white);margin-bottom:7px;}
+.fc-txt{font-size:12.5px;color:var(--text-2);line-height:1.65;}
+
+/* SHIFT FOCUS CALLOUT */
+.shift-focus{
+  background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--gold);
+  padding:28px 32px;margin-top:32px;
+  display:flex;gap:20px;align-items:flex-start;
+}
+.sf-icon{width:40px;height:40px;flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.sf-icon svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.sf-body{}
+.sf-from{font-size:13px;color:var(--text-2);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.sf-from::before{content:'From';font-family:'Inter',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);flex-shrink:0;}
+.sf-to{font-size:13.5px;color:var(--white);font-weight:500;display:flex;align-items:center;gap:8px;}
+.sf-to::before{content:'To';font-family:'Inter',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);flex-shrink:0;}
+.sf-arrow{color:var(--gold-line);margin:6px 0 6px 42px;font-size:18px;}
+
+/* FADE */
+.fu{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.fu.on{opacity:1;transform:translateY(0);}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}.wrap{padding:94px 20px 60px;}.nav-links{display:none;}
+  .foundation-models,.pillars,.framework-cards{grid-template-columns:1fr;}
+  .fm{border-right:none;border-bottom:1px solid var(--border);}
+  .pillar:nth-child(1)::after,.pillar:nth-child(3)::before{display:none;}
+  .pillars::before,.pillars::after{display:none;}
+}
+
+
+/* MODEL 04 — SHARED PORTFOLIO NAVBAR */
+.model04-page .navbar {
+    background-color: rgba(10, 11, 14, 0.95);
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.model04-page .nav-links a.active,
+.model04-page .nav-links a:hover {
+    color: var(--gold-accent);
+}
+
+.model04-page .btn-outline {
+    border-radius: 30px;
+    border-color: var(--gold-accent);
+    color: var(--gold-accent);
+}
+
+.model04-page .btn-outline:hover {
+    background-color: rgba(212, 175, 55, 0.12);
+    border-color: var(--gold-accent);
+}
+
+/* Keep Model 04 content clear of the fixed global navbar. */
+.model04-page .wrap {
+    padding-top: 158px;
+}
+
+/* Model 04 scroll reveal — portfolio-consistent motion */
+.model04-page .fu {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.8s cubic-bezier(0.25,0.8,0.25,1),
+                transform 0.8s cubic-bezier(0.25,0.8,0.25,1);
+}
+.model04-page .fu.on {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+        /* =========================================================
+           MODEL 04 — SECTION 02
+           Business Context / portfolio-native styling
+           ========================================================= */
+
+        .model04-section-two {
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(212,175,55,0.18);
+            background:
+                radial-gradient(circle at 100% 10%, rgba(212,175,55,0.035), transparent 34%),
+                radial-gradient(circle at 0% 90%, rgba(212,175,55,0.025), transparent 30%),
+                linear-gradient(180deg, rgba(15,17,22,0.98), rgba(10,11,14,1));
+        }
+
+        .model04-section-two::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(212,175,55,0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(212,175,55,0.045) 1px, transparent 1px);
+            background-size: 54px 54px;
+            mask-image: radial-gradient(ellipse 80% 90% at 50% 45%, black 15%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse 80% 90% at 50% 45%, black 15%, transparent 85%);
+            opacity: 0.38;
+        }
+
+        .model04-section-two .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 60px 110px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .model04-section-two .eyebrow {
+            color: var(--gold-accent);
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .model04-section-two .eyebrow::before {
+            content: "";
+            display: block;
+            width: 30px;
+            height: 1px;
+            background: var(--gold-accent);
+        }
+
+        .model04-section-two .hero-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 1.08;
+            color: var(--text-white);
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .model04-section-two .hero-title em {
+            color: var(--gold-accent);
+            font-style: normal;
+        }
+
+        .model04-section-two .hero-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--text-grey);
+            max-width: 700px;
+            line-height: 1.65;
+            margin-bottom: 48px;
+        }
+
+        .model04-section-two .div {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(212,175,55,0.26), transparent 82%);
+            margin: 46px 0;
+        }
+
+        .model04-section-two .txt {
+            font-size: 1rem;
+            color: var(--text-grey);
+            line-height: 1.85;
+            margin-bottom: 16px;
+            max-width: 920px;
+        }
+
+        .model04-section-two .txt strong {
+            color: var(--text-white);
+            font-weight: 600;
+        }
+
+        .model04-section-two .scenario {
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(212,175,55,0.15);
+            border-top: 2px solid var(--gold-accent);
+            padding: 30px 34px;
+            margin: 34px 0;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 12px 34px rgba(0,0,0,0.18);
+        }
+
+        .model04-section-two .scenario::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212,175,55,0.05), transparent 70%);
+            pointer-events: none;
+        }
+
+        .model04-section-two .scenario-lbl,
+        .model04-section-two .rs-lbl,
+        .model04-section-two .evidence-stmt-lbl {
+            color: var(--gold-accent);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.74rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .model04-section-two .scenario-lbl {
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model04-section-two .scenario-lbl svg,
+        .model04-section-two .rs-lbl svg,
+        .model04-section-two .tn-icon svg,
+        .model04-section-two .r-icon svg {
+            stroke: var(--gold-accent);
+            fill: none;
+        }
+
+        .model04-section-two .scenario-headline {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1.45rem, 2.4vw, 2rem);
+            font-weight: 400;
+            color: var(--text-white);
+            line-height: 1.4;
+            margin-bottom: 18px;
+        }
+
+        .model04-section-two .scenario-budget {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(212,175,55,0.10);
+            border: 1px solid rgba(212,175,55,0.22);
+            padding: 10px 18px;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+
+        .model04-section-two .scenario-budget-lbl {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-grey);
+        }
+
+        .model04-section-two .scenario-budget-val {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 400;
+            color: var(--gold-accent);
+            line-height: 1;
+        }
+
+        .model04-section-two .options-intro {
+            font-size: 1rem;
+            color: var(--text-grey);
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .model04-section-two .options-intro strong {
+            color: var(--text-white);
+        }
+
+        .model04-section-two .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .model04-section-two .option-q {
+            background: rgba(255,255,255,0.018);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 2px solid rgba(212,175,55,0.22);
+            padding: 18px 20px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            transition: transform .3s ease, border-color .3s ease, background .3s ease;
+            border-radius: 8px;
+        }
+
+        .model04-section-two .option-q:hover {
+            transform: translateY(-4px);
+            border-color: rgba(212,175,55,0.42);
+            background: rgba(212,175,55,0.035);
+        }
+
+        .model04-section-two .oq-num {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.85rem;
+            color: var(--gold-accent);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .model04-section-two .oq-txt {
+            font-size: 0.92rem;
+            color: var(--text-grey);
+            line-height: 1.65;
+            font-style: italic;
+        }
+
+        .model04-section-two .reasonable {
+            background: rgba(255,255,255,0.018);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 22px 24px;
+            margin: 22px 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-radius: 10px;
+        }
+
+        .model04-section-two .r-item {
+            padding: 0 18px;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+
+        .model04-section-two .r-item:first-child { padding-left: 0; }
+        .model04-section-two .r-item:last-child {
+            border-right: none;
+            padding-right: 0;
+        }
+
+        .model04-section-two .r-icon {
+            width: 34px;
+            height: 34px;
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            border-radius: 6px;
+        }
+
+        .model04-section-two .r-lbl {
+            font-size: 0.83rem;
+            font-weight: 600;
+            color: var(--text-white);
+            margin-bottom: 5px;
+        }
+
+        .model04-section-two .r-sub {
+            font-size: 0.76rem;
+            color: var(--text-grey);
+            line-height: 1.55;
+        }
+
+        .model04-section-two .role-shift {
+            margin: 34px 0;
+            background: rgba(255,255,255,0.025);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 28px 32px;
+            border-radius: 10px;
+        }
+
+        .model04-section-two .rs-lbl {
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .model04-section-two .rs-flow {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .model04-section-two .rs-step {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+
+        .model04-section-two .rs-step:last-child {
+            border-bottom: none;
+        }
+
+        .model04-section-two .rs-step-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .model04-section-two .rs-step-icon svg {
+            width: 17px;
+            height: 17px;
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .model04-section-two .rs-step.old .rs-step-icon svg {
+            stroke: var(--text-grey);
+        }
+
+        .model04-section-two .rs-step.new .rs-step-icon svg {
+            stroke: var(--gold-accent);
+        }
+
+        .model04-section-two .rs-step-prefix {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.68rem;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            color: var(--text-grey);
+            flex-shrink: 0;
+            width: 60px;
+        }
+
+        .model04-section-two .rs-step.new .rs-step-prefix {
+            color: var(--gold-accent);
+        }
+
+        .model04-section-two .rs-step-txt {
+            font-size: 0.92rem;
+            color: var(--text-grey);
+            line-height: 1.7;
+        }
+
+        .model04-section-two .rs-step.new .rs-step-txt {
+            color: var(--text-white);
+            font-weight: 600;
+        }
+
+        .model04-section-two .rs-arrow {
+            padding: 6px 0 6px 52px;
+            color: rgba(212,175,55,0.42);
+            font-size: 1.1rem;
+        }
+
+        .model04-section-two .evidence-stmt {
+            border: 1px solid rgba(212,175,55,0.22);
+            border-left: 3px solid var(--gold-accent);
+            background: rgba(212,175,55,0.045);
+            padding: 22px 26px;
+            margin: 24px 0;
+            border-radius: 6px;
+        }
+
+        .model04-section-two .evidence-stmt-lbl {
+            margin-bottom: 10px;
+        }
+
+        .model04-section-two .evidence-stmt-txt {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.18rem;
+            font-weight: 400;
+            color: var(--text-white);
+            line-height: 1.55;
+            font-style: italic;
+        }
+
+        .model04-section-two .transition-note {
+            background: rgba(255,255,255,0.018);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-left: 3px solid var(--gold-accent);
+            padding: 20px 24px;
+            margin-top: 28px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            border-radius: 8px;
+        }
+
+        .model04-section-two .tn-icon {
+            width: 34px;
+            height: 34px;
+            flex-shrink: 0;
+            background: rgba(212,175,55,0.08);
+            border: 1px solid rgba(212,175,55,0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2px;
+            border-radius: 6px;
+        }
+
+        .model04-section-two .tn-txt {
+            font-size: 0.87rem;
+            color: var(--text-grey);
+            line-height: 1.8;
+        }
+
+        .model04-section-two .tn-txt strong {
+            color: var(--text-white);
+        }
+
+        /* Same scroll-reveal language used throughout Model 04 / portfolio */
+        .model04-section-two .fu {
+            opacity: 0;
+            transform: translateY(28px);
+            transition:
+                opacity .8s cubic-bezier(.25,.8,.25,1),
+                transform .8s cubic-bezier(.25,.8,.25,1);
+        }
+
+        .model04-section-two .fu.on {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .model04-section-two .fu:nth-child(2) { transition-delay: .05s; }
+        .model04-section-two .fu:nth-child(3) { transition-delay: .10s; }
+
+        @media(max-width: 768px) {
+            .model04-section-two .wrap {
+                padding: 80px 22px 70px;
+            }
+
+            .model04-section-two .options-grid,
+            .model04-section-two .reasonable {
+                grid-template-columns: 1fr;
+            }
+
+            .model04-section-two .r-item {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+                padding: 14px 0;
+            }
+
+            .model04-section-two .r-item:last-child {
+                border-bottom: none;
+            }
+
+            .model04-section-two .rs-step {
+                align-items: flex-start;
+            }
+
+            .model04-section-two .rs-step-prefix {
+                width: 48px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .model04-section-two .fu {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+    
+        /* Model 04 Section 2 — explicit SVG sizing fix */
+        .model04-section-two .scenario-lbl svg {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 13px;
+        }
+
+        .model04-section-two .rs-lbl svg {
+            width: 13px;
+            height: 13px;
+            flex: 0 0 13px;
+        }
+
+        .model04-section-two .r-icon svg {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 14px;
+        }
+
+        .model04-section-two .rs-step-icon svg {
+            width: 17px;
+            height: 17px;
+            flex: 0 0 17px;
+        }
+
+        .model04-section-two .tn-icon svg {
+            width: 14px;
+            height: 14px;
+            flex: 0 0 14px;
+        }
+
+        /* Prevent any inline SVG from falling back to browser default 300×150 sizing. */
+        .model04-section-two svg {
+            max-width: 100%;
+        }
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/><link href="style.css" rel="stylesheet"/>
+<link rel="stylesheet" href="portfolio-global.css">
+
+<style>
+
+:root {
+  --bg:#0a0b0e;--bg-card:#111318;--bg-deep:#0d0f13;
+  --border:#2a2a2a;--gold:#d4af37;
+  --gold-dim:rgba(212,175,55,0.12);--gold-line:rgba(212,175,55,0.24);
+  --gold-soft:rgba(212,175,55,0.05);
+  --text:#f0f0f0;--text-2:#a0a0a0;--text-3:#555;--white:#ffffff;
+  --green:rgba(80,180,120,0.12);--green-border:rgba(80,180,120,0.25);--green-txt:rgba(120,200,150,0.8);
+  --red:rgba(200,80,80,0.1);--red-border:rgba(200,80,80,0.22);--red-txt:rgba(220,130,130,0.75);
+  --amber:rgba(212,175,55,0.1);--amber-border:rgba(212,175,55,0.22);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.75;overflow-x:hidden;}
+
+/* BACKGROUND */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(212,175,55,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.018) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 15%,transparent 90%);}
+.bg-glow-tl{position:absolute;top:-80px;left:-80px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 65%);}
+.bg-glow-br{position:absolute;bottom:-80px;right:-80px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.03) 0%,transparent 65%);}
+.bg-ring{position:absolute;border-radius:50%;border:1px solid rgba(212,175,55,0.035);}
+.bg-ring-1{width:680px;height:680px;top:-180px;right:-180px;}
+.bg-ring-2{width:480px;height:480px;bottom:-80px;left:-130px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(7,13,24,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500;color:var(--gold);letter-spacing:.07em;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+
+/* WRAP */
+.wrap{max-width:1060px;margin:0 auto;padding:108px 48px 100px;position:relative;z-index:1;}
+
+/* EYEBROW */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Inter',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--gold);}
+
+/* HERO */
+.hero-title{font-family:'Oswald',sans-serif;font-size:clamp(38px,5.5vw,64px);font-weight:300;line-height:1.06;color:var(--white);letter-spacing:-.018em;margin-bottom:10px;}
+.hero-title em{color:var(--gold);font-style:normal;}
+.hero-sub{font-family:'Oswald',sans-serif;font-size:clamp(14px,1.8vw,19px);font-style:italic;font-weight:300;color:var(--text-2);max-width:640px;line-height:1.7;margin-bottom:48px;}
+
+/* DIVIDER */
+.div{width:100%;height:1px;background:linear-gradient(90deg,var(--gold-line) 0%,transparent 80%);margin:44px 0;}
+
+/* TEXT */
+.txt{font-size:14px;color:var(--text-2);line-height:1.88;margin-bottom:14px;}
+.txt strong{color:var(--text);font-weight:500;}
+
+/* APPROACH SEPARATOR */
+.approach-sep{
+  display:flex;align-items:center;gap:16px;margin:48px 0 24px;
+}
+.approach-sep-num{
+  font-family:'Oswald',sans-serif;
+  font-size:56px;font-weight:300;color:rgba(212,175,55,0.15);
+  line-height:1;flex-shrink:0;
+}
+.approach-sep-body{flex:1;}
+.approach-sep-tag{font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.approach-sep-title{font-family:'Oswald',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:400;color:var(--white);line-height:1.15;}
+.approach-sep-line{width:100%;height:1px;background:linear-gradient(90deg,var(--gold-line) 0%,transparent 60%);margin-top:14px;}
+
+/* ── SCALE VISUAL (the centerpiece per approach) ── */
+.scale-wrap{
+  position:relative;
+  margin:24px 0;
+  background:var(--bg-deep);
+  border:1px solid var(--border);
+  padding:32px 28px;
+  overflow:hidden;
+}
+.scale-wrap::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold) 0%,transparent 100%);
+}
+
+/* ai label */
+.ai-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;display:flex;align-items:center;gap:7px;}
+.ai-lbl svg{width:11px;height:11px;stroke:var(--text-3);fill:none;stroke-width:1.5;}
+
+/* scale beam */
+.scale-visual{display:flex;align-items:center;gap:0;position:relative;}
+.scale-side{flex:1;}
+.scale-center{
+  flex-shrink:0;width:60px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  position:relative;
+}
+.scale-beam{width:2px;height:60px;background:var(--gold-line);margin:0 auto;}
+.scale-fulcrum{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--gold-dim);border:2px solid var(--gold-line);
+  margin:0 auto;
+}
+.scale-base{width:40px;height:2px;background:var(--gold-line);margin:0 auto;}
+
+/* scale pans */
+.scale-pan{
+  padding:16px 18px;
+  position:relative;
+}
+.scale-pan.advantage{
+  background:var(--green);border:1px solid var(--green-border);
+  border-radius:2px;
+}
+.scale-pan.tradeoff{
+  background:var(--red);border:1px solid var(--red-border);
+  border-radius:2px;
+}
+.scale-pan-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.scale-pan.advantage .scale-pan-lbl{color:var(--green-txt);}
+.scale-pan.advantage .scale-pan-lbl svg{stroke:var(--green-txt);fill:none;stroke-width:1.5;width:11px;height:11px;}
+.scale-pan.tradeoff .scale-pan-lbl{color:var(--red-txt);}
+.scale-pan.tradeoff .scale-pan-lbl svg{stroke:var(--red-txt);fill:none;stroke-width:1.5;width:11px;height:11px;}
+.scale-pan-items{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.scale-pan-items li{font-size:12.5px;line-height:1.55;padding-left:14px;position:relative;}
+.scale-pan.advantage .scale-pan-items li{color:var(--text-2);}
+.scale-pan.advantage .scale-pan-items li::before{content:'·';position:absolute;left:0;color:var(--green-txt);}
+.scale-pan.tradeoff .scale-pan-items li{color:var(--text-2);}
+.scale-pan.tradeoff .scale-pan-items li::before{content:'·';position:absolute;left:0;color:var(--red-txt);}
+
+/* WHY card */
+.why-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  padding:20px 24px;margin-bottom:16px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.why-icon{width:36px;height:36px;flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;}
+.why-icon svg{width:16px;height:16px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.why-body{}
+.why-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.why-txt{font-size:13px;color:var(--text-2);line-height:1.75;}
+.why-txt strong{color:var(--text);font-weight:500;}
+
+/* ── APPROACH 4 SPECIAL — TEMPTING CHOICE ── */
+.tempting-header{
+  background:var(--amber);border:1px solid var(--amber-border);
+  padding:20px 24px;margin-bottom:16px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.tempting-icon{width:36px;height:36px;flex-shrink:0;background:rgba(212,175,55,0.15);border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;}
+.tempting-icon svg{width:16px;height:16px;stroke:rgba(212,175,55,0.8);fill:none;stroke-width:1.5;}
+.tempting-lbl{font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(212,175,55,0.7);margin-bottom:5px;}
+.tempting-txt{font-size:13px;color:var(--text-2);line-height:1.75;}
+.tempting-txt strong{color:var(--text);font-weight:500;}
+
+/* budget split visual */
+.budget-split{
+  background:var(--bg-deep);border:1px solid var(--border);
+  padding:24px 28px;margin:16px 0;
+}
+.bs-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+.bs-lbl svg{width:11px;height:11px;stroke:var(--text-2);fill:none;stroke-width:1.5;}
+.bs-bars{display:flex;flex-direction:column;gap:10px;}
+.bs-bar-row{display:flex;align-items:center;gap:14px;}
+.bs-bar-lbl{font-size:12px;color:var(--text-2);width:180px;flex-shrink:0;}
+.bs-bar-track{flex:1;height:8px;background:var(--border);border-radius:1px;overflow:hidden;position:relative;}
+.bs-bar-fill{height:100%;border-radius:1px;background:var(--gold);}
+.bs-bar-pct{font-family:'Inter',monospace;font-size:10.5px;color:var(--gold);width:40px;text-align:right;flex-shrink:0;}
+
+/* irony note */
+.irony{
+  background:var(--bg-card);border:1px solid var(--border);border-left:3px solid rgba(212,175,55,0.5);
+  padding:18px 22px;margin-top:16px;
+}
+.irony-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:rgba(212,175,55,0.6);margin-bottom:7px;}
+.irony-txt{font-size:13px;color:var(--text-2);line-height:1.75;font-style:italic;}
+.irony-txt strong{color:var(--text);font-weight:500;font-style:normal;}
+
+/* ── CLOSING ── */
+.closing{
+  background:var(--bg-card);border:1px solid var(--border);border-top:2px solid var(--gold);
+  padding:34px 38px;margin-top:48px;position:relative;overflow:hidden;
+}
+.closing::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 70%);}
+.closing-lbl{font-family:'Inter',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.closing-main{font-family:'Oswald',sans-serif;font-size:clamp(18px,2.5vw,24px);font-weight:300;color:var(--white);line-height:1.45;margin-bottom:14px;}
+.closing-txt{font-size:13.5px;color:var(--text-2);line-height:1.85;}
+.closing-txt strong{color:var(--text);font-weight:500;}
+.closing-next{margin-top:16px;padding-top:16px;border-top:1px solid var(--border);font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:7px;}
+.closing-next svg{width:13px;height:13px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+
+/* FADE */
+.fu{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.fu.on{opacity:1;transform:translateY(0);}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}.wrap{padding:94px 20px 60px;}.nav-links{display:none;}
+  .scale-visual{flex-direction:column;}
+  .scale-center{width:100%;flex-direction:row;height:auto;padding:8px 0;}
+  .scale-beam{width:60px;height:2px;}
+}
+
+/* =========================================================
+   MODEL 04 SECTION 04 — PORTFOLIO IDENTITY OVERRIDES
+   ========================================================= */
+
+.model04-s4{
+  background:
+    radial-gradient(circle at 100% 8%, rgba(212,175,55,.035), transparent 34%),
+    radial-gradient(circle at 0% 92%, rgba(212,175,55,.025), transparent 30%);
+  border-top:1px solid rgba(212,175,55,.18);
+}
+
+.model04-s4 .approach-sep-title,
+.model04-s4 .closing-main{
+  font-family:'Oswald',sans-serif;
+}
+
+.model04-s4 .approach-sep-tag,
+.model04-s4 .why-lbl,
+.model04-s4 .tempting-lbl,
+.model04-s4 .bs-lbl,
+.model04-s4 .irony-lbl,
+.model04-s4 .closing-lbl,
+.model04-s4 .closing-next{
+  font-family:'Inter',monospace;
+}
+
+.model04-s4 .scale-wrap,
+.model04-s4 .why-card,
+.model04-s4 .budget-split,
+.model04-s4 .irony,
+.model04-s4 .closing{
+  background:#111318;
+  border-color:#2a2a2a;
+}
+
+.model04-s4 .scale-wrap::before{
+  background:linear-gradient(90deg,#d4af37 0%,transparent 100%);
+}
+
+.model04-s4 .scale-pan.advantage{
+  background:rgba(80,180,120,.08);
+  border-color:rgba(80,180,120,.22);
+}
+
+.model04-s4 .scale-pan.tradeoff{
+  background:rgba(170,70,70,.10);
+  border-color:rgba(210,110,110,.22);
+}
+
+.model04-s4 .tempting-header{
+  background:rgba(212,175,55,.045);
+  border-color:rgba(212,175,55,.22);
+}
+
+.model04-s4 .closing{
+  border-top:2px solid #d4af37;
+}
+
+.model04-s4 .closing-main{
+  font-weight:300;
+  color:#fff;
+}
+
+.model04-s4 .closing-txt{
+  color:#a0a0a0;
+}
+
+.model04-s4 .closing-next{
+  color:#d4af37;
+  border-top-color:#2a2a2a;
+}
+
+.model04-s4 .approach-sep-num{
+  color:rgba(212,175,55,.13);
+}
+
+@media (max-width:768px){
+  .model04-s4 .wrap{
+    padding:130px 20px 70px;
+  }
+}
+
+</style>
+
+<style>
+
+:root {
+  --bg:#0a0b0e;--bg-card:#111318;--bg-deep:#0d0f13;
+  --border:#2a2a2a;--gold:#d4af37;
+  --gold-dim:rgba(212,175,55,0.12);--gold-line:rgba(212,175,55,0.24);
+  --gold-soft:rgba(212,175,55,0.05);
+  --text:#f0f0f0;--text-2:#a0a0a0;--text-3:#555;--white:#ffffff;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.75;overflow-x:hidden;}
+
+/* BACKGROUND */
+.bg-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(212,175,55,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.018) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 15%,transparent 90%);}
+.bg-glow-tl{position:absolute;top:-80px;left:-80px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.04) 0%,transparent 65%);}
+.bg-glow-br{position:absolute;bottom:-80px;right:-80px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,0.03) 0%,transparent 65%);}
+.bg-ring{position:absolute;border-radius:50%;border:1px solid rgba(212,175,55,0.035);}
+.bg-ring-1{width:680px;height:680px;top:-180px;right:-180px;}
+.bg-ring-2{width:480px;height:480px;bottom:-80px;left:-130px;}
+/* verdict watermark */
+.bg-verdict{position:absolute;right:2%;top:25%;opacity:0.025;font-family:'Oswald',sans-serif;font-size:180px;font-weight:300;color:#d4af37;line-height:1;letter-spacing:-.05em;transform:rotate(90deg);transform-origin:right center;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 52px;background:rgba(7,13,24,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Oswald',sans-serif;font-size:16px;font-weight:500;color:var(--gold);letter-spacing:.07em;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);text-decoration:none;transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold);}
+
+/* WRAP */
+.wrap{max-width:1060px;margin:0 auto;padding:108px 48px 100px;position:relative;z-index:1;}
+
+/* EYEBROW */
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Inter',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;}
+.eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--gold);}
+
+/* HERO */
+.hero-title{font-family:'Oswald',sans-serif;font-size:clamp(36px,5.5vw,62px);font-weight:300;line-height:1.08;color:var(--white);letter-spacing:-.018em;margin-bottom:10px;}
+.hero-title em{color:var(--gold);font-style:normal;}
+
+/* OPENING PRINCIPLE */
+.opening-principle{
+  border-top:1px solid var(--gold-line);border-bottom:1px solid var(--gold-line);
+  padding:28px 0;margin:32px 0;
+}
+.op-txt{font-family:'Oswald',sans-serif;font-size:clamp(18px,2.5vw,24px);font-weight:300;font-style:italic;color:var(--white);line-height:1.5;text-align:center;}
+
+/* DIVIDER */
+.div{width:100%;height:1px;background:linear-gradient(90deg,var(--gold-line) 0%,transparent 80%);margin:44px 0;}
+
+/* TEXT */
+.txt{font-size:14px;color:var(--text-2);line-height:1.88;margin-bottom:14px;}
+.txt strong{color:var(--text);font-weight:500;}
+
+/* ── OPTION SELECTOR VISUAL ── */
+.option-selector{
+  background:var(--bg-deep);border:1px solid var(--border);
+  padding:28px 32px;margin:28px 0;
+}
+.os-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-3);margin-bottom:20px;display:flex;align-items:center;gap:7px;}
+.os-lbl svg{width:11px;height:11px;stroke:var(--text-3);fill:none;stroke-width:1.5;}
+.os-rows{display:flex;flex-direction:column;gap:0;}
+.os-row{
+  display:flex;align-items:stretch;gap:0;
+  border-bottom:1px solid var(--border);
+  transition:background .2s;
+}
+.os-row:last-child{border-bottom:none;}
+.os-row.selected{background:var(--gold-soft);}
+.os-num{
+  font-family:'Inter',monospace;font-size:11px;color:var(--text-2);
+  padding:16px 18px;border-right:1px solid var(--border);
+  display:flex;align-items:center;flex-shrink:0;width:52px;
+  transition:color .2s;
+}
+.os-row.selected .os-num{color:var(--gold);}
+.os-body{padding:16px 20px;flex:1;}
+.os-if{font-family:'Inter',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-2);margin-bottom:4px;}
+.os-row.selected .os-if{color:rgba(212,175,55,0.6);}
+.os-approach{font-size:13px;font-weight:500;color:var(--white);}
+.os-context{font-size:12.5px;color:var(--text-2);margin-top:3px;line-height:1.5;}
+.os-status{
+  padding:16px 18px;border-left:1px solid var(--border);
+  display:flex;align-items:center;flex-shrink:0;
+}
+.os-dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+.os-row.selected .os-dot{background:var(--gold);box-shadow:0 0 8px rgba(212,175,55,0.4);}
+
+/* ── VERDICT CARD ── */
+.verdict{
+  background:var(--bg-card);
+  border:1px solid var(--gold-line);
+  border-top:3px solid var(--gold);
+  padding:0;overflow:hidden;
+  position:relative;margin:32px 0;
+}
+/* glow behind verdict */
+.verdict::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,55,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+
+.verdict-header{
+  padding:24px 32px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+}
+.verdict-gavel{
+  width:44px;height:44px;flex-shrink:0;
+  background:var(--gold-dim);border:1px solid var(--gold-line);
+  display:flex;align-items:center;justify-content:center;
+}
+.verdict-gavel svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.verdict-header-body{}
+.verdict-lbl{font-family:'Inter',monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.verdict-headline{font-family:'Oswald',sans-serif;font-size:clamp(20px,2.8vw,28px);font-weight:400;color:var(--white);}
+
+.verdict-body{padding:28px 32px;}
+
+/* 3 pillars of recommendation */
+.verdict-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+.vp{background:var(--bg-deep);border:1px solid var(--border);padding:18px 18px 20px;}
+.vp-icon{width:32px;height:32px;background:var(--gold-dim);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.vp-icon svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.vp-lbl{font-family:'Inter',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.vp-txt{font-size:12.5px;color:var(--text-2);line-height:1.65;}
+.vp-txt strong{color:var(--text);font-weight:500;}
+
+/* main reasoning */
+.verdict-reasoning{font-size:13.5px;color:var(--text-2);line-height:1.88;margin-bottom:16px;}
+.verdict-reasoning strong{color:var(--text);font-weight:500;}
+
+/* caveat */
+.verdict-caveat{
+  background:var(--bg-deep);border:1px solid var(--border);border-left:2px solid var(--gold-line);
+  padding:14px 18px;
+  font-size:13px;color:var(--text-2);font-style:italic;line-height:1.7;
+}
+
+/* ── FINAL PRINCIPLE ── */
+.final-principle{
+  text-align:center;padding:48px 0 32px;
+  position:relative;
+}
+.final-principle::before{
+  content:'';position:absolute;
+  top:0;left:20%;right:20%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-line),transparent);
+}
+.fp-quote{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(20px,3vw,30px);font-weight:300;font-style:italic;
+  color:var(--white);line-height:1.4;margin-bottom:12px;
+}
+.fp-attr{font-family:'Inter',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-2);}
+.fp-dots{display:flex;justify-content:center;gap:8px;margin-top:20px;}
+.fp-dot{width:4px;height:4px;border-radius:50%;background:var(--gold-line);}
+.fp-dot:nth-child(2){background:rgba(212,175,55,0.4);}
+.fp-dot:nth-child(3){background:var(--gold);}
+
+/* TRANSITION */
+.transition-block{
+  background:var(--bg-deep);border:1px solid var(--border);border-left:3px solid var(--gold);
+  padding:20px 24px;margin-top:12px;display:flex;gap:14px;align-items:flex-start;
+}
+.tb-icon{width:32px;height:32px;flex-shrink:0;background:var(--gold-dim);border:1px solid var(--gold-line);display:flex;align-items:center;justify-content:center;}
+.tb-icon svg{width:14px;height:14px;stroke:var(--gold);fill:none;stroke-width:1.5;}
+.tb-txt{font-size:13px;color:var(--text-2);line-height:1.8;}
+.tb-txt strong{color:var(--text);font-weight:500;}
+
+/* FADE */
+.fu{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.fu.on{opacity:1;transform:translateY(0);}
+
+@media(max-width:768px){
+  nav{padding:0 20px;}.wrap{padding:94px 20px 60px;}.nav-links{display:none;}
+  .verdict-pillars{grid-template-columns:1fr;}
+}
+
+.model04-s5{
+  position:relative;
+  overflow:hidden;
+  border-top:1px solid rgba(212,175,55,.18);
+  background:
+    radial-gradient(circle at 100% 8%, rgba(212,175,55,.035), transparent 34%),
+    radial-gradient(circle at 0% 92%, rgba(212,175,55,.025), transparent 30%);
+}
+.model04-s5 .wrap{max-width:1060px;margin:0 auto;padding:100px 48px;position:relative;z-index:1;}
+.model04-s5 .hero-title,
+.model04-s5 .op-txt,
+.model04-s5 .verdict-headline,
+.model04-s5 .fp-quote{font-family:'Oswald',sans-serif;}
+.model04-s5 .option-selector,
+.model04-s5 .verdict,
+.model04-s5 .vp,
+.model04-s5 .verdict-caveat,
+.model04-s5 .transition-block{background:#111318;border-color:#2a2a2a;}
+.model04-s5 .os-row.selected{background:rgba(212,175,55,.045);}
+.model04-s5 .verdict{border-color:rgba(212,175,55,.24);border-top-color:#d4af37;}
+.model04-s5 .verdict::before{background:radial-gradient(circle,rgba(212,175,55,.055) 0%,transparent 70%);}
+.model04-s5 .final-principle::before{background:linear-gradient(90deg,transparent,rgba(212,175,55,.24),transparent);}
+.model04-s5 .transition-block{border-left-color:#d4af37;}
+@media(max-width:768px){
+  .model04-s5 .wrap{padding:78px 22px 70px;}
+}
+
+</style>
+
+<style>
+
+/* =========================================================
+   MODEL 04 — GLOBAL PORTFOLIO THEME BRIDGE
+   Keeps Sections 01–06 and local interactions intact.
+   ========================================================= */
+
+.model04-page,
+.model04-page body{
+  background:var(--bg-dark)!important;
+  color:var(--text)!important;
+  transition:background-color .35s ease,color .35s ease;
+}
+
+.model04-page .navbar,
+.model04-page nav{
+  background:var(--nav-bg)!important;
+  border-color:var(--border-color)!important;
+}
+
+.model04-page .nav-links a{
+  color:var(--text-grey)!important;
+}
+
+.model04-page .nav-links a:hover,
+.model04-page .nav-links a.active{
+  color:var(--gold-accent)!important;
+}
+
+.model04-page .logo,
+.model04-page .nav-logo{
+  color:var(--gold-accent)!important;
+}
+
+.model04-page .brand-text .name{
+  color:var(--text-white)!important;
+}
+
+.model04-page .brand-text .title,
+.model04-page .brand-text{
+  color:var(--text-grey)!important;
+}
+
+.model04-page .btn-outline{
+  color:var(--gold-accent)!important;
+  border-color:var(--gold-accent)!important;
+}
+
+.model04-page .btn-outline:hover{
+  background:var(--gold-dim)!important;
+}
+
+/* Model 04 shared surfaces */
+.model04-page .m4s3,
+.model04-page .m4s4,
+.model04-page .model04-s5,
+.model04-page .model04-s6{
+  color:var(--text)!important;
+  background-color:var(--bg-dark)!important;
+}
+
+.model04-page .m4s3-card,
+.model04-page .m4s3-summary,
+.model04-page .m4s3-focus,
+.model04-page .m4s3-warning,
+.model04-page .m4s3-bridge,
+.model04-page .m4s4-option,
+.model04-page .m4s4-principles,
+.model04-page .m4s4-closing,
+.model04-page .model04-s5 .option-selector,
+.model04-page .model04-s5 .verdict,
+.model04-page .model04-s5 .vp,
+.model04-page .model04-s5 .verdict-caveat,
+.model04-page .model04-s5 .transition-block,
+.model04-page .model04-s6 .journey,
+.model04-page .model04-s6 .tools-reframe,
+.model04-page .model04-s6 .analyst-role,
+.model04-page .model04-s6 .change-stay,
+.model04-page .model04-s6 .final{
+  background:var(--bg-card)!important;
+  border-color:var(--border-color)!important;
+  color:var(--text)!important;
+}
+
+.model04-page .m4s3-focus,
+.model04-page .m4s3-bridge,
+.model04-page .model04-s6 .journey,
+.model04-page .model04-s6 .tools-reframe,
+.model04-page .model04-s6 .analyst-role{
+  background:var(--bg-deep)!important;
+}
+
+/* Strong text */
+.model04-page .m4s3-card-title,
+.model04-page .m4s3-summary-title,
+.model04-page .m4s4-title-small,
+.model04-page .m4s4-principle-title,
+.model04-page .model04-s5 .verdict-headline,
+.model04-page .model04-s5 .fp-quote,
+.model04-page .model04-s6 .hero-title,
+.model04-page .model04-s6 .js-title,
+.model04-page .model04-s6 .tr-name,
+.model04-page .model04-s6 .final-quote{
+  color:var(--text-white)!important;
+}
+
+/* Muted copy */
+.model04-page .m4s3-finding,
+.model04-page .m4s3-summary-copy,
+.model04-page .m4s4-copy,
+.model04-page .m4s4-principle-copy,
+.model04-page .model04-s5 .os-context,
+.model04-page .model04-s5 .verdict-reasoning,
+.model04-page .model04-s5 .verdict-caveat,
+.model04-page .model04-s6 .hero-opening,
+.model04-page .model04-s6 .js-desc,
+.model04-page .model04-s6 .tr-sub,
+.model04-page .model04-s6 .ar-txt,
+.model04-page .model04-s6 .final-txt{
+  color:var(--text-grey)!important;
+}
+
+/* Gold accents */
+.model04-page .eyebrow,
+.model04-page .m4s3-label,
+.model04-page .m4s3-counter-label,
+.model04-page .m4s3-summary-label,
+.model04-page .m4s4-question-label,
+.model04-page .m4s4-principle-label,
+.model04-page .model04-s5 .os-row.selected .os-num,
+.model04-page .model04-s5 .verdict-lbl,
+.model04-page .model04-s5 .vp-lbl,
+.model04-page .model04-s5 .fp-attr,
+.model04-page .model04-s6 .s6-eyebrow,
+.model04-page .model04-s6 .js-model,
+.model04-page .model04-s6 .tr-lbl,
+.model04-page .model04-s6 .ar-lbl,
+.model04-page .model04-s6 .final-lbl{
+  color:var(--gold-accent)!important;
+}
+
+/* Light-mode cleanup for hard-coded white text found in legacy sections */
+html[data-theme="light"] .model04-page [style*="color:#fff"],
+html[data-theme="light"] .model04-page [style*="color: #fff"],
+html[data-theme="light"] .model04-page [style*="color:white"],
+html[data-theme="light"] .model04-page [style*="color: white"]{
+  color:var(--text-white)!important;
+}
+
+html[data-theme="light"] .model04-page [style*="background:#111318"],
+html[data-theme="light"] .model04-page [style*="background: #111318"],
+html[data-theme="light"] .model04-page [style*="background:#0d0f13"],
+html[data-theme="light"] .model04-page [style*="background: #0d0f13"]{
+  background:var(--bg-card)!important;
+}
+
+.model04-page .portfolio-theme-toggle{
+  flex-shrink:0;
+}
+
+</style>
+
+<style>
+
+/* =========================================================
+   MODEL 04 — LIGHT MODE
+   WHITE TEXT -> BLACK
+   GOLD REMAINS GOLD
+   ========================================================= */
+
+html[data-theme="light"] .model04-page,
+html[data-theme="light"] .model04-page body{
+  color:#111111!important;
+}
+
+html[data-theme="light"] .model04-page h1,
+html[data-theme="light"] .model04-page h2,
+html[data-theme="light"] .model04-page h3,
+html[data-theme="light"] .model04-page h4,
+html[data-theme="light"] .model04-page h5,
+html[data-theme="light"] .model04-page h6,
+html[data-theme="light"] .model04-page p,
+html[data-theme="light"] .model04-page li,
+html[data-theme="light"] .model04-page span,
+html[data-theme="light"] .model04-page strong{
+  color:#111111;
+}
+
+/* Shared Model 04 headings */
+html[data-theme="light"] .model04-page .m4s3-card-title,
+html[data-theme="light"] .model04-page .m4s3-summary-title,
+html[data-theme="light"] .model04-page .m4s4-title,
+html[data-theme="light"] .model04-page .m4s4-title-small,
+html[data-theme="light"] .model04-page .m4s4-principle-title,
+html[data-theme="light"] .model04-page .m4s4-closing,
+html[data-theme="light"] .model04-page .model04-s5 .hero-title,
+html[data-theme="light"] .model04-page .model04-s5 .op-txt,
+html[data-theme="light"] .model04-page .model04-s5 .verdict-headline,
+html[data-theme="light"] .model04-page .model04-s5 .fp-quote,
+html[data-theme="light"] .model04-page .model04-s6 .hero-title,
+html[data-theme="light"] .model04-page .model04-s6 .js-title,
+html[data-theme="light"] .model04-page .model04-s6 .tr-name,
+html[data-theme="light"] .model04-page .model04-s6 .final-quote{
+  color:#111111!important;
+}
+
+/* Body / supporting copy stays readable gray */
+html[data-theme="light"] .model04-page .m4s3-finding,
+html[data-theme="light"] .model04-page .m4s3-summary-copy,
+html[data-theme="light"] .model04-page .m4s4-copy,
+html[data-theme="light"] .model04-page .m4s4-principle-copy,
+html[data-theme="light"] .model04-page .model04-s5 .txt,
+html[data-theme="light"] .model04-page .model04-s5 .os-context,
+html[data-theme="light"] .model04-page .model04-s5 .verdict-reasoning,
+html[data-theme="light"] .model04-page .model04-s5 .verdict-caveat,
+html[data-theme="light"] .model04-page .model04-s6 .hero-opening,
+html[data-theme="light"] .model04-page .model04-s6 .js-desc,
+html[data-theme="light"] .model04-page .model04-s6 .tr-sub,
+html[data-theme="light"] .model04-page .model04-s6 .ar-txt,
+html[data-theme="light"] .model04-page .model04-s6 .final-txt{
+  color:#5f5f5f!important;
+}
+
+/* Preserve gold accents */
+html[data-theme="light"] .model04-page .eyebrow,
+html[data-theme="light"] .model04-page .gold,
+html[data-theme="light"] .model04-page .gold-text,
+html[data-theme="light"] .model04-page .m4s3-label,
+html[data-theme="light"] .model04-page .m4s3-counter-label,
+html[data-theme="light"] .model04-page .m4s3-summary-label,
+html[data-theme="light"] .model04-page .m4s4-question-label,
+html[data-theme="light"] .model04-page .m4s4-principle-label,
+html[data-theme="light"] .model04-page .model04-s5 .os-row.selected .os-num,
+html[data-theme="light"] .model04-page .model04-s5 .verdict-lbl,
+html[data-theme="light"] .model04-page .model04-s5 .vp-lbl,
+html[data-theme="light"] .model04-page .model04-s6 .s6-eyebrow,
+html[data-theme="light"] .model04-page .model04-s6 .js-model,
+html[data-theme="light"] .model04-page .model04-s6 .tr-lbl,
+html[data-theme="light"] .model04-page .model04-s6 .ar-lbl,
+html[data-theme="light"] .model04-page .model04-s6 .final-lbl{
+  color:var(--gold-accent)!important;
+}
+
+/* Inline hard-coded whites */
+html[data-theme="light"] .model04-page [style*="color:#fff"],
+html[data-theme="light"] .model04-page [style*="color: #fff"],
+html[data-theme="light"] .model04-page [style*="color:#ffffff"],
+html[data-theme="light"] .model04-page [style*="color: #ffffff"],
+html[data-theme="light"] .model04-page [style*="color:white"],
+html[data-theme="light"] .model04-page [style*="color: white"],
+html[data-theme="light"] .model04-page [style*="rgb(255,255,255)"],
+html[data-theme="light"] .model04-page [style*="rgb(255, 255, 255)"]{
+  color:#111111!important;
+}
+
+/* Headline / emphasis spans with legacy white */
+html[data-theme="light"] .model04-page .text-white,
+html[data-theme="light"] .model04-page .white-text,
+html[data-theme="light"] .model04-page .text-light{
+  color:#111111!important;
+}
+
+/* Navbar stays brand-consistent */
+html[data-theme="light"] .model04-page .nav-links a,
+html[data-theme="light"] .model04-page .brand-text .title{
+  color:#5f5f5f!important;
+}
+
+html[data-theme="light"] .model04-page .nav-links a:hover,
+html[data-theme="light"] .model04-page .nav-links a.active{
+  color:var(--gold-accent)!important;
+}
+
+html[data-theme="light"] .model04-page .brand-text .name{
+  color:#111111!important;
+}
+
+html[data-theme="light"] .model04-page .logo,
+html[data-theme="light"] .model04-page .nav-logo{
+  color:var(--gold-accent)!important;
+}
+
+/* Cards / surfaces */
+html[data-theme="light"] .model04-page .m4s3-card,
+html[data-theme="light"] .model04-page .m4s3-summary,
+html[data-theme="light"] .model04-page .m4s3-focus,
+html[data-theme="light"] .model04-page .m4s3-warning,
+html[data-theme="light"] .model04-page .m4s3-bridge,
+html[data-theme="light"] .model04-page .m4s4-option,
+html[data-theme="light"] .model04-page .m4s4-principles,
+html[data-theme="light"] .model04-page .m4s4-closing,
+html[data-theme="light"] .model04-page .model04-s5 .option-selector,
+html[data-theme="light"] .model04-page .model04-s5 .verdict,
+html[data-theme="light"] .model04-page .model04-s5 .vp,
+html[data-theme="light"] .model04-page .model04-s5 .verdict-caveat,
+html[data-theme="light"] .model04-page .model04-s5 .transition-block,
+html[data-theme="light"] .model04-page .model04-s6 .journey,
+html[data-theme="light"] .model04-page .model04-s6 .tools-reframe,
+html[data-theme="light"] .model04-page .model04-s6 .analyst-role,
+html[data-theme="light"] .model04-page .model04-s6 .change-stay,
+html[data-theme="light"] .model04-page .model04-s6 .final{
+  background:var(--bg-card)!important;
+  border-color:var(--border-color)!important;
+}
+
+/* Make "what stays" and selected recommendation read as black */
+html[data-theme="light"] .model04-page .model04-s6 .cs-side.stays .cs-items li,
+html[data-theme="light"] .model04-page .model04-s5 .os-approach{
+  color:#111111!important;
+}
+
+/* Success / risk colors remain semantic */
+html[data-theme="light"] .model04-page .m4s3-insight-copy{
+  color:#4b6654!important;
+}
+
+html[data-theme="light"] .model04-page .m4s3-risk-copy{
+  color:#8f4e4e!important;
+}
+
+</style>
+
+<style>
+
+/* =========================================================
+   MODEL 04 — FINAL LIGHT MODE VARIABLE OVERRIDES
+   Fixes local section variables that were still resolving
+   to white (#fff / #ffffff) in the Light theme.
+   ========================================================= */
+
+html[data-theme="light"] .model04-page{
+  --bg:#f5f2eb;
+  --bg-card:#ffffff;
+  --bg-deep:#f0ede5;
+
+  --border:#d9d4c8;
+
+  --gold:#aa7b00;
+  --gold-dim:rgba(170,123,0,.10);
+  --gold-line:rgba(170,123,0,.24);
+  --gold-soft:rgba(170,123,0,.055);
+
+  --text:#111111;
+  --text-2:#5f5f5f;
+  --text-3:#777777;
+
+  --white:#111111;
+  --text-white:#111111;
+  --text-grey:#5f5f5f;
+  --text-muted:#7d7d7d;
+
+  --s6-bg:#f5f2eb;
+  --s6-card:#ffffff;
+  --s6-deep:#f0ede5;
+  --s6-border:#d9d4c8;
+  --s6-gold:#aa7b00;
+  --s6-gold-dim:rgba(170,123,0,.10);
+  --s6-gold-line:rgba(170,123,0,.24);
+  --s6-text:#111111;
+  --s6-muted:#5f5f5f;
+  --s6-soft:#777777;
+
+  --green-txt:#397b4e;
+  --red-txt:#a84f4f;
+}
+
+/* Section 04 local variables */
+html[data-theme="light"] .model04-page .m4s4,
+html[data-theme="light"] .model04-page .model04-s5{
+  --white:#111111!important;
+  --text:#111111!important;
+  --text-2:#5f5f5f!important;
+  --text-3:#777777!important;
+  --bg:#f5f2eb!important;
+  --bg-card:#ffffff!important;
+  --bg-deep:#f0ede5!important;
+  --border:#d9d4c8!important;
+  --gold:#aa7b00!important;
+}
+
+/* Every local element using the old --white variable */
+html[data-theme="light"] .model04-page .m4s4 *,
+html[data-theme="light"] .model04-page .model04-s5 *{
+  --white:#111111;
+}
+
+/* Explicit selectors for the text shown in the screenshot */
+html[data-theme="light"] .model04-page .approach-sep-title,
+html[data-theme="light"] .model04-page .op-txt,
+html[data-theme="light"] .model04-page .os-approach,
+html[data-theme="light"] .model04-page .verdict-headline,
+html[data-theme="light"] .model04-page .closing-main,
+html[data-theme="light"] .model04-page .shift-txt,
+html[data-theme="light"] .model04-page .pillar-name,
+html[data-theme="light"] .model04-page .fc-title,
+html[data-theme="light"] .model04-page .sf-to{
+  color:#111111!important;
+}
+
+/* Preserve gold labels */
+html[data-theme="light"] .model04-page .approach-sep-tag,
+html[data-theme="light"] .model04-page .os-lbl,
+html[data-theme="light"] .model04-page .verdict-lbl,
+html[data-theme="light"] .model04-page .vp-lbl,
+html[data-theme="light"] .model04-page .closing-next{
+  color:#aa7b00!important;
+}
+
+/* Any hard-coded white/near-white inline declarations */
+html[data-theme="light"] .model04-page [style*="#ffffff"],
+html[data-theme="light"] .model04-page [style*="#FFFFFF"],
+html[data-theme="light"] .model04-page [style*="#fff"],
+html[data-theme="light"] .model04-page [style*="#FFF"],
+html[data-theme="light"] .model04-page [style*="white"],
+html[data-theme="light"] .model04-page [style*="rgb(255"]{
+  color:#111111!important;
+}
+
+/* Don't accidentally turn icons/borders/gold graphics black */
+html[data-theme="light"] .model04-page .gold-text,
+html[data-theme="light"] .model04-page .eyebrow,
+html[data-theme="light"] .model04-page .approach-sep-tag,
+html[data-theme="light"] .model04-page .os-lbl,
+html[data-theme="light"] .model04-page .verdict-lbl,
+html[data-theme="light"] .model04-page .vp-lbl,
+html[data-theme="light"] .model04-page .closing-next{
+  color:#aa7b00!important;
+}
+
+</style>
+</head>
+<body class="project-page model04-page">
+<div class="bg-layer">
+<div class="bg-grid"></div>
+<div class="bg-glow-tl"></div>
+<div class="bg-glow-br"></div>
+<div class="bg-ring bg-ring-1"></div>
+<div class="bg-ring bg-ring-2"></div>
+<!-- venn echo in background -->
+<svg class="bg-venn" height="300" viewbox="0 0 300 300" width="300" xmlns="http://www.w3.org/2000/svg">
+<circle cx="120" cy="130" fill="none" r="90" stroke="#c8a45a" stroke-width="1"></circle>
+<circle cx="180" cy="130" fill="none" r="90" stroke="#c8a45a" stroke-width="1"></circle>
+<circle cx="150" cy="185" fill="none" r="90" stroke="#c8a45a" stroke-width="1"></circle>
+<circle cx="150" cy="148" fill="none" r="25" stroke="#c8a45a" stroke-width="0.5"></circle>
+</svg>
+</div>
+<nav class="navbar">
+<div class="nav-brand">
+<span class="logo">MA.</span>
+<div class="brand-text">
+<span class="name">MOHAMED AMR</span>
+<span class="title">DATA ANALYST</span>
+</div>
+</div>
+<ul class="nav-links">
+<li><a href="index.html">HOME</a></li>
+<li><a href="main-project.html">MAIN PROJECT</a></li>
+<li><a class="active" href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li>
+<li><a href="knowledge-hub.html">KNOWLEDGE HUB</a></li>
+<li><a href="resume.html">RESUME</a></li>
+<li><a href="about.html">ABOUT</a></li>
+<li><a href="contact.html">CONTACT</a></li>
+</ul>
+<a class="btn-outline" href="contact.html">
+        Let's Connect <i class="fa-regular fa-paper-plane"></i>
+</a>
+</nav>
+<div class="wrap">
+<!-- HERO -->
+<div class="fu">
+<div class="eyebrow">Model 04 — Section 01</div>
+<h1 class="hero-title">From Analysis<br/><em>to Decision</em></h1>
+<p class="hero-sub">Moving beyond analytical results to understand how business decisions are evaluated, challenged, and justified.</p>
+</div>
+<div class="div"></div>
+<!-- FOUNDATION -->
+<div class="fu">
+<div class="foundation">
+<div class="foundation-lbl">
+<svg viewbox="0 0 24 24"><path d="M2 20h20M5 20V10M12 20V4M19 20v-7"></path></svg>
+        Built on the previous three models
+      </div>
+<div class="foundation-models">
+<div class="fm">
+<div class="fm-dot"></div>
+<div class="fm-body">
+<div class="fm-num">Model 01</div>
+<div class="fm-txt">Defined customer value. Built a fair benchmark. Segmented behavior across two quarters.</div>
+</div>
+</div>
+<div class="fm">
+<div class="fm-dot"></div>
+<div class="fm-body">
+<div class="fm-num">Model 02</div>
+<div class="fm-txt">Validated data quality. Established trust in every metric before drawing conclusions.</div>
+</div>
+</div>
+<div class="fm">
+<div class="fm-dot"></div>
+<div class="fm-body">
+<div class="fm-num">Model 03</div>
+<div class="fm-txt">Built a defensible scoring model. Translated business priorities into technical logic.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="txt">However, <strong>analysis alone is never the final destination.</strong></div>
+<div class="txt">Business decisions are not made directly from dashboards or KPIs. They are made by balancing analytical evidence with the current business context and the objective the business is trying to achieve.</div>
+<div class="txt">This model explores that final step. Rather than producing another dashboard, the goal is to understand how analytical findings influence strategic decisions, how different alternatives introduce different trade-offs, and why the "best" decision is rarely the one with the highest numerical value.</div>
+</div>
+<div class="div"></div>
+<!-- DECISION FRAMEWORK -->
+<div class="framework fu">
+<div class="framework-lbl">
+<svg viewbox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      The Decision Framework
+    </div>
+<!-- VENN PILLARS -->
+<div class="venn-wrap">
+<div class="venn-ai-lbl">
+<svg viewbox="0 0 24 24"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M9 9h6M9 12h6M9 15h4"></path></svg>
+        AI-Generated · Decision Alignment Framework
+      </div>
+<div class="pillars">
+<div class="pillar">
+<div class="pillar-icon">
+<svg viewbox="0 0 24 24"><path d="M2 20h20M5 20V10M12 20V4M19 20v-7"></path></svg>
+</div>
+<div class="pillar-name">Evidence</div>
+<div class="pillar-def">What the historical analysis actually tells us — from all three previous models.</div>
+<div class="pillar-q">"What do the numbers prove?"</div>
+</div>
+<div class="pillar" style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:28px;">
+<!-- center spacer -->
+</div>
+<div class="pillar">
+<div class="pillar-icon">
+<svg viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+</div>
+<div class="pillar-name">Context</div>
+<div class="pillar-def">The current business conditions, constraints, and environment that shape what is possible.</div>
+<div class="pillar-q">"What is the business reality right now?"</div>
+</div>
+</div>
+<!-- Objective below -->
+<div style="width:100%;margin-top:16px;">
+<div class="pillar" style="border-top:2px solid rgba(200,164,90,0.4);max-width:340px;margin:0 auto;text-align:center;padding:20px 24px;">
+<div class="pillar-icon" style="margin:0 auto 14px;">
+<svg viewbox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+</div>
+<div class="pillar-name">Objective</div>
+<div class="pillar-def">The specific outcome the business is trying to achieve — growth, stability, risk reduction, or efficiency.</div>
+<div class="pillar-q">"What does success actually look like?"</div>
+</div>
+</div>
+</div>
+<!-- 3 explanation cards -->
+<div class="framework-cards">
+<div class="fc">
+<div class="fc-num">01 — Evidence</div>
+<div class="fc-title">What the analysis tells us</div>
+<div class="fc-txt">Historical data from Models 1–3 provides the factual foundation. Revenue patterns, segment behavior, product performance, and data quality all feed into this layer.</div>
+</div>
+<div class="fc">
+<div class="fc-num">02 — Context</div>
+<div class="fc-title">What the business reality is</div>
+<div class="fc-txt">Budget constraints, market conditions, operational capacity, and risk tolerance define what is actually possible — regardless of what the data shows.</div>
+</div>
+<div class="fc">
+<div class="fc-num">03 — Objective</div>
+<div class="fc-title">What success looks like</div>
+<div class="fc-txt">The specific outcome being optimized for — whether that is revenue growth, customer retention, risk reduction, or portfolio diversification — shapes which option is "best."</div>
+</div>
+</div>
+</div>
+<!-- SHIFT FOCUS -->
+<div class="shift-focus fu">
+<div class="sf-icon">
+<svg viewbox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+</div>
+<div class="sf-body">
+<div class="sf-from">Proving that the analysis is correct</div>
+<div class="sf-arrow">↓</div>
+<div class="sf-to">Proving that the chosen decision makes sense under the current circumstances</div>
+</div>
+</div>
+</div>
+<section aria-label="Model 04 Section 2 — Defining the Business Context" class="model04-section-two">
+<div class="model04-section-two-inner wrap">
+<!-- HERO -->
+<div class="fu">
+<div class="eyebrow">Model 04 — Section 02</div>
+<h1 class="hero-title">Defining the<br/><em>Business Context</em></h1>
+<p class="hero-sub">Applying the decision framework to the e-commerce project developed in the previous model.</p>
+</div>
+<div class="div"></div>
+<!-- OPENING -->
+<div class="fu">
+<div class="txt">The previous model concluded with a clear set of analytical findings. We identified the strongest product categories, measured product performance using a weighted scoring approach, highlighted business risks, and translated the results into actionable insights.</div>
+<div class="txt"><strong>Now, imagine the business is entering the next stage.</strong></div>
+</div>
+<!-- SCENARIO -->
+<div class="scenario fu">
+<div class="scenario-lbl">
+<svg height="13" style="width:13px !important;height:13px !important;max-width:13px !important;max-height:13px !important;flex:none;" viewbox="0 0 24 24" width="13"><rect height="14" rx="2" width="20" x="2" y="7"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+      Business Scenario
+    </div>
+<div class="scenario-headline">Management has allocated an additional investment budget to improve future business performance.</div>
+<div class="scenario-budget">
+<div class="scenario-budget-lbl">Investment Budget</div>
+<div class="scenario-budget-val">EGP 500,000</div>
+</div>
+</div>
+<!-- OPTIONS -->
+<div class="fu">
+<div class="txt">At first glance, the answer may seem straightforward. But <strong>four reasonable options immediately emerge</strong> — each supported by data, each introducing different trade-offs.</div>
+<div class="options-grid">
+<div class="option-q">
+<div class="oq-num">01</div>
+<div class="oq-txt">Should the company invest more in the highest-performing category?</div>
+</div>
+<div class="option-q">
+<div class="oq-num">02</div>
+<div class="oq-txt">Should it strengthen weaker categories to reduce dependency risk?</div>
+</div>
+<div class="option-q">
+<div class="oq-num">03</div>
+<div class="oq-txt">Should it increase promotional campaigns to grow the customer base?</div>
+</div>
+<div class="option-q">
+<div class="oq-num">04</div>
+<div class="oq-txt">Should it focus on improving long-term stability instead of maximizing short-term revenue?</div>
+</div>
+</div>
+<div class="reasonable">
+<div class="r-item">
+<div class="r-icon"><svg height="14" style="width:14px !important;height:14px !important;max-width:14px !important;max-height:14px !important;flex:none;" viewbox="0 0 24 24" width="14"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+<div class="r-lbl">Each option appears reasonable</div>
+<div class="r-sub">No option can be dismissed without further evaluation.</div>
+</div>
+<div class="r-item">
+<div class="r-icon"><svg height="14" style="width:14px !important;height:14px !important;max-width:14px !important;max-height:14px !important;flex:none;" viewbox="0 0 24 24" width="14"><path d="M2 20h20M5 20V10M12 20V4M19 20v-7"></path></svg></div>
+<div class="r-lbl">Each option is supported by data</div>
+<div class="r-sub">The analytical evidence from Models 1–3 can justify more than one direction.</div>
+</div>
+<div class="r-item">
+<div class="r-icon"><svg height="14" style="width:14px !important;height:14px !important;max-width:14px !important;max-height:14px !important;flex:none;" viewbox="0 0 24 24" width="14"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" x2="12" y1="9" y2="13"></line><line x1="12" x2="12.01" y1="17" y2="17"></line></svg></div>
+<div class="r-lbl">Each option introduces trade-offs</div>
+<div class="r-sub">Choosing one path means accepting the costs of not choosing the others.</div>
+</div>
+</div>
+</div>
+<!-- ROLE SHIFT -->
+<div class="role-shift fu">
+<div class="rs-lbl">
+<svg height="13" style="width:13px !important;height:13px !important;max-width:13px !important;max-height:13px !important;flex:none;" viewbox="0 0 24 24" width="13"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path></svg>
+      This Changes the Role of Data Analytics
+    </div>
+<div class="rs-flow">
+<div class="rs-step old">
+<div class="rs-step-icon"><svg height="17" style="width:17px !important;height:17px !important;max-width:17px !important;max-height:17px !important;flex:none;" viewbox="0 0 24 24" width="17"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg></div>
+<div class="rs-step-prefix">Before</div>
+<div class="rs-step-txt">Discover what happened — understand patterns, validate data, measure performance.</div>
+</div>
+<div class="rs-arrow">↓</div>
+<div class="rs-step new">
+<div class="rs-step-icon"><svg height="17" style="width:17px !important;height:17px !important;max-width:17px !important;max-height:17px !important;flex:none;" viewbox="0 0 24 24" width="17"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+<div class="rs-step-prefix">Now</div>
+<div class="rs-step-txt">Determine which decision creates the greatest business value under the current conditions.</div>
+</div>
+</div>
+</div>
+<!-- EVIDENCE STATEMENT -->
+<div class="evidence-stmt fu">
+<div class="evidence-stmt-lbl">Key Principle</div>
+<div class="evidence-stmt-txt">The analysis from Model 3 will now be treated as evidence — not as the decision itself. The same analytical findings can support multiple business strategies. Choosing between them requires more than selecting the highest number on a dashboard.</div>
+</div>
+<!-- TRANSITION -->
+<div class="transition-note fu">
+<div class="tn-icon"><svg height="14" style="width:14px !important;height:14px !important;max-width:14px !important;max-height:14px !important;flex:none;" viewbox="0 0 24 24" width="14"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></div>
+<div class="tn-txt">The next sections explore <strong>how the same analytical findings can support multiple business strategies</strong> — and why choosing between them requires understanding trade-offs, not just reading results.</div>
+</div>
+</div>
+</section>
+<style>
+/* =========================================================
+   MODEL 04 — SECTION 03 + SECTION 04
+   Portfolio-native extensions
+   ========================================================= */
+
+.m4s3, .m4s4{
+  position:relative;
+  overflow:hidden;
+  border-top:1px solid rgba(212,175,55,.18);
+  background:
+    radial-gradient(circle at 100% 10%, rgba(212,175,55,.035), transparent 34%),
+    radial-gradient(circle at 0% 90%, rgba(212,175,55,.025), transparent 30%);
+}
+
+.m4s3-inner, .m4s4-inner{
+  max-width:1060px;
+  margin:0 auto;
+  padding:100px 48px;
+  position:relative;
+  z-index:1;
+}
+
+.m4s3 .m4s3-hero,
+.m4s4 .m4s4-hero{
+  max-width:850px;
+}
+
+.m4s3-title,
+.m4s4-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(3rem,6vw,5.2rem);
+  font-weight:300;
+  line-height:1.05;
+  color:#fff;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+
+.m4s3-title span,
+.m4s4-title span{
+  color:var(--gold-accent,#d4af37);
+}
+
+.m4s3-sub,
+.m4s4-sub{
+  color:var(--text-grey,#a0a0a0);
+  font-size:clamp(1rem,2vw,1.2rem);
+  line-height:1.75;
+  max-width:680px;
+}
+
+.m4s3-divider,
+.m4s4-divider{
+  height:1px;
+  width:100%;
+  background:linear-gradient(90deg,rgba(212,175,55,.24),transparent 80%);
+  margin:44px 0;
+}
+
+.m4s3-text,
+.m4s4-text{
+  color:var(--text-grey,#a0a0a0);
+  font-size:.95rem;
+  line-height:1.88;
+  margin-bottom:16px;
+}
+
+.m4s3-text strong,
+.m4s4-text strong{
+  color:#fff;
+  font-weight:600;
+}
+
+/* SECTION 03 — WARNING */
+.m4s3-warning{
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+  background:rgba(255,255,255,.018);
+  border:1px solid rgba(212,175,55,.24);
+  border-left:3px solid var(--gold-accent,#d4af37);
+  padding:24px 28px;
+  margin:28px 0;
+}
+
+.m4s3-warning-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  background:rgba(212,175,55,.12);
+  border:1px solid rgba(212,175,55,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.m4s3-warning-icon svg{
+  width:17px;
+  height:17px;
+  stroke:var(--gold-accent,#d4af37);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.m4s3-label{
+  color:var(--gold-accent,#d4af37);
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:7px;
+}
+
+.m4s3-warning-title{
+  color:#fff;
+  font-size:1rem;
+  font-weight:500;
+  margin-bottom:8px;
+}
+
+.m4s3-warning-copy{
+  color:var(--text-grey,#a0a0a0);
+  font-size:.88rem;
+  line-height:1.78;
+}
+
+.m4s3-warning-copy strong{
+  color:#fff;
+}
+
+/* SECTION 03 — OBJECTIVE */
+.m4s3-focus{
+  background:#0d0f13;
+  border:1px solid #2a2a2a;
+  padding:26px 30px;
+  margin:28px 0;
+  position:relative;
+  overflow:hidden;
+}
+
+.m4s3-focus::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:radial-gradient(circle at 100% 0%,rgba(212,175,55,.045),transparent 45%);
+  pointer-events:none;
+}
+
+.m4s3-focus-label{
+  position:relative;
+  z-index:1;
+  color:var(--gold-accent,#d4af37);
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+.m4s3-focus-question{
+  position:relative;
+  z-index:1;
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(1.25rem,2.4vw,1.65rem);
+  font-weight:300;
+  line-height:1.45;
+  margin-bottom:18px;
+  padding-bottom:18px;
+  border-bottom:1px solid #2a2a2a;
+}
+
+.m4s3-focus-metrics{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+
+.m4s3-metric{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 16px;
+  border-right:1px solid #2a2a2a;
+}
+
+.m4s3-metric:last-child{
+  border-right:none;
+}
+
+.m4s3-dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--gold-accent,#d4af37);
+  flex-shrink:0;
+}
+
+.m4s3-metric-name{
+  color:#fff;
+  font-size:.85rem;
+  font-weight:500;
+}
+
+/* SECTION 03 — EVIDENCE */
+.m4s3-counter{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin:44px 0 22px;
+}
+
+.m4s3-line{
+  flex:1;
+  height:1px;
+  background:#2a2a2a;
+}
+
+.m4s3-counter-label{
+  color:var(--gold-accent,#d4af37);
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  font-weight:600;
+}
+
+.m4s3-evidence-stack{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  margin-bottom:46px;
+}
+
+.m4s3-card{
+  background:#111318;
+  border:1px solid #2a2a2a;
+  position:relative;
+  overflow:hidden;
+  transition:
+    transform .4s cubic-bezier(.175,.885,.32,1.275),
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+.m4s3-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  bottom:0;
+  width:3px;
+  background:var(--gold-accent,#d4af37);
+}
+
+.m4s3-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(212,175,55,.55);
+  box-shadow:0 15px 40px rgba(212,175,55,.08);
+}
+
+.m4s3-watermark{
+  position:absolute;
+  right:24px;
+  top:50%;
+  transform:translateY(-50%);
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(80px,10vw,120px);
+  font-weight:300;
+  color:rgba(212,175,55,.035);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+}
+
+.m4s3-card-inner{
+  padding:32px 34px 32px 38px;
+  position:relative;
+  z-index:1;
+}
+
+.m4s3-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:22px;
+  margin-bottom:18px;
+}
+
+.m4s3-head-left{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+}
+
+.m4s3-icon{
+  width:42px;
+  height:42px;
+  flex:0 0 42px;
+  background:rgba(212,175,55,.12);
+  border:1px solid rgba(212,175,55,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.m4s3-icon svg{
+  width:19px;
+  height:19px;
+  stroke:var(--gold-accent,#d4af37);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.m4s3-num{
+  color:#a0a0a0;
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+  font-weight:600;
+}
+
+.m4s3-card-title{
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(1.35rem,2.5vw,1.7rem);
+  font-weight:400;
+  line-height:1.25;
+}
+
+.m4s3-badge{
+  color:var(--gold-accent,#d4af37);
+  border:1px solid rgba(212,175,55,.24);
+  background:rgba(212,175,55,.03);
+  padding:5px 10px;
+  font-size:.62rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  white-space:nowrap;
+  flex-shrink:0;
+  margin-top:3px;
+}
+
+.m4s3-finding{
+  color:#a0a0a0;
+  font-size:.9rem;
+  line-height:1.82;
+  margin-bottom:20px;
+  max-width:980px;
+}
+
+.m4s3-finding strong{
+  color:#fff;
+}
+
+.m4s3-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.m4s3-bottom.single{
+  grid-template-columns:1fr;
+}
+
+.m4s3-insight,
+.m4s3-risk{
+  padding:16px 18px;
+}
+
+.m4s3-insight{
+  background:#0d0f13;
+  border:1px solid #2a2a2a;
+}
+
+.m4s3-risk{
+  background:rgba(170,70,70,.12);
+  border:1px solid rgba(210,110,110,.25);
+}
+
+.m4s3-insight-label,
+.m4s3-risk-label{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:.62rem;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+  font-weight:600;
+}
+
+.m4s3-insight-label{color:rgba(120,205,145,.72);}
+.m4s3-risk-label{color:rgba(225,155,155,.88);}
+
+.m4s3-insight-label svg,
+.m4s3-risk-label svg{
+  width:11px;
+  height:11px;
+  fill:none;
+  stroke-width:1.5;
+}
+
+.m4s3-insight-label svg{stroke:rgba(120,205,145,.65);}
+.m4s3-risk-label svg{stroke:rgba(225,155,155,.88);}
+
+.m4s3-insight-copy,
+.m4s3-risk-copy{
+  font-size:.8rem;
+  line-height:1.7;
+}
+
+.m4s3-insight-copy{color:#a0a0a0;}
+.m4s3-risk-copy{color:rgba(225,155,155,.88);}
+
+/* SECTION 03 — SUMMARY */
+.m4s3-summary{
+  background:#111318;
+  border:1px solid #2a2a2a;
+  border-top:2px solid var(--gold-accent,#d4af37);
+  padding:34px 38px;
+  position:relative;
+  overflow:hidden;
+}
+
+.m4s3-summary-label{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--gold-accent,#d4af37);
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+.m4s3-summary-label svg{
+  width:13px;
+  height:13px;
+  fill:none;
+  stroke:var(--gold-accent,#d4af37);
+  stroke-width:1.5;
+}
+
+.m4s3-summary-title{
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(1.35rem,2.5vw,1.7rem);
+  font-weight:400;
+  line-height:1.35;
+  margin-bottom:13px;
+}
+
+.m4s3-summary-copy{
+  color:#a0a0a0;
+  font-size:.9rem;
+  line-height:1.85;
+  margin-bottom:12px;
+}
+
+.m4s3-summary-copy strong{
+  color:#fff;
+}
+
+.m4s3-bridge{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  background:#0d0f13;
+  border-top:1px solid rgba(212,175,55,.24);
+  border-bottom:1px solid rgba(212,175,55,.24);
+  padding:22px 26px;
+  margin-top:22px;
+}
+
+.m4s3-bridge-icon{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  background:rgba(212,175,55,.12);
+  border:1px solid rgba(212,175,55,.24);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.m4s3-bridge-icon svg{
+  width:15px;
+  height:15px;
+  fill:none;
+  stroke:var(--gold-accent,#d4af37);
+  stroke-width:1.5;
+}
+
+.m4s3-bridge-copy{
+  color:#a0a0a0;
+  font-size:.85rem;
+  line-height:1.78;
+  font-style:italic;
+}
+
+.m4s3-bridge-copy strong{
+  color:#fff;
+  font-style:normal;
+}
+
+
+</style>
+
+<!-- =========================================================
+     MODEL 04 — SECTION 03
+     ========================================================= -->
+<section class="m4s3" aria-label="Model 04 Section 03 Building the Evidence">
+
+  <div class="m4s3-inner">
+
+    <div class="m4s3-hero fu">
+      <span class="eyebrow">Model 04 — Section 03</span>
+      <h2 class="m4s3-title">Building the<br><span>Evidence</span></h2>
+      <p class="m4s3-sub">
+        Reviewing the analytical findings before evaluating business alternatives.
+      </p>
+    </div>
+
+    <div class="m4s3-divider fu"></div>
+
+    <div class="fu">
+      <p class="m4s3-text">
+        Before discussing any business decision, it is important to verify that the available evidence actually answers the original business question.
+      </p>
+
+      <div class="m4s3-warning">
+        <div class="m4s3-warning-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <div class="m4s3-label">Common Analytical Mistake</div>
+          <div class="m4s3-warning-title">Expanding the analysis beyond the original objective.</div>
+          <div class="m4s3-warning-copy">
+            Simply because more data is available does not mean it should be analyzed.
+            <strong>A good analysis does not answer every possible question. It answers the right question.</strong>
+            This project could have analyzed cities, monthly trends, or customer behavior — but none of these would have directly answered the original business question.
+          </div>
+        </div>
+      </div>
+
+      <div class="m4s3-focus">
+        <div class="m4s3-focus-label">The Original Objective — Model 3</div>
+        <div class="m4s3-focus-question">
+          "How can product performance be measured fairly without relying on revenue alone?"
+        </div>
+
+        <div class="m4s3-focus-metrics">
+          <div class="m4s3-metric">
+            <span class="m4s3-dot"></span>
+            <span class="m4s3-metric-name">Revenue</span>
+          </div>
+          <div class="m4s3-metric">
+            <span class="m4s3-dot"></span>
+            <span class="m4s3-metric-name">Quantity Sold</span>
+          </div>
+          <div class="m4s3-metric">
+            <span class="m4s3-dot"></span>
+            <span class="m4s3-metric-name">Purchase Frequency</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="m4s3-text">
+        These metrics were combined through a weighted scoring model to produce a balanced performance evaluation.
+        <strong>The insights below are therefore treated as evidence — not as business decisions.</strong>
+      </p>
+    </div>
+
+    <div class="m4s3-counter fu">
+      <div class="m4s3-line"></div>
+      <div class="m4s3-counter-label">Four Pieces of Evidence</div>
+      <div class="m4s3-line"></div>
+    </div>
+
+    <div class="m4s3-evidence-stack">
+
+      <article class="m4s3-card fu">
+        <div class="m4s3-watermark">01</div>
+        <div class="m4s3-card-inner">
+
+          <div class="m4s3-card-head">
+            <div class="m4s3-head-left">
+              <div class="m4s3-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+              </div>
+              <div>
+                <div class="m4s3-num">Evidence 01</div>
+                <div class="m4s3-card-title">Revenue Concentration</div>
+              </div>
+            </div>
+            <div class="m4s3-badge">~50% of Revenue</div>
+          </div>
+
+          <div class="m4s3-finding">
+            Mobile Devices generated approximately
+            <strong>half of the company's total revenue</strong>,
+            making it the strongest revenue-driving category by a significant margin.
+          </div>
+
+          <div class="m4s3-bottom">
+            <div class="m4s3-insight">
+              <div class="m4s3-insight-label">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Business Insight
+              </div>
+              <div class="m4s3-insight-copy">
+                The category is clearly the company's primary revenue engine — and any strategy that ignores it ignores the majority of business value.
+              </div>
+            </div>
+
+            <div class="m4s3-risk">
+              <div class="m4s3-risk-label">
+                <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+                Business Risk
+              </div>
+              <div class="m4s3-risk-copy">
+                Relying heavily on a single category introduces concentration risk. Any decline in demand, supply, pricing, or competition could have a disproportionate impact on overall performance.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <article class="m4s3-card fu">
+        <div class="m4s3-watermark">02</div>
+        <div class="m4s3-card-inner">
+
+          <div class="m4s3-card-head">
+            <div class="m4s3-head-left">
+              <div class="m4s3-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+                </svg>
+              </div>
+              <div>
+                <div class="m4s3-num">Evidence 02</div>
+                <div class="m4s3-card-title">Product Performance Is More Than Revenue</div>
+              </div>
+            </div>
+            <div class="m4s3-badge">Weighted Model</div>
+          </div>
+
+          <div class="m4s3-finding">
+            The weighted scoring model identified the <strong>Top 10 products</strong>
+            by combining revenue, quantity sold, and purchase frequency — instead of relying on revenue alone.
+          </div>
+
+          <div class="m4s3-bottom single">
+            <div class="m4s3-insight">
+              <div class="m4s3-insight-label">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Business Insight
+              </div>
+              <div class="m4s3-insight-copy">
+                Revenue explains only part of product performance. Products that consistently sell, maintain customer demand, and generate repeat purchases may provide greater long-term business value than products ranked by revenue alone.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <article class="m4s3-card fu">
+        <div class="m4s3-watermark">03</div>
+        <div class="m4s3-card-inner">
+
+          <div class="m4s3-card-head">
+            <div class="m4s3-head-left">
+              <div class="m4s3-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  <line x1="11" y1="8" x2="11" y2="14"/>
+                  <line x1="8" y1="11" x2="14" y2="11"/>
+                </svg>
+              </div>
+              <div>
+                <div class="m4s3-num">Evidence 03</div>
+                <div class="m4s3-card-title">Hidden Business Value</div>
+              </div>
+            </div>
+            <div class="m4s3-badge">Accessories</div>
+          </div>
+
+          <div class="m4s3-finding">
+            Although Accessories contributed a
+            <strong>relatively small share of total revenue</strong>,
+            several accessory products appeared within the highest-performing products after applying the weighted scoring model.
+          </div>
+
+          <div class="m4s3-bottom single">
+            <div class="m4s3-insight">
+              <div class="m4s3-insight-label">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Business Insight
+              </div>
+              <div class="m4s3-insight-copy">
+                Lower-revenue categories can still contain strategically valuable products when evaluated using multiple business metrics. This demonstrates why balanced performance measurement provides a more realistic picture than revenue alone.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+      <article class="m4s3-card fu">
+        <div class="m4s3-watermark">04</div>
+        <div class="m4s3-card-inner">
+
+          <div class="m4s3-card-head">
+            <div class="m4s3-head-left">
+              <div class="m4s3-icon">
+                <svg viewBox="0 0 24 24">
+                  <line x1="12" y1="1" x2="12" y2="23"/>
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+              </div>
+              <div>
+                <div class="m4s3-num">Evidence 04</div>
+                <div class="m4s3-card-title">Revenue Quality</div>
+              </div>
+            </div>
+            <div class="m4s3-badge">Low Discount Ratio</div>
+          </div>
+
+          <div class="m4s3-finding">
+            The business generated strong revenue while
+            <strong>total discounts represented only a relatively small percentage of overall sales</strong>.
+          </div>
+
+          <div class="m4s3-bottom single">
+            <div class="m4s3-insight">
+              <div class="m4s3-insight-label">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Business Insight
+              </div>
+              <div class="m4s3-insight-copy">
+                Revenue growth was not driven primarily by aggressive discounting. This suggests that product demand contributed more to business performance than discount dependency — a sign of healthier, more sustainable revenue.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </article>
+
+    </div>
+
+    <div class="m4s3-summary fu">
+      <div class="m4s3-summary-label">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Evidence Summary
+      </div>
+
+      <div class="m4s3-summary-title">
+        What the Analysis Proved — and What It Did Not
+      </div>
+
+      <div class="m4s3-summary-copy">
+        Model 3 successfully answered its original business question by establishing a balanced way to evaluate product performance and transforming analytical results into meaningful business insights.
+      </div>
+
+      <div class="m4s3-summary-copy">
+        <strong>However, these findings are not business decisions.</strong>
+        They are the analytical evidence that will be used in the next stage to evaluate multiple business alternatives, compare their trade-offs, and determine which decision best fits the current business objective.
+      </div>
+
+      <div class="m4s3-bridge">
+        <div class="m4s3-bridge-icon">
+          <svg viewBox="0 0 24 24">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+        <div class="m4s3-bridge-copy">
+          The same four findings above will now serve as the foundation for evaluating business alternatives.
+          <strong>Analysis becomes a decision only when it is tested against context and a clear objective.</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     MODEL 04 — SECTION 04
+     EVALUATING THE ALTERNATIVES
+     ========================================================= -->
+
+<section class="model04-s4" aria-label="Model 04 Section 04 — Turning Evidence into Decisions">
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="fu">
+    <div class="eyebrow">Model 04 — Section 04</div>
+    <h1 class="hero-title">Turning Evidence<br><em>into Decisions</em></h1>
+    <p class="hero-sub">Strong analysis does not produce a single answer. It produces several defensible decisions — each supported by the same evidence, but driven by different business priorities.</p>
+
+    <div class="txt">By this stage, the data has been validated, explored, and translated into reliable business evidence. The remaining challenge is no longer discovering insights, but deciding how those insights should influence the business.</div>
+    <div class="txt">Because the same evidence can support different objectives, <strong>there is rarely a single "correct" strategy.</strong> Instead, the analyst must understand the strengths, limitations, and business implications of each possible direction before making a recommendation.</div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- ══════════════════════════════
+       APPROACH 1
+  ══════════════════════════════ -->
+  <div class="approach-sep fu">
+    <div class="approach-sep-num">01</div>
+    <div class="approach-sep-body">
+      <div class="approach-sep-tag">Approach 01</div>
+      <div class="approach-sep-title">Strengthen the Strongest Revenue Driver</div>
+      <div class="approach-sep-line"></div>
+    </div>
+  </div>
+
+  <div class="why-card fu">
+    <div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+    <div class="why-body">
+      <div class="why-lbl">Why This Approach?</div>
+      <div class="why-txt">Mobile Devices contribute nearly <strong>50% of total revenue</strong>. The highest-performing product belongs to this category. Protecting and strengthening the strongest revenue contributor could maximize short-term business impact — this approach focuses on reinforcing what is already working.</div>
+    </div>
+  </div>
+
+  <div class="scale-wrap fu">
+    <div class="ai-lbl">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      AI-Generated · Trade-off Balance
+    </div>
+    <div class="scale-visual">
+      <div class="scale-side">
+        <div class="scale-pan advantage">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Business Advantage
+          </div>
+          <ul class="scale-pan-items">
+            <li>Higher probability of immediate revenue growth</li>
+            <li>Builds on an already proven product category</li>
+            <li>Requires less uncertainty than investing in weaker categories</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scale-center">
+        <div class="scale-beam"></div>
+        <div class="scale-fulcrum"></div>
+        <div class="scale-base"></div>
+      </div>
+      <div class="scale-side">
+        <div class="scale-pan tradeoff">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            Potential Trade-off
+          </div>
+          <ul class="scale-pan-items">
+            <li>Increases business dependency on a single category</li>
+            <li>Demand shifts, competition, or supply issues could have disproportionate impact</li>
+            <li>Concentration risk grows with every additional investment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       APPROACH 2
+  ══════════════════════════════ -->
+  <div class="approach-sep fu">
+    <div class="approach-sep-num">02</div>
+    <div class="approach-sep-body">
+      <div class="approach-sep-tag">Approach 02</div>
+      <div class="approach-sep-title">Build a Second Growth Pillar</div>
+      <div class="approach-sep-line"></div>
+    </div>
+  </div>
+
+  <div class="why-card fu">
+    <div class="why-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M5 20V10M12 20V4M19 20v-7"/></svg></div>
+    <div class="why-body">
+      <div class="why-lbl">Why This Approach?</div>
+      <div class="why-txt">Instead of increasing investment in the strongest category, the business could focus on strengthening <strong>Accessories as a second commercial pillar</strong> — creating a more balanced revenue structure rather than relying heavily on a single category.</div>
+    </div>
+  </div>
+
+  <div class="scale-wrap fu">
+    <div class="ai-lbl">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      AI-Generated · Trade-off Balance
+    </div>
+    <div class="scale-visual">
+      <div class="scale-side">
+        <div class="scale-pan advantage">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Business Advantage
+          </div>
+          <ul class="scale-pan-items">
+            <li>Reduces dependency on one dominant category</li>
+            <li>Creates a healthier and more diversified revenue mix</li>
+            <li>Makes the business less vulnerable to demand or market changes</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scale-center">
+        <div class="scale-beam"></div>
+        <div class="scale-fulcrum"></div>
+        <div class="scale-base"></div>
+      </div>
+      <div class="scale-side">
+        <div class="scale-pan tradeoff">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            Potential Trade-off
+          </div>
+          <ul class="scale-pan-items">
+            <li>Requires more investment, more time, and greater execution effort</li>
+            <li>Return is less predictable than investing in an already successful category</li>
+            <li>Results may take longer to justify the investment</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       APPROACH 3
+  ══════════════════════════════ -->
+  <div class="approach-sep fu">
+    <div class="approach-sep-num">03</div>
+    <div class="approach-sep-body">
+      <div class="approach-sep-tag">Approach 03</div>
+      <div class="approach-sep-title">Invest in High-Potential Products</div>
+      <div class="approach-sep-line"></div>
+    </div>
+  </div>
+
+  <div class="why-card fu">
+    <div class="why-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <div class="why-body">
+      <div class="why-lbl">Why This Approach?</div>
+      <div class="why-txt">Rather than prioritizing entire product categories, investment is directed toward the <strong>highest-ranked products identified by the weighted scoring model</strong>. This strategy follows product performance instead of category performance — using data-driven prioritization instead of intuition.</div>
+    </div>
+  </div>
+
+  <div class="scale-wrap fu">
+    <div class="ai-lbl">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      AI-Generated · Trade-off Balance
+    </div>
+    <div class="scale-visual">
+      <div class="scale-side">
+        <div class="scale-pan advantage">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Business Advantage
+          </div>
+          <ul class="scale-pan-items">
+            <li>Uses data-driven prioritization instead of intuition</li>
+            <li>Targets products with strong overall business performance</li>
+            <li>Can improve return on investment without committing to a single category</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scale-center">
+        <div class="scale-beam"></div>
+        <div class="scale-fulcrum"></div>
+        <div class="scale-base"></div>
+      </div>
+      <div class="scale-side">
+        <div class="scale-pan tradeoff">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            Potential Trade-off
+          </div>
+          <ul class="scale-pan-items">
+            <li>May overlook broader category development</li>
+            <li>Could create an uneven product portfolio</li>
+            <li>Sustainable growth often depends on a balanced ecosystem, not individual products</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       APPROACH 4 — THE TEMPTING CHOICE
+  ══════════════════════════════ -->
+  <div class="approach-sep fu">
+    <div class="approach-sep-num">04</div>
+    <div class="approach-sep-body">
+      <div class="approach-sep-tag">Approach 04 — The Tempting Choice</div>
+      <div class="approach-sep-title">Hybrid Investment Strategy</div>
+      <div class="approach-sep-line"></div>
+    </div>
+  </div>
+
+  <div class="tempting-header fu">
+    <div class="tempting-icon">
+      <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div>
+      <div class="tempting-lbl">Why It Feels Safe</div>
+      <div class="tempting-txt">Instead of choosing a single direction, distribute the investment across all three strategies. At first glance, this appears to be the <strong>safest and most balanced option</strong> — it reduces dependence on one decision and spreads investment across multiple opportunities.</div>
+    </div>
+  </div>
+
+  <!-- Budget split visual -->
+  <div class="budget-split fu">
+    <div class="bs-lbl">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      AI-Generated · Budget Allocation — EGP 500,000
+    </div>
+    <div class="bs-bars">
+      <div class="bs-bar-row">
+        <div class="bs-bar-lbl">Mobile Devices (Strengthen)</div>
+        <div class="bs-bar-track"><div class="bs-bar-fill" style="width:50%"></div></div>
+        <div class="bs-bar-pct">50%</div>
+      </div>
+      <div class="bs-bar-row">
+        <div class="bs-bar-lbl">Accessories (Grow)</div>
+        <div class="bs-bar-track"><div class="bs-bar-fill" style="width:30%;opacity:.7"></div></div>
+        <div class="bs-bar-pct">30%</div>
+      </div>
+      <div class="bs-bar-row">
+        <div class="bs-bar-lbl">Top Products (Support)</div>
+        <div class="bs-bar-track"><div class="bs-bar-fill" style="width:20%;opacity:.5"></div></div>
+        <div class="bs-bar-pct">20%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scale-wrap fu">
+    <div class="ai-lbl">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+      AI-Generated · Trade-off Balance
+    </div>
+    <div class="scale-visual">
+      <div class="scale-side">
+        <div class="scale-pan advantage">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Benefits
+          </div>
+          <ul class="scale-pan-items">
+            <li>Diversifies investment across multiple directions</li>
+            <li>Reduces the risk of relying on one assumption</li>
+            <li>Addresses multiple business opportunities simultaneously</li>
+            <li>Looks balanced from a strategic perspective</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scale-center">
+        <div class="scale-beam"></div>
+        <div class="scale-fulcrum"></div>
+        <div class="scale-base"></div>
+      </div>
+      <div class="scale-side">
+        <div class="scale-pan tradeoff">
+          <div class="scale-pan-lbl">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>
+            Risks
+          </div>
+          <ul class="scale-pan-items">
+            <li>No strategy receives enough investment to create measurable impact</li>
+            <li>Resources become fragmented across competing priorities</li>
+            <li>Success becomes impossible to attribute to a specific decision</li>
+            <li>Splitting the budget feels safer — but often produces weaker results</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="irony fu">
+    <div class="irony-lbl">The Irony</div>
+    <div class="irony-txt">This approach is <strong>the easiest recommendation to make</strong> — and often the least decisive. When uncertainty exists, splitting the budget feels safer than committing to one direction. Ironically, that feeling of safety can be the most expensive choice of all.</div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing fu">
+    <div class="closing-lbl">Section 04 — Closing</div>
+    <div class="closing-main">"None of these approaches is inherently right or wrong. Each one optimizes a different business objective — and each is fully supported by the same analysis."</div>
+    <div class="closing-txt">The analyst's responsibility is therefore not to maximize the number of recommendations, but to understand <strong>which recommendation best fits the current business context.</strong> That distinction transforms analysis from generating options into supporting decisions — which naturally leads to the next section.</div>
+    <div class="closing-next">
+      <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      Section 05 — Making the Decision
+    </div>
+  </div>
+</section>
+
+
+<script>
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); obs.unobserve(e.target); }});
+},{threshold:0.06});
+document.querySelectorAll('.fu').forEach(el => obs.observe(el));
+</script>
+
+<section class="model04-s5" aria-label="Model 04 Section 05 — When Every Option Makes Sense">
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="fu">
+    <div class="eyebrow">Model 04 — Section 05</div>
+    <h1 class="hero-title">When Every Option<br><em>Makes Sense</em></h1>
+
+    <div class="opening-principle">
+      <div class="op-txt">"The value of analysis is measured by the quality of the decisions it supports — not by the number of options or dashboards it creates."</div>
+    </div>
+
+    <div class="txt">Every approach presented in the previous section represents a valid business direction. Each one addresses a different objective, creates a different impact, and comes with different implications. Therefore, the purpose of the analysis is not to search for a universally perfect approach — but to identify the approach that <strong>best fits the current business objective and available evidence.</strong></div>
+  </div>
+
+  <div class="div"></div>
+
+  <!-- OPTION SELECTOR -->
+  <div class="fu">
+    <div class="option-selector">
+      <div class="os-lbl">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/></svg>
+        AI-Generated · Decision Selector — Each option is valid under different priorities
+      </div>
+      <div class="os-rows">
+        <div class="os-row">
+          <div class="os-num">01</div>
+          <div class="os-body">
+            <div class="os-if">If the priority is</div>
+            <div class="os-approach">Protecting existing revenue drivers</div>
+            <div class="os-context">Approach 1 would be a reasonable decision.</div>
+          </div>
+          <div class="os-status"><div class="os-dot"></div></div>
+        </div>
+        <div class="os-row">
+          <div class="os-num">02</div>
+          <div class="os-body">
+            <div class="os-if">If the objective is</div>
+            <div class="os-approach">Building long-term growth and reducing dependency</div>
+            <div class="os-context">Approach 2 would also be justified.</div>
+          </div>
+          <div class="os-status"><div class="os-dot"></div></div>
+        </div>
+        <div class="os-row selected">
+          <div class="os-num">03</div>
+          <div class="os-body">
+            <div class="os-if">If the business requires</div>
+            <div class="os-approach">A balanced investment strategy across multiple dimensions</div>
+            <div class="os-context">Approach 3 becomes the strongest choice — and the recommended direction.</div>
+          </div>
+          <div class="os-status"><div class="os-dot"></div></div>
+        </div>
+        <div class="os-row">
+          <div class="os-num">04</div>
+          <div class="os-body">
+            <div class="os-if">If the goal is</div>
+            <div class="os-approach">Expanding investment across all opportunities simultaneously</div>
+            <div class="os-context">Approach 4 could also make sense — with the risks clearly understood.</div>
+          </div>
+          <div class="os-status"><div class="os-dot"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERDICT CARD -->
+  <div class="verdict fu">
+    <div class="verdict-header">
+      <div class="verdict-gavel">
+        <svg viewBox="0 0 24 24"><path d="M14 14l-7.5 7.5a2.121 2.121 0 0 1-3-3L11 11"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><line x1="9" y1="15" x2="15" y2="9"/></svg>
+      </div>
+      <div class="verdict-header-body">
+        <div class="verdict-lbl">Recommendation</div>
+        <div class="verdict-headline">Approach 3 — Invest in High-Potential Products</div>
+      </div>
+    </div>
+
+    <div class="verdict-body">
+      <div class="verdict-pillars">
+        <div class="vp">
+          <div class="vp-icon"><svg viewBox="0 0 24 24"><path d="M2 20h20M5 20V10M12 20V4M19 20v-7"/></svg></div>
+          <div class="vp-lbl">Evidence</div>
+          <div class="vp-txt">The Weighted Scoring framework evaluates products across <strong>multiple business dimensions</strong> — not revenue alone. Selected products represent stronger overall value.</div>
+        </div>
+        <div class="vp">
+          <div class="vp-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="vp-lbl">Expected Impact</div>
+          <div class="vp-txt">Focusing investment on <strong>balanced-performance products</strong> allocates resources toward higher-potential returns while reducing dependency on a single indicator.</div>
+        </div>
+        <div class="vp">
+          <div class="vp-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+          <div class="vp-lbl">Business Alignment</div>
+          <div class="vp-txt">The selected products <strong>naturally include the strongest-performing categories</strong> — this balance emerged from the evidence, not from a predefined target.</div>
+        </div>
+      </div>
+
+      <div class="verdict-reasoning">
+        This recommendation is supported by the evidence generated in Model 3. The selected products represent stronger overall business value rather than simply being the highest revenue contributors — which is precisely what the Hybrid Weighted Scoring model was designed to identify.
+      </div>
+
+      <div class="verdict-caveat">
+        This recommendation is not a permanent answer. It is the most defensible decision under the current objective, evidence, constraints, and expected impact. <strong>If these factors change, the recommended approach should be reassessed.</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINAL PRINCIPLE -->
+  <div class="final-principle fu">
+    <div class="fp-quote">"That distinction transforms analysis from generating options<br>into supporting decisions."</div>
+    <div class="fp-attr">The analyst's real responsibility</div>
+    <div class="fp-dots">
+      <div class="fp-dot"></div>
+      <div class="fp-dot"></div>
+      <div class="fp-dot"></div>
+    </div>
+  </div>
+
+  <div class="transition-block fu">
+    <div class="tb-icon"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
+    <div class="tb-txt">The decision has been made and justified. What remains is understanding <strong>what this entire analytical journey actually proved</strong> — and where it leads next.</div>
+  </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sectionFiveElements = document.querySelectorAll(".model04-s5 .fu");
+
+  if (!("IntersectionObserver" in window)) {
+    sectionFiveElements.forEach(function(el){ el.classList.add("on"); });
+    return;
+  }
+
+  const sectionFiveObserver = new IntersectionObserver(function(entries, observer){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add("on");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: "0px 0px -30px 0px"
+  });
+
+  sectionFiveElements.forEach(function(el){
+    sectionFiveObserver.observe(el);
+  });
+});
+</script>
+
+
+
+<!-- =========================================================
+     MODEL 04 — SECTION 06
+     REFLECTION BEYOND THE DECISION
+     Portfolio-native version
+     ========================================================= -->
+<style>
+.model04-s6{
+  --s6-bg:#0a0b0e;
+  --s6-card:#111318;
+  --s6-deep:#0d0f13;
+  --s6-border:#2a2a2a;
+  --s6-gold:#d4af37;
+  --s6-gold-dim:rgba(212,175,55,.12);
+  --s6-gold-line:rgba(212,175,55,.24);
+  --s6-text:#f0f0f0;
+  --s6-muted:#a0a0a0;
+  --s6-soft:#555;
+  position:relative;
+  overflow:hidden;
+  border-top:1px solid rgba(212,175,55,.18);
+  background:
+    radial-gradient(circle at 100% 8%, rgba(212,175,55,.035), transparent 34%),
+    radial-gradient(circle at 0% 92%, rgba(212,175,55,.025), transparent 30%);
+}
+
+.model04-s6 .wrap{
+  max-width:1060px;
+  margin:0 auto;
+  padding:100px 48px;
+  position:relative;
+  z-index:1;
+}
+
+.model04-s6 .s6-journey-bg{
+  position:absolute;
+  left:50%;
+  top:0;
+  bottom:0;
+  width:1px;
+  background:linear-gradient(
+    to bottom,
+    transparent,
+    rgba(212,175,55,.045) 20%,
+    rgba(212,175,55,.045) 80%,
+    transparent
+  );
+  transform:translateX(-50%);
+  pointer-events:none;
+}
+
+.model04-s6 .hero-title{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(3rem,6vw,5.25rem);
+  font-weight:300;
+  line-height:1.06;
+  color:#fff;
+  letter-spacing:-.02em;
+  margin-bottom:10px;
+}
+
+.model04-s6 .hero-title em{
+  color:var(--s6-gold);
+  font-style:normal;
+}
+
+.model04-s6 .hero-opening{
+  color:var(--s6-muted);
+  max-width:660px;
+  font-size:.95rem;
+  line-height:1.9;
+  margin-top:20px;
+  margin-bottom:48px;
+}
+
+.model04-s6 .hero-opening strong,
+.model04-s6 .txt strong,
+.model04-s6 .ar-txt strong,
+.model04-s6 .tr-purpose strong,
+.model04-s6 .final-txt strong{
+  color:#fff;
+  font-weight:600;
+}
+
+.model04-s6 .s6-eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.68rem;
+  letter-spacing:2.4px;
+  text-transform:uppercase;
+  font-weight:600;
+  margin-bottom:22px;
+}
+
+.model04-s6 .s6-eyebrow::before{
+  content:"";
+  width:22px;
+  height:1px;
+  background:var(--s6-gold);
+}
+
+.model04-s6 .s6-divider{
+  width:100%;
+  height:1px;
+  background:linear-gradient(90deg,var(--s6-gold-line),transparent 80%);
+  margin:44px 0;
+}
+
+.model04-s6 .txt{
+  color:var(--s6-muted);
+  font-size:.9rem;
+  line-height:1.88;
+  margin-bottom:14px;
+}
+
+/* JOURNEY */
+.model04-s6 .journey{
+  background:var(--s6-deep);
+  border:1px solid var(--s6-border);
+  padding:32px 36px;
+  margin:32px 0;
+  position:relative;
+  overflow:hidden;
+}
+
+.model04-s6 .journey::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--s6-gold),transparent);
+}
+
+.model04-s6 .journey-lbl{
+  color:var(--s6-soft);
+  font-family:'Inter',monospace;
+  font-size:.62rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:24px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.model04-s6 .journey-lbl svg{
+  width:11px;
+  height:11px;
+  stroke:var(--s6-soft);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.model04-s6 .journey-steps{
+  display:flex;
+  flex-direction:column;
+}
+
+.model04-s6 .js{
+  display:flex;
+  align-items:flex-start;
+}
+
+.model04-s6 .js-left{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:40px;
+  flex:0 0 40px;
+}
+
+.model04-s6 .js-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--s6-gold);
+  border:2px solid var(--s6-deep);
+  flex-shrink:0;
+  position:relative;
+  z-index:1;
+  box-shadow:0 0 0 1px rgba(212,175,55,.12);
+}
+
+.model04-s6 .js-line{
+  width:1px;
+  flex:1;
+  min-height:28px;
+  background:var(--s6-gold-line);
+}
+
+.model04-s6 .js:last-child .js-line{
+  display:none;
+}
+
+.model04-s6 .js-content{
+  padding:0 0 28px 16px;
+  flex:1;
+}
+
+.model04-s6 .js:last-child .js-content{
+  padding-bottom:0;
+}
+
+.model04-s6 .js-model{
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.62rem;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  margin-bottom:4px;
+  font-weight:600;
+}
+
+.model04-s6 .js-title{
+  color:#fff;
+  font-size:.92rem;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.model04-s6 .js-desc{
+  color:var(--s6-muted);
+  font-size:.78rem;
+  line-height:1.65;
+}
+
+/* TOOLS */
+.model04-s6 .tools-reframe{
+  background:var(--s6-card);
+  border:1px solid var(--s6-border);
+  padding:28px 32px;
+  margin:28px 0;
+}
+
+.model04-s6 .tr-lbl{
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.model04-s6 .tr-lbl svg{
+  width:13px;
+  height:13px;
+  stroke:var(--s6-gold);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.model04-s6 .tr-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--s6-border);
+}
+
+.model04-s6 .tr-item{
+  padding:18px 16px;
+  border-right:1px solid var(--s6-border);
+  text-align:center;
+  position:relative;
+}
+
+.model04-s6 .tr-item:last-child{
+  border-right:none;
+}
+
+.model04-s6 .tr-item::after{
+  content:"→";
+  position:absolute;
+  right:-10px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--s6-gold-line);
+  font-size:14px;
+  z-index:2;
+}
+
+.model04-s6 .tr-item:last-child::after{
+  display:none;
+}
+
+.model04-s6 .tr-icon{
+  width:36px;
+  height:36px;
+  background:var(--s6-gold-dim);
+  border:1px solid var(--s6-gold-line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 10px;
+}
+
+.model04-s6 .tr-icon svg{
+  width:16px;
+  height:16px;
+  stroke:var(--s6-gold);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.model04-s6 .tr-name{
+  color:#fff;
+  font-size:.85rem;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.model04-s6 .tr-sub{
+  color:var(--s6-muted);
+  font-size:.7rem;
+  line-height:1.5;
+}
+
+.model04-s6 .tr-purpose{
+  margin-top:16px;
+  padding:14px 18px;
+  background:var(--s6-gold-dim);
+  border:1px solid var(--s6-gold-line);
+  color:var(--s6-muted);
+  font-size:.8rem;
+  line-height:1.75;
+  text-align:center;
+  font-style:italic;
+}
+
+/* ANALYST ROLE */
+.model04-s6 .analyst-role{
+  background:var(--s6-deep);
+  border:1px solid var(--s6-border);
+  border-left:3px solid var(--s6-gold);
+  padding:24px 28px;
+  margin:24px 0;
+  display:flex;
+  gap:16px;
+  align-items:flex-start;
+}
+
+.model04-s6 .ar-icon{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  background:var(--s6-gold-dim);
+  border:1px solid var(--s6-gold-line);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-top:2px;
+}
+
+.model04-s6 .ar-icon svg{
+  width:17px;
+  height:17px;
+  stroke:var(--s6-gold);
+  fill:none;
+  stroke-width:1.5;
+}
+
+.model04-s6 .ar-lbl{
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.63rem;
+  letter-spacing:1.9px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.model04-s6 .ar-txt{
+  color:var(--s6-muted);
+  font-size:.86rem;
+  line-height:1.82;
+}
+
+/* WHAT CHANGES / WHAT STAYS */
+.model04-s6 .change-stay{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border:1px solid var(--s6-border);
+  margin:28px 0;
+}
+
+.model04-s6 .cs-side{
+  padding:24px 26px;
+}
+
+.model04-s6 .cs-side.changes{
+  border-right:1px solid var(--s6-border);
+}
+
+.model04-s6 .cs-lbl{
+  font-family:'Inter',monospace;
+  font-size:.63rem;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-weight:600;
+}
+
+.model04-s6 .cs-side.changes .cs-lbl{
+  color:var(--s6-muted);
+}
+
+.model04-s6 .cs-side.stays .cs-lbl{
+  color:var(--s6-gold);
+}
+
+.model04-s6 .cs-lbl svg{
+  width:12px;
+  height:12px;
+  fill:none;
+  stroke-width:1.5;
+}
+
+.model04-s6 .cs-side.changes .cs-lbl svg{
+  stroke:var(--s6-muted);
+}
+
+.model04-s6 .cs-side.stays .cs-lbl svg{
+  stroke:var(--s6-gold);
+}
+
+.model04-s6 .cs-items{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.model04-s6 .cs-items li{
+  font-size:.82rem;
+  line-height:1.55;
+  padding-left:16px;
+  position:relative;
+}
+
+.model04-s6 .cs-side.changes .cs-items li{
+  color:var(--s6-muted);
+}
+
+.model04-s6 .cs-side.changes .cs-items li::before{
+  content:"↻";
+  position:absolute;
+  left:0;
+  color:var(--s6-muted);
+  font-size:11px;
+}
+
+.model04-s6 .cs-side.stays .cs-items li{
+  color:#fff;
+  font-weight:500;
+}
+
+.model04-s6 .cs-side.stays .cs-items li::before{
+  content:"→";
+  position:absolute;
+  left:0;
+  color:var(--s6-gold);
+  font-size:11px;
+}
+
+/* FINAL */
+.model04-s6 .final{
+  background:var(--s6-card);
+  border:1px solid var(--s6-border);
+  border-top:2px solid var(--s6-gold);
+  padding:40px 44px;
+  margin-top:32px;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+}
+
+.model04-s6 .final::before{
+  content:"";
+  position:absolute;
+  top:-60px;
+  left:50%;
+  transform:translateX(-50%);
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(212,175,55,.045) 0%,transparent 70%);
+}
+
+.model04-s6 .final-lbl{
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.63rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:20px;
+  font-weight:600;
+}
+
+.model04-s6 .final-quote{
+  font-family:'Oswald',sans-serif;
+  font-size:clamp(1.45rem,3.5vw,2.15rem);
+  font-weight:300;
+  font-style:italic;
+  color:#fff;
+  line-height:1.4;
+  margin-bottom:20px;
+}
+
+.model04-s6 .final-quote em{
+  color:var(--s6-gold);
+  font-style:normal;
+}
+
+.model04-s6 .final-txt{
+  color:var(--s6-muted);
+  font-size:.83rem;
+  line-height:1.88;
+  max-width:580px;
+  margin:0 auto 24px;
+}
+
+.model04-s6 .pot-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  border:1px solid var(--s6-gold-line);
+  padding:10px 20px;
+  color:var(--s6-gold);
+  font-family:'Inter',monospace;
+  font-size:.63rem;
+  letter-spacing:1.7px;
+  text-transform:uppercase;
+}
+
+.model04-s6 .pot-badge svg{
+  width:14px;
+  height:14px;
+  stroke:var(--s6-gold);
+  fill:none;
+  stroke-width:1.5;
+}
+
+@media(max-width:768px){
+  .model04-s6 .wrap{
+    padding:78px 22px 70px;
+  }
+
+  .model04-s6 .tr-row,
+  .model04-s6 .change-stay{
+    grid-template-columns:1fr;
+  }
+
+  .model04-s6 .tr-item{
+    border-right:none;
+    border-bottom:1px solid var(--s6-border);
+  }
+
+  .model04-s6 .tr-item:last-child{
+    border-bottom:none;
+  }
+
+  .model04-s6 .tr-item::after{
+    display:none;
+  }
+
+  .model04-s6 .cs-side.changes{
+    border-right:none;
+    border-bottom:1px solid var(--s6-border);
+  }
+
+  .model04-s6 .final{
+    padding:30px 22px;
+  }
+}
+</style>
+
+<section class="model04-s6" aria-label="Model 04 Section 06 Reflection Beyond the Decision">
+  <div class="s6-journey-bg" aria-hidden="true"></div>
+
+  <div class="wrap">
+
+    <div class="fu">
+      <div class="s6-eyebrow">Model 04 — Section 06</div>
+      <h2 class="hero-title">Reflection Beyond<br><em>the Decision</em></h2>
+      <p class="hero-opening">
+        The purpose of this model was never to prove that one decision is universally correct.
+        It was to demonstrate <strong>how a data analyst thinks before supporting a business decision.</strong>
+      </p>
+    </div>
+
+    <div class="s6-divider"></div>
+
+    <div class="journey fu">
+      <div class="journey-lbl">
+        <svg viewBox="0 0 24 24">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        The Analytical Journey — Four Models, One Direction
+      </div>
+
+      <div class="journey-steps">
+
+        <div class="js">
+          <div class="js-left">
+            <div class="js-dot"></div>
+            <div class="js-line"></div>
+          </div>
+          <div class="js-content">
+            <div class="js-model">Model 01</div>
+            <div class="js-title">Understanding the Business Problem</div>
+            <div class="js-desc">
+              Identifying the right analytical direction before writing a single line of code.
+              Defining what value means before measuring it.
+            </div>
+          </div>
+        </div>
+
+        <div class="js">
+          <div class="js-left">
+            <div class="js-dot"></div>
+            <div class="js-line"></div>
+          </div>
+          <div class="js-content">
+            <div class="js-model">Model 02</div>
+            <div class="js-title">Ensuring Reliable Foundations</div>
+            <div class="js-desc">
+              Validating data quality so every future decision would rely on evidence that could be trusted —
+              not just data that was available.
+            </div>
+          </div>
+        </div>
+
+        <div class="js">
+          <div class="js-left">
+            <div class="js-dot"></div>
+            <div class="js-line"></div>
+          </div>
+          <div class="js-content">
+            <div class="js-model">Model 03</div>
+            <div class="js-title">Transforming Data into Evidence</div>
+            <div class="js-desc">
+              Structured analysis and analytical frameworks that turned validated data into defensible,
+              explainable business findings.
+            </div>
+          </div>
+        </div>
+
+        <div class="js">
+          <div class="js-left">
+            <div class="js-dot"></div>
+          </div>
+          <div class="js-content">
+            <div class="js-model">Model 04</div>
+            <div class="js-title">Evaluating Decisions When Multiple Valid Options Exist</div>
+            <div class="js-desc">
+              Moving beyond insights to understand how the same evidence can support different strategies —
+              and how to choose between them with transparency.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tools-reframe fu">
+      <div class="tr-lbl">
+        <svg viewBox="0 0 24 24">
+          <polyline points="17 1 21 5 17 9"/>
+          <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+        </svg>
+        Reframing the Purpose of Every Tool
+      </div>
+
+      <div class="tr-row">
+
+        <div class="tr-item">
+          <div class="tr-icon">
+            <svg viewBox="0 0 24 24">
+              <polyline points="16 18 22 12 16 6"/>
+              <polyline points="8 6 2 12 8 18"/>
+            </svg>
+          </div>
+          <div class="tr-name">SQL</div>
+          <div class="tr-sub">
+            Not an end. A way to extract reliable evidence from raw data.
+          </div>
+        </div>
+
+        <div class="tr-item">
+          <div class="tr-icon">
+            <svg viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M3 9h18M9 21V9"/>
+            </svg>
+          </div>
+          <div class="tr-name">Dashboards</div>
+          <div class="tr-sub">
+            Not a final product. A communication layer that translates evidence for decision makers.
+          </div>
+        </div>
+
+        <div class="tr-item">
+          <div class="tr-icon">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <div class="tr-name">Insights</div>
+          <div class="tr-sub">
+            Not conclusions. Starting points for better business questions.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tr-purpose">
+        They are tools that support a larger purpose:
+        <strong>enabling better decisions.</strong>
+      </div>
+    </div>
+
+    <div class="analyst-role fu">
+      <div class="ar-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ar-lbl">The Role of the Analyst</div>
+        <div class="ar-txt">
+          Analysts do not make business decisions on behalf of the organization.
+          They provide <strong>recommendations supported by reliable data, meaningful analysis,
+          and transparent reasoning</strong> — allowing decision makers to choose based on evidence
+          rather than assumptions. A different stakeholder, a different budget, or a different
+          business goal could reasonably lead to a different recommendation while using the exact same evidence.
+        </div>
+      </div>
+    </div>
+
+    <div class="analyst-role fu">
+      <div class="ar-icon">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M9 9h6M9 12h6M9 15h4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="ar-lbl">The Same Principle — AI</div>
+        <div class="ar-txt">
+          AI can accelerate learning, challenge assumptions, explore alternatives, and support problem-solving.
+          However, <strong>it does not replace the analyst's responsibility</strong> to understand the business
+          problem, validate the data, evaluate the evidence, and justify the recommendation.
+          The thinking must remain human. The tools can change.
+        </div>
+      </div>
+    </div>
+
+    <div class="change-stay fu">
+
+      <div class="cs-side changes">
+        <div class="cs-lbl">
+          <svg viewBox="0 0 24 24">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          </svg>
+          What Changes
+        </div>
+
+        <ul class="cs-items">
+          <li>The tools available to analysts</li>
+          <li>The industries being analyzed</li>
+          <li>The business priorities driving decisions</li>
+          <li>The data sources and technical platforms</li>
+        </ul>
+      </div>
+
+      <div class="cs-side stays">
+        <div class="cs-lbl">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          What Stays
+        </div>
+
+        <ul class="cs-items">
+          <li>Disciplined analytical thinking</li>
+          <li>Evidence before recommendation</li>
+          <li>Transparency in reasoning</li>
+          <li>Understanding the problem before choosing the tool</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="final fu">
+
+      <div class="final-lbl">The Central Idea</div>
+
+      <div class="final-quote">
+        Not a gallery of dashboards.<br>
+        Not a collection of technical skills.<br>
+        A <em>repeatable analytical mindset.</em>
+      </div>
+
+      <div class="final-txt">
+        Understanding the problem. Building reliable evidence. Evaluating alternatives.
+        Supporting better decisions.
+        <strong>That mindset is what this portfolio was built to demonstrate — and what remains
+        transferable across every domain, every tool, and every industry.</strong>
+      </div>
+
+      <div class="pot-badge">
+        <svg viewBox="0 0 24 24">
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/>
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+        Proof of Thinking · Not a Gallery of Results
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const section = document.querySelector(".model04-s6");
+  if (!section) return;
+
+  const elements = section.querySelectorAll(".fu");
+
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach(function (el) { el.classList.add("on"); });
+    return;
+  }
+
+  const observer = new IntersectionObserver(function (entries, obs) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("on");
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.05,
+    rootMargin: "0px 0px -30px 0px"
+  });
+
+  elements.forEach(function (el) {
+    observer.observe(el);
+  });
+});
+</script>
+
+
+<script src="portfolio-global.js"></script>
+</body>
+</html>

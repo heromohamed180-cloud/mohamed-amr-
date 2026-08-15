@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Project - Mohamed Amr</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="portfolio-global.css">
+<style>
+/* =========================================================
+   MAIN PROJECT — SECTION 04 IMAGE SYSTEM
+   ========================================================= */
+.section-04-header{display:flex;justify-content:space-between;gap:40px;align-items:flex-start;}
+.section-04-number{font-family:'Oswald',sans-serif;font-size:.9rem;letter-spacing:3px;color:var(--gold-accent);border-left:2px solid var(--gold-accent);padding-left:12px;display:block;margin-bottom:18px;}
+.section-04-subtitle{color:var(--text-grey);font-size:1rem;margin-top:18px;}
+.section-04-icon-placeholder{width:150px;min-height:150px;border:1px solid rgba(212,175,55,.22);background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;}
+.section-04-intro{max-width:850px;color:var(--text-grey);line-height:1.85;font-size:.95rem;}
+.section-04-intro p{margin:0 0 14px;}
+.data-quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.quality-block{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-top:2px solid var(--gold-accent);border-radius:8px;overflow:hidden;}
+.quality-block-header{display:flex;gap:16px;align-items:flex-start;padding:24px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);}
+.quality-number{font-family:'Oswald',sans-serif;font-size:2.5rem;line-height:1;color:var(--gold-accent);opacity:.6;}
+.quality-block-header h3{font-size:1rem;letter-spacing:1px;margin:0 0 4px;}
+.quality-subtitle{font-size:.78rem;color:var(--text-grey);margin:0;}
+.quality-block-content{padding:24px;}
+.challenge-section,.action-section{padding:14px 16px;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.16);border-radius:6px;margin-bottom:14px;}
+.challenge-label,.action-label{display:block;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-accent);margin-bottom:7px;}
+.challenge-section p,.action-section p{font-size:.84rem;line-height:1.7;color:var(--text-grey);margin:0;}
+.before-after-container{display:grid;grid-template-columns:minmax(0,1fr) 42px minmax(0,1fr);gap:12px;align-items:center;margin-top:18px;}
+.table-label{display:block;font-family:'Oswald',sans-serif;color:var(--gold-accent);font-size:.72rem;letter-spacing:1.5px;margin-bottom:7px;}
+.table-placeholder{min-width:0;border:1px dashed rgba(212,175,55,.28);background:rgba(0,0,0,.22);border-radius:6px;overflow:hidden;min-height:160px;display:flex;align-items:center;justify-content:center;}
+.table-placeholder img{display:block;width:100%;height:auto;max-width:100%;object-fit:contain;}
+.arrow-icon-large{display:flex;align-items:center;justify-content:center;color:var(--gold-accent);font-size:1.1rem;}
+.result-section{display:flex;gap:10px;align-items:flex-start;margin-top:16px;padding-top:15px;border-top:1px solid rgba(255,255,255,.06);}
+.result-section p{margin:0;color:var(--text-grey);font-size:.82rem;line-height:1.65;}
+.validated-dataset-section{background:rgba(255,255,255,.02);border:1px solid rgba(212,175,55,.18);border-top:2px solid var(--gold-accent);border-radius:8px;padding:28px;}
+.validated-header{display:flex;gap:12px;align-items:center;margin-bottom:18px;}
+.validated-header h3{margin:0;font-size:1rem;letter-spacing:1px;}
+.validated-dataset-placeholder{border:1px dashed rgba(212,175,55,.3);border-radius:8px;overflow:hidden;background:rgba(0,0,0,.18);}
+.validated-dataset-placeholder .placeholder-image{padding:10px;display:flex;justify-content:center;}
+.validated-dataset-placeholder img{display:block;width:100%;height:auto;max-width:100%;border-radius:6px;}
+.validated-footer{display:flex;align-items:flex-start;gap:12px;}
+@media(max-width:900px){.data-quality-grid{grid-template-columns:1fr;} .section-04-header{flex-direction:column;} .section-04-icon-placeholder{display:none;}}
+@media(max-width:600px){.section-04-intro{font-size:.9rem;} .quality-block-header{padding:20px;} .quality-block-content{padding:18px;} .before-after-container{grid-template-columns:1fr;} .arrow-icon-large{transform:rotate(90deg);padding:4px 0;} .validated-dataset-section{padding:18px;} .validated-header{align-items:flex-start;} .validated-header h3{font-size:.85rem;line-height:1.5;}}
+</style>
+</head>
+<body class="project-page">
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">MA.</span>
+            <div class="brand-text">
+                <span class="name">MOHAMED AMR</span>
+                <span class="title">DATA ANALYST</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="main-project.html" class="active">MAIN PROJECT</a></li>
+            <li><a href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li>
+            <li><a href="knowledge-hub.html">KNOWLEDGE HUB</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+            <li><a href="about.html">ABOUT</a></li>
+            <li><a href="contact.html">CONTACT</a></li>
+        </ul>
+        <a href="contact.html" class="btn-outline">Let's Connect <i class="fa-regular fa-paper-plane"></i></a>
+    </nav>
+
+    <section class="project-section padding-top">
+        <div class="section-wrapper reveal">
+            
+            <div class="project-intro-grid">
+                <div class="intro-text">
+                    <span class="eyebrow">1. PROJECT OVERVIEW</span>
+                    <h1 class="project-title">End-to-End<br><span class="gold-text">E-Commerce<br>Analytics Project</span></h1>
+                    <p class="project-subtitle">A self-built project designed to simulate real business environments and test analytical thinking.</p>
+                    <p class="project-desc">In a world where every number has a story, but not every story is obvious — I build, test, break, and rebuild until the numbers become a reliable single source of truth.</p>
+                </div>
+                
+                <div class="intro-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781984337/Screenshot_%D9%A2%D9%A0%D9%A2%D9%A6%D9%A0%D9%A6%D9%A2%D9%A0-%D9%A2%D9%A2%D9%A3%D9%A0%D9%A5%D9%A2.jpg-removebg-preview_gltoob.png" alt="Data Security and Architecture" class="floating-img">
+                </div>
+            </div>
+            
+            <div class="stats-grid-4">
+                <div class="glass-card flex-center">
+                    <h3 class="gold-text">01</h3>
+                    <p>6 Related Tables | 5 Built Relations</p>
+                </div>
+                <div class="glass-card flex-center">
+                    <h3 class="gold-text">02</h3>
+                    <p>4 Interactive Dashboards</p>
+                </div>
+                <div class="glass-card flex-center">
+                    <h3 class="gold-text">03</h3>
+                    <p>SQL → Power BI Workflow</p>
+                </div>
+                <div class="glass-card flex-center">
+                    <h3 class="gold-text">04</h3>
+                    <p>Real-Business Insights</p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <section class="project-section alt-bg">
+        <div class="section-wrapper split-grid reveal">
+            <div class="split-left">
+                <span class="eyebrow">02 • WHY I BUILT MY OWN DATASET</span>
+                <h2>Why I Built<br><span class="gold-text">My Own Dataset</span></h2>
+                <p class="bold-text">Building the data became part of the learning process itself.</p>
+                <p>This project was born from the need for a realistic analytical environment. I wanted data that behaves more like a real business system — full of relationships, imperfections, operational patterns, and decisions made by humans.</p>
+                <p>Instead of relying only on public datasets, I built one from scratch to simulate how data is created, processed, and affected by real-world business behavior.</p>
+                
+                <div class="system-note">
+                    <i class="fa-solid fa-triangle-exclamation gold-text"></i>
+                    <div>
+                        <span class="gold-text" style="font-weight: bold; letter-spacing: 1px;">SYSTEM NOTE</span>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">This portfolio was built to explore the reasoning behind decisions, not only the tools behind dashboards.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="split-right grid-2x2">
+                <div class="glass-card">
+                    <div class="card-header"><h3 class="gold-text">01</h3> <h4>Beyond Ready-Made Data</h4></div>
+                    <p>Public datasets were a valuable starting point, but many of them were either too clean, too isolated, or disconnected from realistic business behavior. I was not looking only for tables to query, but for a system that behaves like the real world.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="card-header"><h3 class="gold-text">02</h3> <h4>Simulating Business Reality</h4></div>
+                    <p>Real-world problems are created by human decisions, operational workflows, system behavior, and business processes behind the data. I intentionally introduced delays, returns, inconsistencies, and KPI distortions to simulate reality.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="card-header"><h3 class="gold-text">03</h3> <h4>Why E-Commerce?</h4></div>
+                    <p>E-Commerce provides a rich and highly connected environment involving customers, orders, products, categories, shipping, cities, and purchasing patterns. It also opens the door to supply chain analysis on a broader level.</p>
+                </div>
+                <div class="glass-card">
+                    <div class="card-header"><h3 class="gold-text">04</h3> <h4>Learning Through Building</h4></div>
+                    <p>Building the environment became part of the learning process. Every broken relationship, inconsistent value, delayed order, or distorted KPI created a new question that needed to be understood before it could be solved.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section">
+        <div class="section-wrapper">
+            <div class="text-center reveal" style="margin-bottom: 50px;">
+                <span class="eyebrow">03 • DATA ARCHITECTURE & BUSINESS COMPLEXITY</span>
+                <h2 class="project-title">Dataset Architecture<br><span class="gold-text">& Business Complexity</span></h2>
+                <p class="bold-text">Structured as a Connected System</p>
+                <div class="glass-card" style="display: inline-block; padding: 15px 30px; margin-top: 15px;">
+                    <p style="margin: 0;"><i class="fa-solid fa-link gold-text" style="margin-right: 10px;"></i> After explaining why I built my own dataset in Section 2, this section now shows exactly how the data was structured.</p>
+                </div>
+            </div>
+
+            <div class="vertical-cards">
+                <div class="glass-card flex-row reveal delay-1">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">1</h3>
+                        <i class="fa-solid fa-database gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">DATASET ARCHITECTURE</h4>
+                        <p>The dataset was designed as a connected business environment rather than a single flat table.</p>
+                        <p>It included customers, orders, order items, products, categories, shipping behavior, and cities connected through relational modeling principles to better simulate how transactional systems behave in real analytical environments.</p>
+                        <p>The goal was not only to store data, but to preserve the relationships and business context behind the numbers.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-2">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">2</h3>
+                        <i class="fa-solid fa-link gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">WHY MULTIPLE RELATED TABLES?</h4>
+                        <p>Instead of simplifying everything into one dataset, the project was intentionally built using multiple related tables to reflect how data is usually generated across operational systems.</p>
+                        <p>This structure made it possible to work with <span class="gold-text">joins, aggregations, relationship behavior, and analytical consistency</span> in a more realistic way while also exposing common issues such as duplication, distorted metrics, and reporting challenges.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-3">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">3</h3>
+                        <i class="fa-regular fa-star gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">STAR SCHEMA DESIGN</h4>
+                        <div class="schema-image-wrapper">
+                            <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781981973/Screenshot_2026-04-10_153318_dfehhy.png" alt="Star Schema Data Model" class="content-img">
+                        </div>
+                        <p>The schema follows a star design where <strong>Orders</strong> and <strong>Order Items</strong> serve as fact-like tables, connected to surrounding dimension tables including <strong>Customers, Products, Categories, and Shipping</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-4">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">4</h3>
+                        <i class="fa-solid fa-chart-line gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">BUSINESS SCENARIO SIMULATION</h4>
+                        <p>The project also included business-driven scenarios rather than technical problems only.</p>
+                        <p>Discount behavior changed across specific periods, shipment delays affected operational patterns, and some KPIs were intentionally distorted through returns and cancelled orders to create situations where analytical decisions required deeper investigation before reaching conclusions.</p>
+                        <p>The presence of these scenarios was built into the architecture itself before any cleaning or analysis began.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row transition-card reveal delay-5">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">5</h3>
+                        <i class="fa-regular fa-circle-right gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">TRANSITION TO SECTION 4</h4>
+                        <p>After establishing the data architecture and relationships between tables, the natural next step was to clean and validate the data. This will be covered in detail in Section 4.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workflow-pipeline-container reveal delay-2" style="margin-top: 80px; margin-bottom: 0;">
+                <span class="eyebrow" style="margin-bottom: 20px; display: block; text-align: center;">FROM RAW DATA TO ACTIONABLE INSIGHTS</span>
+                <div class="pipeline-track" style="margin-bottom: 0;">
+                    <div class="pipeline-step">
+                        <div class="icon-circle"><i class="fa-solid fa-database"></i></div>
+                        <p>Raw Data<br><span class="gold-text">(SQL)</span></p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                    <div class="pipeline-step">
+                        <div class="icon-circle"><i class="fa-solid fa-gear"></i></div>
+                        <p>Data Cleaning<br><span class="gold-text">& ETL</span></p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                    <div class="pipeline-step">
+                        <div class="icon-circle"><i class="fa-solid fa-cube"></i></div>
+                        <p>Data Modeling<br><span class="gold-text">(Power BI)</span></p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                    <div class="pipeline-step">
+                        <div class="icon-circle"><i class="fa-solid fa-chart-line"></i></div>
+                        <p>Advanced Analysis<br><span class="gold-text">(DAX)</span></p>
+                    </div>
+                    <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                    <div class="pipeline-step">
+                        <div class="icon-circle"><i class="fa-solid fa-bullseye"></i></div>
+                        <p>Actionable<br><span class="gold-text">Insights</span></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========== SECTION 04: DATA QUALITY & VALIDATION ========== -->
+    <section class="project-section">
+        <div class="section-wrapper">
+            <div class="reveal" style="margin-bottom:50px;">
+                <div class="section-04-header">
+                    <div class="header-left">
+                        <span class="section-04-number">04</span>
+                        <h2 class="project-title">DATA QUALITY<br><span class="gold-text">& VALIDATION</span></h2>
+                        <p class="section-04-subtitle">From Raw Data to Trusted Data</p>
+                    </div>
+                    <div class="header-right"><div class="section-04-icon-placeholder"><i class="fa-solid fa-database gold-text" style="font-size:3rem;"></i><i class="fa-solid fa-shield-halved gold-text" style="font-size:2rem;margin-top:10px;"></i></div></div>
+                </div>
+                <div class="section-04-intro" style="margin-top:30px;">
+                    <p>In Section 3, we saw how the data was structured and how the tables were related. Now in Section 4, we will see how the data was cleaned and validated before any business analysis began.</p>
+                    <p>Real business data is rarely clean from the start. Since this dataset was built manually to simulate a realistic e-commerce environment, different types of data quality issues were intentionally introduced.</p>
+                    <p>Before any analysis could begin, the dataset had to be reviewed, cleaned, and validated to ensure that every metric produced later could be trusted.</p>
+                    <p><strong>The following four categories represent the primary data quality challenges that were identified and resolved during the validation process.</strong></p>
+                </div>
+            </div>
+
+            <div class="data-quality-grid reveal">
+                <div class="quality-block">
+                    <div class="quality-block-header"><span class="quality-number">01</span><div><h3 class="gold-text">ORDER ID VALIDATION</h3><p class="quality-subtitle">Missing & Duplicate IDs</p></div></div>
+                    <div class="quality-block-content">
+                        <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Some Order IDs were missing (NULL) and some orders were duplicated (e.g., ORD009 appearing multiple times).</p></div>
+                        <div class="action-section"><span class="action-label"><i class="fa-solid fa-wrench"></i> The Action</span><p>Missing IDs were investigated and filled when possible, while duplicate records were removed to ensure each order remains completely unique.</p></div>
+                        <div class="before-after-container"><div><span class="table-label">BEFORE</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/order_id_hebkkv.png" alt="Order ID validation before" loading="lazy"></div></div><div class="arrow-icon-large"><i class="fa-solid fa-arrow-right"></i></div><div><span class="table-label">AFTER</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/order_id_2_fppjhg.png" alt="Order ID validation after" loading="lazy"></div></div></div>
+                        <div class="result-section"><i class="fa-solid fa-check-circle gold-text"></i><p><strong>Result:</strong> Every order has a valid and unique Order ID.</p></div>
+                    </div>
+                </div>
+
+                <div class="quality-block">
+                    <div class="quality-block-header"><span class="quality-number">02</span><div><h3 class="gold-text">DATE STANDARDIZATION</h3><p class="quality-subtitle">Mixed Formats & Serial Numbers</p></div></div>
+                    <div class="quality-block-content">
+                        <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Date fields appeared in different formats across tables (short dates, serial numbers, text formats).</p></div>
+                        <div class="action-section"><span class="action-label"><i class="fa-solid fa-wrench"></i> The Action</span><p>All dates were converted to a single standard format (YYYY-MM-DD) and validated to ensure logical consistency across all date fields.</p></div>
+                        <div class="before-after-container"><div><span class="table-label">BEFORE</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/dates_gihpez.png" alt="Date standardization before" loading="lazy"></div></div><div class="arrow-icon-large"><i class="fa-solid fa-arrow-right"></i></div><div><span class="table-label">AFTER</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/dates_2_w3dvic.png" alt="Date standardization after" loading="lazy"></div></div></div>
+                        <div class="result-section"><i class="fa-solid fa-check-circle gold-text"></i><p><strong>Result:</strong> All dates are in standard format and follow logical consistency.</p></div>
+                    </div>
+                </div>
+
+                <div class="quality-block">
+                    <div class="quality-block-header"><span class="quality-number">03</span><div><h3 class="gold-text">FORMATTING CONSISTENCY</h3><p class="quality-subtitle">Status & Payment Method</p></div></div>
+                    <div class="quality-block-content">
+                        <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Text fields contained inconsistent capitalization, extra spaces, and special characters that negatively affected joins, grouping, and reporting.</p></div>
+                        <div class="action-section"><span class="action-label"><i class="fa-solid fa-wrench"></i> The Action</span><p>Text was cleaned by removing extra spaces and standardizing casing to improve overall consistency without losing the original business context.</p></div>
+                        <div class="before-after-container"><div><span class="table-label">BEFORE</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749031/inconsistante_formating_x0gaun.png" alt="Formatting consistency before" loading="lazy"></div></div><div class="arrow-icon-large"><i class="fa-solid fa-arrow-right"></i></div><div><span class="table-label">AFTER</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749031/inconsistante_formating_2_ubbomw.png" alt="Formatting consistency after" loading="lazy"></div></div></div>
+                        <div class="result-section"><i class="fa-solid fa-check-circle gold-text"></i><p><strong>Result:</strong> All text values are consistent and clean for accurate reporting.</p></div>
+                    </div>
+                </div>
+
+                <div class="quality-block">
+                    <div class="quality-block-header"><span class="quality-number">04</span><div><h3 class="gold-text">HELPER COLUMN & DERIVED FIELD</h3><p class="quality-subtitle">Creating Shipping Cost</p></div></div>
+                    <div class="quality-block-content">
+                        <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Shipping cost was not natively available as a single column in any source table.</p></div>
+                        <div class="action-section"><span class="action-label"><i class="fa-solid fa-wrench"></i> The Action</span><p>It was derived by calculating the difference between total amount and product cost. A helper column was intentionally created instead of modifying existing columns to preserve complete data transparency and traceability.</p></div>
+                        <div class="before-after-container"><div><span class="table-label">BEFORE</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749031/helper_lxngjd.png" alt="Helper column before" loading="lazy"></div></div><div class="arrow-icon-large"><i class="fa-solid fa-arrow-right"></i></div><div><span class="table-label">AFTER</span><div class="table-placeholder"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749031/HELPER_2_nlurkb.png" alt="Helper column after" loading="lazy"></div></div></div>
+                        <div class="result-section"><i class="fa-solid fa-check-circle gold-text"></i><p><strong>Result:</strong> Shipping cost is now available as a derived field with full traceability.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="validated-dataset-section reveal" style="margin-top:80px;">
+                <div class="validated-header"><i class="fa-solid fa-circle-check gold-text" style="font-size:1.8rem;"></i><h3 class="gold-text">AFTER CLEANING – VALIDATED DATASET SNAPSHOT (COMPLETE VIEW)</h3></div>
+                <div class="validated-dataset-placeholder"><div class="placeholder-image"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/After_cleanig_icuroi.png" alt="Validated dataset after cleaning" loading="lazy"></div></div>
+                <div class="validated-footer reveal" style="margin-top:30px;"><i class="fa-solid fa-circle-check gold-text" style="font-size:1.5rem;"></i><div><p style="margin:0;font-weight:600;">The dataset is now clean, consistent, and trustworthy —</p><p style="margin:0;color:var(--text-grey);font-size:.95rem;">ready for analysis and business insights in Section 5.</p></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section alt-bg">
+        <div class="section-wrapper">
+            <div class="text-center reveal" style="margin-bottom: 60px;">
+                <span class="eyebrow">SECTION 05</span>
+                <h2 class="project-title">What The Data<br><span class="gold-text">Started Revealing</span></h2>
+                <p class="bold-text">Moving from analysis to understanding</p>
+                <p class="project-desc" style="margin: 0 auto;">After building the dataset, designing the structure, and validating the data, the next step was no longer improving the data itself. The focus shifted toward understanding what the data was actually showing. Rather than treating dashboards as final outputs, they became a way to compare perspectives, question assumptions, and connect numbers with business context.</p>
+            </div>
+
+            <div class="dashboard-grid reveal">
+                <div class="dashboard-text">
+                    <span class="eyebrow">BLOCK 01</span>
+                    <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Macro View</h3>
+                    <p class="bold-text">Seeing The Bigger Picture</p>
+                    <p>The first step was stepping back and looking at the business as a whole. Instead of focusing on individual metrics, this view was designed to understand overall movement across sales, profitability, operational performance, customer activity, and changes over time.</p>
+                    <p>The objective was not to answer every question here. It was to build context and identify where deeper investigation might be needed. That broader view naturally led to a more focused level of analysis.</p>
+                </div>
+                <div class="dashboard-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982618/macro_mkp2mk.png" alt="Macro Dashboard" class="content-img shadow-img">
+                </div>
+            </div>
+
+            <div class="dashboard-grid reverse reveal" style="margin-top: 60px;">
+                <div class="dashboard-text">
+                    <span class="eyebrow">BLOCK 02</span>
+                    <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Micro View</h3>
+                    <p class="bold-text">Exploring What Deserved Attention</p>
+                    <p>After identifying broader patterns, the next step was narrowing the scope and examining areas that appeared more meaningful. This level focused less on overall performance and more on comparison, behavior, and changing conditions across different dimensions.</p>
+                    <p>Some observations appeared connected at first glance, but patterns alone were not enough to support conclusions. This stage required moving beyond surface interpretation and looking more carefully at what the numbers might actually represent.</p>
+                </div>
+                <div class="dashboard-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982656/micro_z7bymj.png" alt="Micro Dashboard" class="content-img shadow-img">
+                </div>
+            </div>
+
+            <div class="dashboard-grid reveal" style="margin-top: 60px;">
+                <div class="dashboard-text">
+                    <span class="eyebrow">BLOCK 03</span>
+                    <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Details View</h3>
+                    <p class="bold-text">Looking Beyond The Summary</p>
+                    <p>Once broader patterns became visible, deeper exploration helped move beyond aggregated results and investigate the factors behind them. At this stage, the objective was not to collect more numbers.</p>
+                    <p>It was to understand what influenced those numbers and whether the initial assumptions remained valid after closer examination. Some findings became clearer. Others became more complex. Those observations eventually shaped the final business understanding.</p>
+                </div>
+                <div class="dashboard-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982769/details_hfgevt.png" alt="Details Dashboard" class="content-img shadow-img">
+                </div>
+            </div>
+
+            <div class="dashboard-grid reverse reveal" style="margin-top: 60px;">
+                <div class="dashboard-text">
+                    <span class="eyebrow">BLOCK 04</span>
+                    <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Key Insights</h3>
+                    <p class="bold-text">Connecting The Findings</p>
+                    <p>The final step was bringing observations together and turning separate findings into a more connected understanding. Not every observation became an insight immediately. Some findings later became starting points for more focused analytical exploration, where questions, assumptions, and emerging patterns were examined in greater depth before reaching more meaningful conclusions.</p>
+                    <p>Several of those directions later evolved into more structured analytical work and deeper investigation. The project did not end with dashboards. It changed how I approach questions, validate assumptions, and understand business performance.</p>
+                </div>
+                <div class="dashboard-image">
+                    <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982797/key_insights_tyvbot.png" alt="Key Insights" class="content-img shadow-img">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="project-section">
+        <div class="section-wrapper">
+            <div class="text-center reveal" style="margin-bottom: 50px;">
+                <span class="eyebrow">SECTION 06</span>
+                <h2 class="project-title">Project Outcomes<br><span class="gold-text">& What I Learned</span></h2>
+                <p class="bold-text">The real outcome was not the dashboard. It was the way I think today.</p>
+            </div>
+
+            <div class="vertical-cards">
+                
+                <div class="glass-card flex-row reveal delay-1">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">01</h3>
+                        <i class="fa-solid fa-clipboard-question gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">DEFINITIONS BEFORE CALCULATIONS</h4>
+                        <p>When I started this project, I thought the difficult part would be writing complex SQL queries, building advanced Power BI visuals, or learning new analytical techniques. I was wrong.</p>
+                        <p>The deeper I got into the project, the more I realized that most analytical problems are not technical problems. <strong>They are definition problems.</strong> One of the biggest turning points came when I discovered that several KPIs I had calculated correctly were still producing misleading business conclusions. The queries were accurate. The formulas were accurate. The dashboard looked accurate. Yet the story was wrong because I had not fully questioned what those metrics were supposed to represent in the first place.</p>
+                        <p>Instead of starting with calculations, I learned to start with definitions. Instead of asking how to calculate a KPI, I learned to ask what that KPI actually means from a business perspective.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-2">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">02</h3>
+                        <i class="fa-solid fa-magnifying-glass-chart gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">DATA CHALLENGED MY ASSUMPTIONS</h4>
+                        <p>What surprised me most was how often the data challenged my assumptions. There were multiple occasions where I expected one conclusion, only to discover that the underlying business logic pointed somewhere completely different.</p>
+                        <p>Even simple questions such as sales, revenue, orders, or profit became more complex once returns, cancellations, discounts, delivery delays, and operational constraints were taken into account.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-3">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">03</h3>
+                        <i class="fa-solid fa-chart-pie gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">ANALYTICS IS MORE THAN DASHBOARDS</h4>
+                        <p>As the project evolved, so did my understanding of analytics. The dashboard gradually became the least interesting part of the work.</p>
+                        <p>Most of the value came from investigating anomalies, validating calculations, testing assumptions, and understanding how <strong>operational processes influence business outcomes</strong>.</p>
+                        <p>The Macro, Micro, and Details layers of the dashboard reflect that evolution in thinking. The first layer focuses on understanding what happened. The second investigates where the results came from. The third explores the operational drivers behind those results.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-4">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">04</h3>
+                        <i class="fa-solid fa-brain gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">SELF-LEARNING SHAPED MY GROWTH</h4>
+                        <p>Self-learning played a significant role in that process. It provided complete freedom to explore different ideas, approaches, and techniques, but it also meant there was no predefined path to follow.</p>
+                        <p>Many of the most valuable lessons came from mistakes, rework, and assumptions that did not survive contact with the data. In hindsight, those moments contributed more to my growth than any successful dashboard build.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-5">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">05</h3>
+                        <i class="fa-solid fa-shield-halved gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">HOW I APPROACH ANALYTICS TODAY</h4>
+                        <p>Today, I approach analytics very differently than I did 13 months ago.</p>
+                        <p>I am less interested in producing answers quickly and more interested in understanding whether those answers deserve to be trusted. I spend more time questioning assumptions, validating business logic, and evaluating data quality before drawing conclusions.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card flex-row reveal delay-5">
+                    <div class="card-side-panel">
+                        <h3 class="gold-text">06</h3>
+                        <i class="fa-solid fa-trophy gold-text icon-large"></i>
+                    </div>
+                    <div class="vertical-divider"></div>
+                    <div class="card-content">
+                        <h4 class="gold-text">THE REAL OUTCOME</h4>
+                        <p>This project started as an attempt to build a dashboard. It became an exercise in analytical thinking.</p>
+                        <p>The dashboard is simply the final artifact. The real outcome was learning how to navigate uncertainty, challenge assumptions, and <strong>develop confidence</strong> in the conclusions that support business decisions.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="project-section" style="padding-top: 0;">
+        <div class="section-wrapper">
+            <div class="final-transition-box reveal">
+                <div class="transition-text">
+                    <i class="fa-solid fa-signs-post gold-text" style="font-size: 2rem; margin-right: 15px;"></i>
+                    <div>
+                        <p style="margin: 0; color: var(--text-grey);">This project did not end here.</p>
+                        <p style="margin: 0; font-size: 0.9rem;">It became the foundation for a deeper analytical workflow and a structured way of solving business problems.</p>
+                    </div>
+                </div>
+                <a href="analytics-workflow.html" class="next-page-btn">
+                    <span>Next:</span><br><strong>The Analytical Workflow</strong> <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script src="portfolio-global.js"></script>
+</body>
+</html>
