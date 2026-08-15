@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume — Muhammad Amr</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--bg:#05080f;--gold:#d4af37;--text:#f7f8fb;--muted:#a8b1bd;--line:rgba(255,255,255,.1);--blue:#5ba4e5}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{min-width:0;background:radial-gradient(circle at 84% 12%,rgba(91,164,229,.07),transparent 24%),radial-gradient(circle at 8% 88%,rgba(212,175,55,.045),transparent 24%),linear-gradient(180deg,#05080f 0%,#02060c 100%);color:var(--text);font-family:Inter,sans-serif;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.navbar{position:fixed;inset:0 0 auto 0;width:100%;z-index:99999;display:flex;justify-content:space-between;align-items:center;gap:30px;padding:18px 50px;background:rgba(5,8,15,.94);border-bottom:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);transition:.3s}
+.navbar.scrolled{background:rgba(4,7,13,.985);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.nav-brand{display:flex;align-items:center;gap:14px;flex-shrink:0}.logo{font-family:Oswald,sans-serif;font-size:2rem;font-weight:700;color:var(--gold);line-height:1}.brand-text{display:flex;flex-direction:column;gap:2px}.brand-name{font-size:.88rem;font-weight:700;letter-spacing:2px}.brand-title{font-size:.68rem;letter-spacing:1.6px;color:var(--muted)}
+.nav-links{list-style:none;display:flex;align-items:center;gap:26px}.nav-links a{color:var(--muted);font-size:.74rem;letter-spacing:1px;text-transform:uppercase;transition:color .25s}.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{border:1px solid var(--gold);color:var(--gold);padding:9px 16px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;font-size:.72rem;transition:.25s}.nav-cta:hover{background:var(--gold);color:#05080f;transform:translateY(-1px)}
+.resume-page{padding-top:82px;min-height:100vh}.resume-section{position:relative;padding:70px 0 90px;overflow:hidden}.resume-section:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(212,175,55,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,.045) 1px,transparent 1px);background-size:46px 46px;opacity:.28}
+.resume-wrap{width:min(1220px,calc(100% - 80px));margin:0 auto;position:relative;z-index:2}.resume-grid{display:grid;grid-template-columns:minmax(330px,.72fr) minmax(0,1.28fr);gap:56px;align-items:start}
+.resume-left{padding-top:6px}.eyebrow{display:flex;align-items:center;gap:10px;color:var(--gold);font-family:Oswald,sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}.eyebrow:before{content:"";width:3px;height:26px;background:var(--gold)}
+.resume-title{font-family:"Times New Roman",Times,serif;font-size:clamp(3rem,5vw,5rem);line-height:.98;font-weight:700;letter-spacing:-1px;margin-bottom:18px}.resume-title span{display:block;color:var(--gold)}.accent-line{width:76px;height:3px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:24px}
+.resume-lead{color:#d7dce4;font-size:1rem;line-height:1.75;max-width:520px;margin-bottom:18px}.resume-sub{color:var(--muted);font-size:.95rem;line-height:1.75;max-width:520px}
+.resume-actions{display:flex;flex-wrap:wrap;gap:12px;margin:28px 0 34px}.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 18px;border-radius:4px;font-size:.78rem;letter-spacing:1px;text-transform:uppercase;transition:.25s}.btn-primary{background:var(--gold);color:#05080f;font-weight:700}.btn-secondary{border:1px solid rgba(212,175,55,.55);color:var(--gold);background:transparent}.btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(0,0,0,.25)}
+.insight-card{padding:22px 22px 22px 24px;border:1px solid rgba(212,175,55,.28);border-left:3px solid var(--gold);background:linear-gradient(135deg,rgba(212,175,55,.06),rgba(255,255,255,.015));border-radius:5px;max-width:540px}.insight-icon{color:var(--gold);font-size:1.2rem;margin-bottom:12px}.insight-title{font-family:"Times New Roman",Times,serif;color:var(--gold);font-size:1.2rem;font-weight:700;margin-bottom:7px}.insight-text{color:#ccd3dc;font-size:.88rem;line-height:1.7}
+.resume-frame{position:relative;padding:10px;border:1px solid rgba(91,164,229,.34);border-radius:10px;background:linear-gradient(145deg,rgba(9,18,31,.96),rgba(4,10,18,.96));box-shadow:0 20px 60px rgba(0,0,0,.35)}.resume-toolbar{display:flex;justify-content:space-between;align-items:center;padding:9px 8px 12px}.resume-toolbar-left{display:flex;align-items:center;gap:8px}.resume-dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}.resume-toolbar-label{color:#92a2b5;font-size:.66rem;letter-spacing:1.3px;text-transform:uppercase}.resume-toolbar-right{color:#8ca0b6;font-size:.68rem}.resume-image{display:block;width:100%;height:auto;background:#fff;border-radius:5px}.resume-caption{text-align:center;color:#7f93aa;font-size:.68rem;letter-spacing:1px;text-transform:uppercase;padding:11px 4px 3px}
+.resume-bottom{margin-top:42px;padding-top:26px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.resume-stat{padding:18px 20px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.018)}.resume-stat-label{color:var(--muted);font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}.resume-stat-value{color:var(--text);font-family:"Times New Roman",Times,serif;font-weight:700;font-size:1.05rem}
+.is-1000 .resume-wrap{width:min(100% - 50px,1000px)}.is-1000 .resume-grid{grid-template-columns:1fr;gap:34px}.is-1000 .resume-left,.is-1000 .resume-visual{max-width:920px}
+.is-700 .navbar{padding:14px 20px}.is-700 .nav-links,.is-700 .nav-cta{display:none}.is-700 .resume-page{padding-top:66px}.is-700 .resume-section{padding:48px 0 64px}.is-700 .resume-wrap{width:calc(100% - 28px)}.is-700 .resume-grid{grid-template-columns:1fr;gap:26px}.is-700 .resume-title{font-size:3.1rem}.is-700 .resume-bottom{grid-template-columns:1fr}.is-700 .resume-actions{flex-direction:column;align-items:stretch}.is-700 .btn{justify-content:center}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<a class="nav-brand" href="index.html"><span class="logo">MA.</span><span class="brand-text"><span class="brand-name">MUHAMMAD AMR</span><span class="brand-title">JUNIOR DATA ANALYST</span></span></a>
+<ul class="nav-links">
+<li><a href="index.html">HOME</a></li><li><a href="main-project.html">MAIN PROJECT</a></li><li><a href="analytics-workflow.html">ANALYTICS WORKFLOW</a></li><li><a href="knowledge-hub.html">KNOWLEDGE HUB</a></li><li><a href="resume.html" class="active">RESUME</a></li>
+</ul><a href="contact.html" class="nav-cta">Let's Connect <i class="fa-regular fa-paper-plane"></i></a>
+</nav>
+<main class="resume-page"><section class="resume-section"><div class="resume-wrap"><div class="resume-grid">
+<div class="resume-left">
+<div class="eyebrow">RESUME</div><h1 class="resume-title">My<span>Resume</span></h1><div class="accent-line"></div>
+<p class="resume-lead">A concise overview of my analytical background, technical skills, experience, education, and the projects that shaped my approach to solving business problems with data.</p>
+<p class="resume-sub">The portfolio shows the thinking behind my work. The resume gives the complete snapshot — skills, experience, tools, and professional direction in one place.</p>
+<div class="resume-actions"><a class="btn btn-primary" href="https://res.cloudinary.com/dqac0apbs/image/upload/v1786783369/Mohamed_Amr_CV_page-0001_zf1dsn.jpg" target="_blank" rel="noopener"><i class="fa-regular fa-eye"></i> View Resume</a><a class="btn btn-secondary" href="https://drive.google.com/file/d/1Vbv18v249lcHFfvbmTFHVx7L4hWxYGEZ/view?usp=sharing" download="Muhammad-Amr-Resume.jpg"><i class="fa-solid fa-download"></i> Download Resume</a></div>
+<div class="insight-card"><div class="insight-icon"><i class="fa-regular fa-lightbulb"></i></div><div class="insight-title">Want the full picture?</div><div class="insight-text">Explore the rest of the portfolio to see how the projects, analytical workflows, and business thinking presented here were applied in practice.</div></div>
+</div>
+<div class="resume-visual"><div class="resume-frame"><div class="resume-toolbar"><div class="resume-toolbar-left"><span class="resume-dot"></span><span class="resume-toolbar-label">Resume Preview</span></div><div class="resume-toolbar-right">CV · 01</div></div><img class="resume-image" src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786783369/Mohamed_Amr_CV_page-0001_zf1dsn.jpg" alt="Muhammad Amr Resume"><div class="resume-caption">Muhammad Amr — Junior Data Analyst</div></div></div>
+</div>
+<div class="resume-bottom"><div class="resume-stat"><div class="resume-stat-label">Role</div><div class="resume-stat-value">Junior Data Analyst</div></div><div class="resume-stat"><div class="resume-stat-label">Focus</div><div class="resume-stat-value">Business &amp; Data Analytics</div></div><div class="resume-stat"><div class="resume-stat-label">Portfolio</div><div class="resume-stat-value">Projects • Thinking • Decisions</div></div></div>
+</div></section></main>
+<script>
+(function(){const nav=document.querySelector('.navbar');function apply(){const w=window.innerWidth;document.body.classList.remove('is-1000','is-700');if(w<=700)document.body.classList.add('is-700');else if(w<=1000)document.body.classList.add('is-1000');if(nav)nav.classList.toggle('scrolled',window.scrollY>8)}apply();window.addEventListener('resize',apply,{passive:true});window.addEventListener('scroll',()=>nav&&nav.classList.toggle('scrolled',window.scrollY>8),{passive:true})})();
+</script>
+</body></html>
