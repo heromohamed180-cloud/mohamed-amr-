@@ -1,0 +1,66 @@
+/* =========================================================
+   PORTFOLIO — TYPOGRAPHY SCALE
+   ========================================================= */
+
+body {
+    font-size: 1.08rem;
+}
+
+p {
+    font-size: 1.06em;
+}
+
+h1 {
+    font-size: clamp(2.8rem, 5vw, 5rem);
+}
+
+h2 {
+    font-size: clamp(2.1rem, 4vw, 3.5rem);
+}
+
+h3 {
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+}
+
+h4 {
+    font-size: 1.15rem;
+}
+
+/* Labels / Eyebrows */
+.eyebrow,
+.section-badge,
+.m2-section-badge {
+    font-size: 0.82rem;
+}
+
+/* Small descriptive text */
+.project-desc,
+.context-text,
+.model-body,
+.card-content p {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    body {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    h1 {
+        font-size: clamp(2.3rem, 10vw, 3.4rem);
+    }
+
+    h2 {
+        font-size: clamp(1.9rem, 8vw, 2.8rem);
+    }
+
+    h3 {
+        font-size: 1.35rem;
+    }
+}
