@@ -19,7 +19,7 @@
 .section-04-icon-placeholder{width:150px;min-height:150px;border:1px solid rgba(212,175,55,.22);background:rgba(255,255,255,.02);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;}
 .section-04-intro{max-width:850px;color:var(--text-grey);line-height:1.85;font-size:.95rem;}
 .section-04-intro p{margin:0 0 14px;}
-.data-quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.data-quality-grid{display:grid;grid-template-columns:1fr;gap:24px;}
 .quality-block{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-top:2px solid var(--gold-accent);border-radius:8px;overflow:hidden;}
 .quality-block-header{display:flex;gap:16px;align-items:flex-start;padding:24px 24px 18px;border-bottom:1px solid rgba(255,255,255,.06);}
 .quality-number{font-family:'Oswald',sans-serif;font-size:2.5rem;line-height:1;color:var(--gold-accent);opacity:.6;}
@@ -43,11 +43,295 @@
 .validated-dataset-placeholder .placeholder-image{padding:10px;display:flex;justify-content:center;}
 .validated-dataset-placeholder img{display:block;width:100%;height:auto;max-width:100%;border-radius:6px;}
 .validated-footer{display:flex;align-items:flex-start;gap:12px;}
-@media(max-width:900px){.data-quality-grid{grid-template-columns:1fr;} .section-04-header{flex-direction:column;} .section-04-icon-placeholder{display:none;}}
+@media(max-width:900px){.section-04-header{flex-direction:column;} .section-04-icon-placeholder{display:none;}}
 @media(max-width:600px){.section-04-intro{font-size:.9rem;} .quality-block-header{padding:20px;} .quality-block-content{padding:18px;} .before-after-container{grid-template-columns:1fr;} .arrow-icon-large{transform:rotate(90deg);padding:4px 0;} .validated-dataset-section{padding:18px;} .validated-header{align-items:flex-start;} .validated-header h3{font-size:.85rem;line-height:1.5;}}
 </style>
+
+<style id="main-project-enhancements">
+/* =========================================================
+   MAIN PROJECT — DATA ANALYTICS VISUAL BACKGROUND
+   ========================================================= */
+
+.project-page{
+    position:relative;
+    overflow-x:hidden;
+    isolation:isolate;
+}
+
+.main-data-bg{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    pointer-events:none;
+    overflow:hidden;
+    opacity:.48;
+}
+
+.main-data-bg svg{
+    width:100%;
+    height:100%;
+    display:block;
+}
+
+.main-data-bg .grid-line{
+    stroke:rgba(91,164,229,.10);
+    stroke-width:1;
+}
+
+.main-data-bg .data-line{
+    fill:none;
+    stroke:var(--gold-accent);
+    stroke-width:1.5;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:1400;
+    stroke-dashoffset:1400;
+    animation:dataLineDraw 8s ease-in-out infinite alternate;
+}
+
+.main-data-bg .data-line.blue{
+    stroke:rgba(91,164,229,.62);
+    stroke-width:1.15;
+    animation-duration:11s;
+}
+
+.main-data-bg .node{
+    fill:var(--gold-accent);
+    opacity:.75;
+    filter:drop-shadow(0 0 8px rgba(212,175,55,.35));
+    animation:dataNodePulse 3.2s ease-in-out infinite;
+}
+
+.main-data-bg .node.blue{
+    fill:#5ba4e5;
+    filter:drop-shadow(0 0 8px rgba(91,164,229,.35));
+}
+
+.main-data-bg .bar{
+    fill:url(#mainDataBarGradient);
+    opacity:.34;
+    transform-origin:center bottom;
+    animation:dataBarPulse 4.8s ease-in-out infinite alternate;
+}
+
+.main-data-bg .bar:nth-child(2){animation-delay:.35s}
+.main-data-bg .bar:nth-child(3){animation-delay:.7s}
+.main-data-bg .bar:nth-child(4){animation-delay:1.05s}
+.main-data-bg .bar:nth-child(5){animation-delay:1.4s}
+
+@keyframes dataLineDraw{
+    0%{stroke-dashoffset:1400;opacity:.15}
+    55%{opacity:.65}
+    100%{stroke-dashoffset:0;opacity:.38}
+}
+
+@keyframes dataNodePulse{
+    0%,100%{transform:scale(.8);opacity:.42}
+    50%{transform:scale(1.55);opacity:1}
+}
+
+@keyframes dataBarPulse{
+    0%{transform:scaleY(.78);opacity:.18}
+    100%{transform:scaleY(1);opacity:.42}
+}
+
+/* =========================================================
+   POP-UP / REVEAL ANIMATION
+   ========================================================= */
+
+.main-popup{
+    opacity:0;
+    transform:translateY(28px) scale(.975);
+    transition:
+        opacity .75s cubic-bezier(.22,.61,.36,1),
+        transform .75s cubic-bezier(.22,.61,.36,1);
+    will-change:opacity,transform;
+}
+
+.main-popup.is-visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+.main-popup.delay-1{transition-delay:.08s}
+.main-popup.delay-2{transition-delay:.16s}
+.main-popup.delay-3{transition-delay:.24s}
+.main-popup.delay-4{transition-delay:.32s}
+.main-popup.delay-5{transition-delay:.40s}
+
+/* Slightly stronger pop on cards and visual panels */
+.main-popup-card{
+    opacity:0;
+    transform:translateY(20px) scale(.985);
+    transition:
+        opacity .65s ease,
+        transform .65s cubic-bezier(.22,.61,.36,1),
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+.main-popup-card.is-visible{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+.main-popup-card:hover{
+    transform:translateY(-4px) scale(1.005);
+    box-shadow:0 18px 38px rgba(0,0,0,.24);
+}
+
+/* Keep content above decorative SVG */
+.project-page > *:not(.main-data-bg){
+    position:relative;
+    z-index:1;
+}
+
+/* Section 04 vertical cards now have more image breathing room */
+.data-quality-grid .quality-block{
+    width:100%;
+}
+
+.data-quality-grid .before-after-container{
+    grid-template-columns:minmax(0,1fr) 50px minmax(0,1fr);
+}
+
+.data-quality-grid .table-placeholder{
+    min-height:220px;
+}
+
+.data-quality-grid .table-placeholder img{
+    max-height:420px;
+    width:100%;
+    object-fit:contain;
+}
+
+/* Small viewport optimization */
+@media(max-width:700px){
+    .main-data-bg{
+        opacity:.22;
+    }
+
+    .data-quality-grid .before-after-container{
+        grid-template-columns:1fr;
+    }
+
+    .data-quality-grid .arrow-icon-large{
+        transform:rotate(90deg);
+    }
+
+    .data-quality-grid .table-placeholder{
+        min-height:170px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+    .main-data-bg .data-line,
+    .main-data-bg .node,
+    .main-data-bg .bar,
+    .main-popup,
+    .main-popup-card{
+        animation:none !important;
+        transition:none !important;
+    }
+
+    .main-popup,
+    .main-popup-card{
+        opacity:1 !important;
+        transform:none !important;
+    }
+}
+</style>
+
 </head>
 <body class="project-page">
+
+<!-- =========================================================
+     MAIN PROJECT — ANALYTICS SVG BACKGROUND
+     ========================================================= -->
+<div class="main-data-bg" aria-hidden="true">
+    <svg viewBox="0 0 1600 1000" preserveAspectRatio="none">
+        <defs>
+            <linearGradient id="mainDataBarGradient" x1="0" y1="1" x2="0" y2="0">
+                <stop offset="0%" stop-color="#5ba4e5" stop-opacity=".08"></stop>
+                <stop offset="100%" stop-color="#d4af37" stop-opacity=".42"></stop>
+            </linearGradient>
+        </defs>
+
+        <!-- analytical grid -->
+        <g opacity=".5">
+            <line class="grid-line" x1="80" y1="140" x2="1520" y2="140"></line>
+            <line class="grid-line" x1="80" y1="280" x2="1520" y2="280"></line>
+            <line class="grid-line" x1="80" y1="420" x2="1520" y2="420"></line>
+            <line class="grid-line" x1="80" y1="560" x2="1520" y2="560"></line>
+            <line class="grid-line" x1="80" y1="700" x2="1520" y2="700"></line>
+            <line class="grid-line" x1="80" y1="840" x2="1520" y2="840"></line>
+
+            <line class="grid-line" x1="180" y1="80" x2="180" y2="920"></line>
+            <line class="grid-line" x1="420" y1="80" x2="420" y2="920"></line>
+            <line class="grid-line" x1="660" y1="80" x2="660" y2="920"></line>
+            <line class="grid-line" x1="900" y1="80" x2="900" y2="920"></line>
+            <line class="grid-line" x1="1140" y1="80" x2="1140" y2="920"></line>
+            <line class="grid-line" x1="1380" y1="80" x2="1380" y2="920"></line>
+        </g>
+
+        <!-- trend line / data flow -->
+        <path class="data-line"
+              d="M55,770 C180,700 245,720 335,620
+                 S505,510 600,560 S780,430 890,470
+                 S1060,355 1165,385 S1340,270 1545,210"></path>
+
+        <path class="data-line blue"
+              d="M40,840 C190,785 255,810 360,710
+                 S560,620 650,650 S835,545 925,580
+                 S1095,460 1190,510 S1370,395 1560,350"></path>
+
+        <path class="data-line blue"
+              d="M65,310 C200,390 275,240 380,310
+                 S565,395 680,300 S850,190 965,270
+                 S1130,330 1240,235 S1405,130 1540,165"></path>
+
+        <!-- nodes -->
+        <circle class="node" cx="335" cy="620" r="5"></circle>
+        <circle class="node blue" cx="600" cy="560" r="4"></circle>
+        <circle class="node" cx="890" cy="470" r="5"></circle>
+        <circle class="node blue" cx="1165" cy="385" r="4"></circle>
+        <circle class="node" cx="1340" cy="270" r="5"></circle>
+
+        <circle class="node blue" cx="360" cy="710" r="4"></circle>
+        <circle class="node" cx="650" cy="650" r="5"></circle>
+        <circle class="node blue" cx="925" cy="580" r="4"></circle>
+        <circle class="node" cx="1190" cy="510" r="5"></circle>
+
+        <!-- simple analytical bars -->
+        <g transform="translate(116,700)">
+            <rect class="bar" x="0"   y="80" width="34" height="95"></rect>
+            <rect class="bar" x="62"  y="45" width="34" height="130"></rect>
+            <rect class="bar" x="124" y="68" width="34" height="107"></rect>
+            <rect class="bar" x="186" y="12" width="34" height="163"></rect>
+            <rect class="bar" x="248" y="37" width="34" height="138"></rect>
+        </g>
+
+        <!-- circular analytics motif -->
+        <circle cx="1360" cy="720" r="115"
+                fill="none"
+                stroke="rgba(91,164,229,.12)"
+                stroke-width="1.2"></circle>
+
+        <circle cx="1360" cy="720" r="82"
+                fill="none"
+                stroke="rgba(212,175,55,.16)"
+                stroke-width="1.2"
+                stroke-dasharray="9 11"></circle>
+
+        <circle cx="1360" cy="720" r="8"
+                fill="#d4af37"
+                opacity=".75"
+                filter="drop-shadow(0 0 10px rgba(212,175,55,.4))"></circle>
+    </svg>
+</div>
+
 
     <nav class="navbar">
         <div class="nav-brand">
@@ -68,7 +352,7 @@
     </nav>
 
     <section class="project-section padding-top">
-        <div class="section-wrapper reveal">
+        <div class="section-wrapper main-popup reveal">
             
             <div class="project-intro-grid">
                 <div class="intro-text">
@@ -106,7 +390,7 @@
     </section>
 
     <section class="project-section alt-bg">
-        <div class="section-wrapper split-grid reveal">
+        <div class="section-wrapper main-popup split-grid reveal">
             <div class="split-left">
                 <span class="eyebrow">02 • WHY I BUILT MY OWN DATASET</span>
                 <h2>Why I Built<br><span class="gold-text">My Own Dataset</span></h2>
@@ -145,7 +429,7 @@
     </section>
 
     <section class="project-section">
-        <div class="section-wrapper">
+        <div class="section-wrapper main-popup">
             <div class="text-center reveal" style="margin-bottom: 50px;">
                 <span class="eyebrow">03 • DATA ARCHITECTURE & BUSINESS COMPLEXITY</span>
                 <h2 class="project-title">Dataset Architecture<br><span class="gold-text">& Business Complexity</span></h2>
@@ -156,7 +440,7 @@
             </div>
 
             <div class="vertical-cards">
-                <div class="glass-card flex-row reveal delay-1">
+                <div class="glass-card flex-row reveal delay-1 main-popup-card">
                     <div class="card-side-panel">
                         <h3 class="gold-text">1</h3>
                         <i class="fa-solid fa-database gold-text icon-large"></i>
@@ -170,7 +454,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card flex-row reveal delay-2">
+                <div class="glass-card flex-row reveal delay-2 main-popup-card">
                     <div class="card-side-panel">
                         <h3 class="gold-text">2</h3>
                         <i class="fa-solid fa-link gold-text icon-large"></i>
@@ -183,7 +467,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card flex-row reveal delay-3">
+                <div class="glass-card flex-row reveal delay-3 main-popup-card">
                     <div class="card-side-panel">
                         <h3 class="gold-text">3</h3>
                         <i class="fa-regular fa-star gold-text icon-large"></i>
@@ -261,7 +545,7 @@
 
     <!-- ========== SECTION 04: DATA QUALITY & VALIDATION ========== -->
     <section class="project-section">
-        <div class="section-wrapper">
+        <div class="section-wrapper main-popup">
             <div class="reveal" style="margin-bottom:50px;">
                 <div class="section-04-header">
                     <div class="header-left">
@@ -280,7 +564,7 @@
             </div>
 
             <div class="data-quality-grid reveal">
-                <div class="quality-block">
+                <div class="quality-block main-popup-card">
                     <div class="quality-block-header"><span class="quality-number">01</span><div><h3 class="gold-text">ORDER ID VALIDATION</h3><p class="quality-subtitle">Missing & Duplicate IDs</p></div></div>
                     <div class="quality-block-content">
                         <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Some Order IDs were missing (NULL) and some orders were duplicated (e.g., ORD009 appearing multiple times).</p></div>
@@ -290,7 +574,7 @@
                     </div>
                 </div>
 
-                <div class="quality-block">
+                <div class="quality-block main-popup-card">
                     <div class="quality-block-header"><span class="quality-number">02</span><div><h3 class="gold-text">DATE STANDARDIZATION</h3><p class="quality-subtitle">Mixed Formats & Serial Numbers</p></div></div>
                     <div class="quality-block-content">
                         <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Date fields appeared in different formats across tables (short dates, serial numbers, text formats).</p></div>
@@ -300,7 +584,7 @@
                     </div>
                 </div>
 
-                <div class="quality-block">
+                <div class="quality-block main-popup-card">
                     <div class="quality-block-header"><span class="quality-number">03</span><div><h3 class="gold-text">FORMATTING CONSISTENCY</h3><p class="quality-subtitle">Status & Payment Method</p></div></div>
                     <div class="quality-block-content">
                         <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Text fields contained inconsistent capitalization, extra spaces, and special characters that negatively affected joins, grouping, and reporting.</p></div>
@@ -310,7 +594,7 @@
                     </div>
                 </div>
 
-                <div class="quality-block">
+                <div class="quality-block main-popup-card">
                     <div class="quality-block-header"><span class="quality-number">04</span><div><h3 class="gold-text">HELPER COLUMN & DERIVED FIELD</h3><p class="quality-subtitle">Creating Shipping Cost</p></div></div>
                     <div class="quality-block-content">
                         <div class="challenge-section"><span class="challenge-label"><i class="fa-solid fa-triangle-exclamation"></i> The Challenge</span><p>Shipping cost was not natively available as a single column in any source table.</p></div>
@@ -321,7 +605,7 @@
                 </div>
             </div>
 
-            <div class="validated-dataset-section reveal" style="margin-top:80px;">
+            <div class="validated-dataset-section reveal main-popup-card" style="margin-top:80px;">
                 <div class="validated-header"><i class="fa-solid fa-circle-check gold-text" style="font-size:1.8rem;"></i><h3 class="gold-text">AFTER CLEANING – VALIDATED DATASET SNAPSHOT (COMPLETE VIEW)</h3></div>
                 <div class="validated-dataset-placeholder"><div class="placeholder-image"><img src="https://res.cloudinary.com/dqac0apbs/image/upload/v1786749030/After_cleanig_icuroi.png" alt="Validated dataset after cleaning" loading="lazy"></div></div>
                 <div class="validated-footer reveal" style="margin-top:30px;"><i class="fa-solid fa-circle-check gold-text" style="font-size:1.5rem;"></i><div><p style="margin:0;font-weight:600;">The dataset is now clean, consistent, and trustworthy —</p><p style="margin:0;color:var(--text-grey);font-size:.95rem;">ready for analysis and business insights in Section 5.</p></div></div>
@@ -330,7 +614,7 @@
     </section>
 
     <section class="project-section alt-bg">
-        <div class="section-wrapper">
+        <div class="section-wrapper main-popup">
             <div class="text-center reveal" style="margin-bottom: 60px;">
                 <span class="eyebrow">SECTION 05</span>
                 <h2 class="project-title">What The Data<br><span class="gold-text">Started Revealing</span></h2>
@@ -339,53 +623,53 @@
             </div>
 
             <div class="dashboard-grid reveal">
-                <div class="dashboard-text">
+                <div class="dashboard-text main-popup-card">
                     <span class="eyebrow">BLOCK 01</span>
                     <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Macro View</h3>
                     <p class="bold-text">Seeing The Bigger Picture</p>
                     <p>The first step was stepping back and looking at the business as a whole. Instead of focusing on individual metrics, this view was designed to understand overall movement across sales, profitability, operational performance, customer activity, and changes over time.</p>
                     <p>The objective was not to answer every question here. It was to build context and identify where deeper investigation might be needed. That broader view naturally led to a more focused level of analysis.</p>
                 </div>
-                <div class="dashboard-image">
+                <div class="dashboard-image main-popup-card">
                     <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982618/macro_mkp2mk.png" alt="Macro Dashboard" class="content-img shadow-img">
                 </div>
             </div>
 
             <div class="dashboard-grid reverse reveal" style="margin-top: 60px;">
-                <div class="dashboard-text">
+                <div class="dashboard-text main-popup-card">
                     <span class="eyebrow">BLOCK 02</span>
                     <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Micro View</h3>
                     <p class="bold-text">Exploring What Deserved Attention</p>
                     <p>After identifying broader patterns, the next step was narrowing the scope and examining areas that appeared more meaningful. This level focused less on overall performance and more on comparison, behavior, and changing conditions across different dimensions.</p>
                     <p>Some observations appeared connected at first glance, but patterns alone were not enough to support conclusions. This stage required moving beyond surface interpretation and looking more carefully at what the numbers might actually represent.</p>
                 </div>
-                <div class="dashboard-image">
+                <div class="dashboard-image main-popup-card">
                     <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982656/micro_z7bymj.png" alt="Micro Dashboard" class="content-img shadow-img">
                 </div>
             </div>
 
             <div class="dashboard-grid reveal" style="margin-top: 60px;">
-                <div class="dashboard-text">
+                <div class="dashboard-text main-popup-card">
                     <span class="eyebrow">BLOCK 03</span>
                     <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Details View</h3>
                     <p class="bold-text">Looking Beyond The Summary</p>
                     <p>Once broader patterns became visible, deeper exploration helped move beyond aggregated results and investigate the factors behind them. At this stage, the objective was not to collect more numbers.</p>
                     <p>It was to understand what influenced those numbers and whether the initial assumptions remained valid after closer examination. Some findings became clearer. Others became more complex. Those observations eventually shaped the final business understanding.</p>
                 </div>
-                <div class="dashboard-image">
+                <div class="dashboard-image main-popup-card">
                     <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982769/details_hfgevt.png" alt="Details Dashboard" class="content-img shadow-img">
                 </div>
             </div>
 
             <div class="dashboard-grid reverse reveal" style="margin-top: 60px;">
-                <div class="dashboard-text">
+                <div class="dashboard-text main-popup-card">
                     <span class="eyebrow">BLOCK 04</span>
                     <h3 class="gold-text" style="font-size: 2rem; margin-bottom: 10px;">Key Insights</h3>
                     <p class="bold-text">Connecting The Findings</p>
                     <p>The final step was bringing observations together and turning separate findings into a more connected understanding. Not every observation became an insight immediately. Some findings later became starting points for more focused analytical exploration, where questions, assumptions, and emerging patterns were examined in greater depth before reaching more meaningful conclusions.</p>
                     <p>Several of those directions later evolved into more structured analytical work and deeper investigation. The project did not end with dashboards. It changed how I approach questions, validate assumptions, and understand business performance.</p>
                 </div>
-                <div class="dashboard-image">
+                <div class="dashboard-image main-popup-card">
                     <img src="https://res.cloudinary.com/dqac0apbs/image/upload/q_auto/f_auto/v1781982797/key_insights_tyvbot.png" alt="Key Insights" class="content-img shadow-img">
                 </div>
             </div>
@@ -394,7 +678,7 @@
     </section>
 
     <section class="project-section">
-        <div class="section-wrapper">
+        <div class="section-wrapper main-popup">
             <div class="text-center reveal" style="margin-bottom: 50px;">
                 <span class="eyebrow">SECTION 06</span>
                 <h2 class="project-title">Project Outcomes<br><span class="gold-text">& What I Learned</span></h2>
@@ -403,7 +687,7 @@
 
             <div class="vertical-cards">
                 
-                <div class="glass-card flex-row reveal delay-1">
+                <div class="glass-card flex-row reveal delay-1 main-popup-card">
                     <div class="card-side-panel">
                         <h3 class="gold-text">01</h3>
                         <i class="fa-solid fa-clipboard-question gold-text icon-large"></i>
@@ -488,7 +772,7 @@
     </section>
 
     <section class="project-section" style="padding-top: 0;">
-        <div class="section-wrapper">
+        <div class="section-wrapper main-popup">
             <div class="final-transition-box reveal">
                 <div class="transition-text">
                     <i class="fa-solid fa-signs-post gold-text" style="font-size: 2rem; margin-right: 15px;"></i>
@@ -506,5 +790,44 @@
 
     <script src="script.js"></script>
     <script src="portfolio-global.js"></script>
+
+<script id="main-project-popup-controller">
+(function(){
+    const popupItems = document.querySelectorAll(
+        '.main-popup, .main-popup-card'
+    );
+
+    if(!popupItems.length) return;
+
+    if(!('IntersectionObserver' in window)){
+        popupItems.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if(!entry.isIntersecting) return;
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+        });
+    }, {
+        threshold: .12,
+        rootMargin:'0px 0px -8% 0px'
+    });
+
+    popupItems.forEach((el, index) => {
+        if(!el.classList.contains('delay-1') &&
+           !el.classList.contains('delay-2') &&
+           !el.classList.contains('delay-3') &&
+           !el.classList.contains('delay-4') &&
+           !el.classList.contains('delay-5')){
+            el.style.transitionDelay = Math.min(index * .035, .22) + 's';
+        }
+
+        observer.observe(el);
+    });
+})();
+</script>
+
 </body>
 </html>
